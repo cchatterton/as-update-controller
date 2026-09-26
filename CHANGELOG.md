@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 - 2026-09-26
+
+- Support PHP 7.4 to match the minimum PHP version for WordPress 7.0.
+- Replace PHP 8-only union return declarations with equivalent PHPDoc types without changing updater behaviour.
+- Align the client installation contract with PHP 7.4 compatibility.
+
 ## 0.1.0 - 2026-09-26
 
 - Add a AlphaSys-only verified plugin catalogue with Installed, Catalogue and Settings views.

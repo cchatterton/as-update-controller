@@ -1,6 +1,7 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
-function asuc_start_batch(array $ids, string $kind): array|WP_Error {
+/** @return array|WP_Error */
+function asuc_start_batch(array $ids, string $kind) {
     if (!in_array($kind, ['update', 'install'], true) || !asuc_authorised($kind === 'install' ? 'install_plugins' : 'update_plugins')) { return new WP_Error('permission', 'You cannot perform this operation.'); }
     if (!wp_is_file_mod_allowed('asuc')) { return new WP_Error('files_disabled', 'File changes are disabled on this site.'); }
     if (!$ids || count($ids) > 100) { return new WP_Error('selection', 'Select at least one plugin.'); }
@@ -23,7 +24,8 @@ function asuc_start_batch(array $ids, string $kind): array|WP_Error {
         asuc_put('batch', $job); return $job;
     } finally { asuc_unlock('batch', $lock); }
 }
-function asuc_step_batch(string $id): array|WP_Error {
+/** @return array|WP_Error */
+function asuc_step_batch(string $id) {
     $lock = asuc_lock('batch', 300); if (!$lock) { return new WP_Error('busy', 'An installation step is already running.'); }
     try {
         $job = asuc_get('batch');
@@ -66,7 +68,8 @@ function asuc_step_batch(string $id): array|WP_Error {
         return $job;
     } finally { asuc_unlock('batch', $lock); }
 }
-function asuc_dispatch(string $op, array $input): array|WP_Error {
+/** @return array|WP_Error */
+function asuc_dispatch(string $op, array $input) {
     if (!asuc_authorised()) { return new WP_Error('permission', 'You cannot manage plugin updates.'); }
     if ($op === 'check') {
         $id = sanitize_text_field($input['plugin_id'] ?? '');

@@ -22,7 +22,8 @@ function asuc_package(array $entry): string {
     return 'https://github.com/' . $entry['owner'] . '/' . $entry['repo'] . '/releases/download/' . rawurlencode($entry['tag']) . '/' . rawurlencode($entry['asset']);
 }
 function asuc_release_url(array $entry): string { return 'https://github.com/' . $entry['owner'] . '/' . $entry['repo'] . '/releases/tag/' . rawurlencode($entry['tag']); }
-function asuc_validate_catalogue($candidate): array|WP_Error {
+/** @return array|WP_Error */
+function asuc_validate_catalogue($candidate) {
     if (!is_array($candidate) || ($candidate['schema'] ?? 0) !== 1 || !is_array($candidate['plugins'] ?? null) || count($candidate['plugins']) > 200 || !is_string($candidate['published_at'] ?? null) || strtotime($candidate['published_at']) === false) {
         return new WP_Error('catalogue_schema', 'The catalogue format is not supported.');
     }
@@ -52,7 +53,8 @@ function asuc_validate_catalogue($candidate): array|WP_Error {
     if (!$result) { return new WP_Error('catalogue_empty', 'No recognised releases were found.'); }
     return ['published_at' => $candidate['published_at'], 'plugins' => $result];
 }
-function asuc_refresh(bool $manual = true): array|WP_Error {
+/** @return array|WP_Error */
+function asuc_refresh(bool $manual = true) {
     $state = (array) asuc_get('check'); $now = time();
     if (($state['retry_at'] ?? 0) > $now) { return new WP_Error('backoff', 'A previous check failed. Retry after ' . gmdate('Y-m-d H:i', $state['retry_at']) . ' UTC.'); }
     if (($state['last_success'] ?? 0) > $now - 60) { return ['message' => 'The catalogue was checked less than a minute ago. Showing those results.']; }

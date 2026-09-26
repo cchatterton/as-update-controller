@@ -34,3 +34,7 @@ Tests use the adjacent repository catalogue fixtures. `install.php` requires out
 WordPress 6.5 is the declared minimum; full runtime tests used WordPress 7.1.2. PHP 8.1 was syntax-checked. Feature behaviour of all catalogue plugins, every historical legacy updater version, hosting credential-based filesystem transports, host-specific MU code and every possible feature-plugin activation scope were not exhaustively exercised. The guided installer supports direct filesystem writes; native WordPress flows remain the recovery route on credential-based filesystems. The controller is not a backup or rollback service.
 
 Initial feature-plugin catalogue releases still use legacy integration. Their migration status is explicit. Reviewed hashes apply only to the exact inspected updater files. A future plugin release that changes those files needs migration to the client API or a new audited controller registry release. No customer site was changed during these tests.
+
+## PHP 7.4 correction
+
+See [PHP compatibility validation](PHP-COMPATIBILITY.md) for WordPress 7.0 runtime testing on PHP 7.4.30, 8.1.23 and 8.5.7. This supersedes the earlier PHP minimum and syntax-only compatibility notes above.

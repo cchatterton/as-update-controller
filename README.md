@@ -2,7 +2,7 @@
 
 A WordPress plugin library and update coordinator for **AlphaSys-authored plugins from cchatterton on GitHub**. Installable ZIP: [latest release](https://github.com/cchatterton/as-update-controller/releases/latest/download/as-update-controller.zip).
 
-WordPress 6.5+, PHP 8.1+. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
+WordPress 6.5+, PHP 7.4+. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
 
 - **Installed:** version comparisons, update-management status, per-plugin checks and selected bulk updates.
 - **Catalogue:** searchable cards, release notes, install/update/activate actions. Installation leaves new feature plugins inactive.

@@ -3,8 +3,8 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.1.0
-Requires PHP: 8.1
+Stable tag: 0.1.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.1.1 =
+* Support PHP 7.4 by replacing PHP 8-only return declarations with equivalent PHPDoc types.
 
 = 0.1.0 =
 * First release: author-specific catalogue, background/manual checks, native update integration, guided batch updates and audited legacy compatibility.

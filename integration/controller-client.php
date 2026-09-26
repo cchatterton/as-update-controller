@@ -28,6 +28,10 @@ if (!function_exists('asuc_client_register')) {
     function asuc_bootstrap_install(): void {
         if (!current_user_can('install_plugins') || (is_multisite() && !current_user_can('manage_network_plugins'))) { wp_die('You cannot install this controller.'); }
         check_admin_referer('asuc_bootstrap_install');
+        global $wp_version;
+        if (version_compare(PHP_VERSION, '7.4', '<') || version_compare($wp_version, '6.5', '<')) {
+            wp_die('AlphaSys Update Controller requires WordPress 6.5 and PHP 7.4 or later. This plugin can continue to run without it.');
+        }
         if (!wp_is_file_mod_allowed('asuc_bootstrap')) { wp_die('File modifications are disabled.'); }
         require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
         require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';

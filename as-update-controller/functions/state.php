@@ -40,8 +40,11 @@ function asuc_scheduled_check(): void {
     asuc_refresh(false);
     asuc_schedule();
 }
-/** Unique option_name provides atomic acquisition; compare-and-delete protects a replacement owner. */
-function asuc_lock(string $name, int $ttl = 120): string|false {
+/**
+ * Unique option_name provides atomic acquisition; compare-and-delete protects a replacement owner.
+ * @return string|false
+ */
+function asuc_lock(string $name, int $ttl = 120) {
     return asuc_on_main(static function () use ($name, $ttl) {
         global $wpdb;
         $key = 'asuc_lock_' . $name;
