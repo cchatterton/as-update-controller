@@ -1,0 +1,57 @@
+=== AS Update Controller ===
+Contributors:
+Tags: updates, plugins, catalogue, alphasys
+Requires at least: 6.5
+Tested up to: 7.1.2
+Stable tag: 0.1.0
+Requires PHP: 8.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+A cached catalogue, background update checks and guided installation for AlphaSys plugins.
+
+== Description ==
+
+Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories. Techn plugins are managed separately by TN Update Controller. Both controllers can run together.
+
+Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use one aggregate catalogue. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
+
+Automatic discovery defaults to approximately every six hours. Manual-only mode is available. Discovery does not install updates or change WordPress auto-update settings.
+
+Reviewed legacy updater files are held inactive while this controller runs. This is a compatibility bridge, not a claim that all plugin repositories have been migrated. Unknown legacy implementations and site-level forced refresh code require review.
+
+On multisite, network activate this controller and use Network Admin. Inactive recognised plugins can receive updates without being activated.
+
+== Installation ==
+
+1. Upload as-update-controller.zip through Plugins > Add Plugin > Upload Plugin.
+2. Activate (network activate on multisite).
+3. Open Plugins > AlphaSys Plugins and check the catalogue.
+4. Review installed/available versions and choose Update selected plugins when ready.
+
+Installing or activating the controller does not automatically update other plugins. Batch operations preserve active/inactive state. Test migration on staging and verify recovery arrangements before production rollout.
+
+If filesystem credentials are required, use the native WordPress update/upload screen. A failed or interrupted batch can be reviewed and resumed from Installed. Use a verified controller ZIP for manual recovery if the controller cannot run.
+
+== Frequently Asked Questions ==
+
+= Does this require the controller for normal plugin functionality? =
+No. Feature plugins continue to operate without it. Legacy updater suppression only applies while the controller is active.
+
+= Why is a GitHub repository absent? =
+Only explicitly approved AlphaSys-authored WordPress plugin packages are included. Themes, blocks, unrelated authors and ambiguous packages are excluded. New package identities require a registry update.
+
+= Are checks immediate? =
+Manual checks bypass the normal six-hour interval, but reuse a successful check made within the last minute and respect in-progress checks and remote retry limits.
+
+== External services ==
+
+GitHub hosts the public catalogue and release packages. A scheduled or explicit manual check sends an HTTPS GET for the catalogue with the controller version in its User-Agent. It does not submit site inventory or credentials. GitHub receives the server IP address and normal connection metadata. An explicit installation/update downloads the selected release package from github.com and approved GitHub release-asset hosts. Repository/release links open GitHub only when clicked.
+
+Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
+Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+
+== Changelog ==
+
+= 0.1.0 =
+* First release: author-specific catalogue, background/manual checks, native update integration, guided batch updates and audited legacy compatibility.

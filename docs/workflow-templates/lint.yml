@@ -1,0 +1,16 @@
+name: PHP and catalogue validation
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax
+        run: find as-update-controller integration tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Python syntax and JSON
+        run: |
+          python3 -m py_compile scripts/publish-catalogue.py
+          python3 -m json.tool catalogue.json > /dev/null
+          python3 -m json.tool as-update-controller/data/registry.json > /dev/null

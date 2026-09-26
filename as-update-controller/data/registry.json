@@ -1,0 +1,269 @@
+{
+  "as-utm-relay": {
+    "id": "as-utm-relay",
+    "owner": "cchatterton",
+    "repo": "as-utm-relay",
+    "file": "as-utm-relay/as-utm-relay.php",
+    "slug": "as-utm-relay",
+    "asset": "as-utm-relay.zip",
+    "name": "AS UTM Relay",
+    "author": "AlphaSys",
+    "description": "Maintains a first-party JSON cookie of UTM touchpoints over time.",
+    "legacy": [
+      {
+        "path": "functions/updater.php",
+        "sha256": "a4a2410f4ae94913e425e5a8774fab7ca7906c20af39791620ec65859f6dfa90"
+      }
+    ]
+  },
+  "web-force-connect-27": {
+    "id": "web-force-connect-27",
+    "owner": "cchatterton",
+    "repo": "web-force-connect-27",
+    "file": "alphasys-web-force-connect-27/alphasys-web-force-connect-27.php",
+    "slug": "alphasys-web-force-connect-27",
+    "asset": "alphasys-web-force-connect-27.zip",
+    "name": "AlphaSys Web Force Connect 27",
+    "author": "AlphaSys",
+    "description": "Moves opaque text between durable Salesforce and WordPress stations.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "c614d9fc3485a43997868570d3e0b7ce8e2d6496158d34b8db8bdde92b9e23b2"
+      }
+    ]
+  },
+  "as-local-css": {
+    "id": "as-local-css",
+    "owner": "cchatterton",
+    "repo": "as-local-css",
+    "file": "as-local-css/as-local-css.php",
+    "slug": "as-local-css",
+    "asset": "as-local-css.zip",
+    "name": "AS Local CSS",
+    "author": "AlphaSys",
+    "description": "Compatible AlphaSys-maintained release of Simple Custom CSS and JS for adding local CSS, JavaScript, and HTML snippets.",
+    "legacy": [
+      {
+        "path": "includes/github-updater.php",
+        "sha256": "eb732ecbe0aa4f68c36626ef0d457813eadb6f73592393d0483a0bc9505b7fe9"
+      }
+    ]
+  },
+  "as-content-stream": {
+    "id": "as-content-stream",
+    "owner": "cchatterton",
+    "repo": "as-content-stream",
+    "file": "as-content-stream/as-content-stream.php",
+    "slug": "as-content-stream",
+    "asset": "as-content-stream.zip",
+    "name": "Content Stream",
+    "author": "AlphaSys",
+    "description": "Network content stream queue and WPML capability discovery for AlphaSys multisite networks.",
+    "legacy": [
+      {
+        "path": "includes/class-as-content-stream-github-updater.php",
+        "sha256": "1bb5efd44cc2cb727c9cd2040782823179e027e9cb82faf7888f34e52620da86"
+      }
+    ]
+  },
+  "gf-sf-webhook": {
+    "id": "gf-sf-webhook",
+    "owner": "cchatterton",
+    "repo": "gf-sf-webhook",
+    "file": "gf-sf-webhook/gf-sf-webhook.php",
+    "slug": "gf-sf-webhook",
+    "asset": "gf-sf-webhook.zip",
+    "name": "GF SF Webhook",
+    "author": "AlphaSys",
+    "description": "Sends mapped Gravity Forms submissions to a configured Salesforce webhook.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "a0b8f9760bfcc166a60155d5cc441b450209d72ccd41b7ae0569593f6978f2e6"
+      }
+    ]
+  },
+  "as-gated-content": {
+    "id": "as-gated-content",
+    "owner": "cchatterton",
+    "repo": "as-gated-content",
+    "file": "as-gated-content/as-gated-content.php",
+    "slug": "as-gated-content",
+    "asset": "as-gated-content.zip",
+    "name": "AS Gated Content",
+    "author": "AlphaSys",
+    "description": "Reusable gated content overlays powered by ACF Pro and Gravity Forms.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "c7665d40764cb33142c9a42c340073026ef8f607744ae67b8a38c56fedfd8e6d"
+      }
+    ]
+  },
+  "as-image-governance": {
+    "id": "as-image-governance",
+    "owner": "cchatterton",
+    "repo": "as-image-governance",
+    "file": "as-image-governance/as-image-governance.php",
+    "slug": "as-image-governance",
+    "asset": "as-image-governance.zip",
+    "name": "Image Governance",
+    "author": "AlphaSys",
+    "description": "Records image source, authority, usage, attribution, and lightweight collections.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "323156ad923431122dd29d7063a1ba0e38af34824c5a027e8c7324389ea540ae"
+      }
+    ]
+  },
+  "AS-Relevansi": {
+    "id": "AS-Relevansi",
+    "owner": "cchatterton",
+    "repo": "AS-Relevansi",
+    "file": "as-relevansi/as-relevansi.php",
+    "slug": "as-relevansi",
+    "asset": "as-relevansi.zip",
+    "name": "Relevanssi Extended",
+    "author": "AlphaSys",
+    "description": "Extends Relevanssi with a reusable search block, optional AI semantic expansion, a site topic map, search companion, and AI telemetry.",
+    "legacy": [
+      {
+        "path": "functions/updater.php",
+        "sha256": "d5e6c6b78eee1cb1b8c7c6cf6e3a3838937d3191d0290b73b199d9332644de96"
+      }
+    ]
+  },
+  "raiven-connector": {
+    "id": "raiven-connector",
+    "owner": "cchatterton",
+    "repo": "raiven-connector",
+    "file": "raiven-connector/raiven-connector.php",
+    "slug": "raiven-connector",
+    "asset": "raiven-connector.zip",
+    "name": "rAIven Connector",
+    "author": "AlphaSys",
+    "description": "Adds rAIven as an AlphaSys AI connector and provides a live admin test console.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "269243fe91bc08e37ac8fe10cc391222532b079f45ec9c419de4c8c68a290c4d"
+      }
+    ]
+  },
+  "as-shopify-catalog-link": {
+    "id": "as-shopify-catalog-link",
+    "owner": "cchatterton",
+    "repo": "as-shopify-catalog-link",
+    "file": "as-shopify-catalog-link/as-shopify-catalog-link.php",
+    "slug": "as-shopify-catalog-link",
+    "asset": "as-shopify-catalog-link.zip",
+    "name": "AlphaSys Shopify Catalog Link",
+    "author": "AlphaSys",
+    "description": "Maps WordPress query-string quantities to Shopify variants and redirects visitors to a configured Shopify cart.",
+    "legacy": [
+      {
+        "path": "includes/class-ascl-github-updater.php",
+        "sha256": "6ced58f1c23b10688d8303c61aaa33e45a5554708bee4ab4b97ca8fc1a88ecbc"
+      }
+    ]
+  },
+  "as-qs-relay": {
+    "id": "as-qs-relay",
+    "owner": "cchatterton",
+    "repo": "as-qs-relay",
+    "file": "as-qs-relay/as-qs-relay.php",
+    "slug": "as-qs-relay",
+    "asset": "as-qs-relay.zip",
+    "name": "AS QS Relay",
+    "author": "AlphaSys",
+    "description": "Maintains a first-party JSON cookie of tracked query-string touchpoints over time.",
+    "legacy": [
+      {
+        "path": "functions/updater.php",
+        "sha256": "6ebc5658b60f042f4f73c62977e50924ce316c1d164642a453272d15d09290a1"
+      }
+    ]
+  },
+  "gravity-forms-data-retention-policy": {
+    "id": "gravity-forms-data-retention-policy",
+    "owner": "cchatterton",
+    "repo": "gravity-forms-data-retention-policy",
+    "file": "gravity-forms-data-retention-policy/gravity-forms-data-retention-policy.php",
+    "slug": "gravity-forms-data-retention-policy",
+    "asset": "gravity-forms-data-retention-policy.zip",
+    "name": "Gravity Forms Data Retention Policy",
+    "author": "AlphaSys",
+    "description": "Enforces a site-wide maximum retention policy across Gravity Forms entries.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "14e720820da00f01e0252981c37a88401ec63ebc0a919ff21fc8325be77afe13"
+      }
+    ]
+  },
+  "wfc-cart": {
+    "id": "wfc-cart",
+    "owner": "cchatterton",
+    "repo": "wfc-cart",
+    "file": "wfc-cart/wfc-cart.php",
+    "slug": "wfc-cart",
+    "asset": "wfc-cart.zip",
+    "name": "WFC Cart",
+    "author": "AlphaSys",
+    "description": "Gravity Forms donation, cart, Stripe payment and configurable CRM transaction orchestration.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "ce22b1dd6b6a63430be28a2089682c9b5b904bdd21ccc54e68ae8be674fc6c0d"
+      }
+    ]
+  },
+  "as-transcript-themes": {
+    "id": "as-transcript-themes",
+    "owner": "cchatterton",
+    "repo": "as-transcript-themes",
+    "file": "as-transcript-themes/as-transcript-themes.php",
+    "slug": "as-transcript-themes",
+    "asset": "as-transcript-themes.zip",
+    "name": "AS Transcript Themes",
+    "author": "AlphaSys",
+    "description": "Uses the WordPress AI Client to identify topics, themes, and commitments from transcripts and email threads.",
+    "legacy": [
+      {
+        "path": "functions/updater.php",
+        "sha256": "7aa722d3dae1ab01ab96501e72488b7fbdca9912b43995f6fd9b890c3bec3635"
+      }
+    ]
+  },
+  "as-ms-reporting": {
+    "id": "as-ms-reporting",
+    "owner": "cchatterton",
+    "repo": "as-ms-reporting",
+    "file": "as-ms-reporting/as-ms-reporting.php",
+    "slug": "as-ms-reporting",
+    "asset": "as-ms-reporting.zip",
+    "name": "AS Managed Services Reporting",
+    "author": "AlphaSys",
+    "description": "Provides managed-services account reporting, access controls, data imports, and AI-assisted summaries.",
+    "legacy": [
+      {
+        "path": "functions/github-updater.php",
+        "sha256": "0e50f7193bedd0fde671e5a500f114b53f00641de1fc76f619985ea8e731d9e4"
+      }
+    ]
+  },
+  "as-update-controller": {
+    "id": "as-update-controller",
+    "owner": "cchatterton",
+    "repo": "as-update-controller",
+    "file": "as-update-controller/as-update-controller.php",
+    "slug": "as-update-controller",
+    "asset": "as-update-controller.zip",
+    "name": "AS Update Controller",
+    "author": "AlphaSys",
+    "description": "A cached plugin catalogue, background discovery and guided updates for AlphaSys plugins.",
+    "legacy": []
+  }
+}
