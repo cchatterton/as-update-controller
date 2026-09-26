@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T02:21:47.094026+00:00",
+  "published_at": "2026-09-26T03:10:03.732313+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -183,14 +183,14 @@
       "name": "AS Update Controller",
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
-      "version": "0.1.0",
-      "tag": "v0.1.0",
+      "version": "0.1.1",
+      "tag": "v0.1.1",
       "requires": "6.5",
-      "requires_php": "8.1",
+      "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "# Changelog\n\n## 0.1.0 - 2026-09-26\n\n- Add a AlphaSys-only verified plugin catalogue with Installed, Catalogue and Settings views.\n- Add background/manual discovery with durable metadata, atomic locking and retry backoff.\n- Integrate native WordPress updates, inactive plugins, checksummed packages and resumable batches.\n- Add audited legacy-updater suppression and migration status without replacing feature plugins on activation.\n- Publish the version 1 client bootstrap contract and controller recovery instructions.\n",
-      "sha256": "7357a51adb2535d0eb11f3a0ef78003636d2a9781083bd1e6f705954640daeaf"
+      "body": "## 0.1.1 - 2026-09-26\n\n- Support PHP 7.4 to match the minimum PHP version for WordPress 7.0.\n- Replace PHP 8-only union return declarations with equivalent PHPDoc types without changing updater behaviour.\n- Align the client installation contract with PHP 7.4 compatibility.\n",
+      "sha256": "f8388e64652f6609dc588dcf87a0dbbcbc9b579507660b23b6840717dc3b8399"
     },
     {
       "id": "as-utm-relay",
