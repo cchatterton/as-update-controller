@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,11 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.4.2 =
+* Remove the catalogue heading/search toolbar.
+* Remove redundant status strips from catalogue cards; group headings convey lifecycle state.
+
 
 = 0.4.1 =
 * Group cards as Active, Installed, Available and Beta, with state-specific actions.

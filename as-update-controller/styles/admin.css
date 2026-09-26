@@ -19,7 +19,6 @@
 .asuc-card-content { padding: 1.25rem; display: flex; flex: 1; flex-direction: column; }
 .asuc-card h3 { font-size: 1.15rem; line-height: 1.35; margin: 0 0 .5rem; }
 .asuc-card-description { flex: 1; margin: 0 0 1rem; }
-.asuc-card-state { background: #f5f6f7; padding: .55rem .7rem; font-weight: 600; border: .0625rem solid #dcdcde; margin: .25rem 0; }
 .asuc-card-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem; margin-top: .8rem; }
 .asuc-feedback { padding: .8rem 1rem; margin: 1rem 0; }
 .asuc-wrap button:focus-visible, .asuc-wrap a:focus-visible, .asuc-wrap input:focus-visible { outline: .15rem solid #2271b1; outline-offset: .15rem; }

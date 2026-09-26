@@ -70,16 +70,14 @@ function asuc_render_dialog(): void {
 }
 function asuc_details_link(array $entry): void { echo '<a href="' . esc_url(asuc_release_url($entry)) . '" target="_blank" rel="noopener noreferrer">Release notes<span class="screen-reader-text"> (opens in a new tab)</span></a>'; }
 function asuc_render_catalogue(array $registry, array $releases, array $plugins): void {
-    echo '<div class="asuc-toolbar"><h2>Plugin catalogue</h2><label>Find a plugin <input type="search" id="asuc-search" placeholder="Search name or description"></label></div>';
     if (!$releases) { echo '<p class="asuc-intro">This library lists the plugins recognised by this controller. Refresh the catalogue to load verified releases and enable installation.</p>'; }
     $labels = ['active' => 'Active', 'installed' => 'Installed', 'available' => 'Available', 'beta' => 'Beta'];
     foreach (asuc_catalogue_groups($registry, $releases, $plugins) as $group => $entries) {
     echo '<section class="asuc-catalogue-group" data-catalogue-group="' . esc_attr($group) . '" aria-labelledby="asuc-group-' . esc_attr($group) . '"' . (!$entries ? ' hidden' : '') . '><h2 id="asuc-group-' . esc_attr($group) . '">' . esc_html($labels[$group]) . '</h2><div class="asuc-grid">';
     foreach ($entries as $id=>$identity) {
-        $e = $releases[$id] ?? $identity; $has = isset($plugins[$e['file']]); $active = $has && (is_multisite() ? is_plugin_active_for_network($e['file']) : is_plugin_active($e['file']));
+        $e = $releases[$id] ?? $identity; $has = isset($plugins[$e['file']]);
         $conflict = $has && !asuc_match($e, $plugins); $issue = $conflict ? 'Installed plugin identity needs review.' : (isset($releases[$id]) ? asuc_compatibility($e) : 'Check the catalogue to load this release.');
-        $update = $has && isset($releases[$id]) && version_compare($e['version'], $plugins[$e['file']]['Version'], '>');
-        echo '<article class="asuc-card" data-search="' . esc_attr(strtolower($e['name'] . ' ' . $e['description'])) . '"><div class="asuc-card-content"><h3>' . esc_html($e['name']) . '</h3><p class="asuc-card-description">' . esc_html($e['description']) . '</p><p class="asuc-card-state">' . ($update ? 'Update available' : ($active ? 'Active' : ($has ? 'Installed · inactive' : 'Not installed'))) . '</p><p class="description">' . (isset($releases[$id]) ? esc_html('Version ' . $e['version'] . ' · WordPress ' . $e['requires'] . '+ · PHP ' . $e['requires_php'] . '+') : 'Release not checked') . '</p>';
+        echo '<article class="asuc-card" data-search="' . esc_attr(strtolower($e['name'] . ' ' . $e['description'])) . '"><div class="asuc-card-content"><h3>' . esc_html($e['name']) . '</h3><p class="asuc-card-description">' . esc_html($e['description']) . '</p><p class="description">' . (isset($releases[$id]) ? esc_html('Version ' . $e['version'] . ' · WordPress ' . $e['requires'] . '+ · PHP ' . $e['requires_php'] . '+') : 'Release not checked') . '</p>';
         if ($issue) { echo '<p class="asuc-warning">' . esc_html($issue) . '</p>'; }
         echo '<div class="asuc-card-actions">';
         if (!$has) { echo '<button class="button button-primary" data-install="' . esc_attr($id) . '" data-kind="install"' . ($issue || !asuc_authorised('install_plugins') || !wp_is_file_mod_allowed('asuc') ? ' disabled' : '') . '>Install</button>'; }
@@ -89,7 +87,6 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
     echo '</div></section>';
     }
-    echo '<p id="asuc-no-results" hidden>No matching plugins.</p>';
 }
 function asuc_render_settings(): void {
     $settings = asuc_settings();

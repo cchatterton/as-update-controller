@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2 - 2026-09-26
+
+- Remove the catalogue heading/search toolbar.
+- Remove redundant catalogue card status strips, including Not installed, Active and Installed/inactive. Group headings and state-specific actions already convey lifecycle state.
+- Retain version requirements, Beta chips and compatibility warnings.
+
 ## 0.4.1 - 2026-09-26
 
 - Add Installed between Active and Available; keep beta installed plugins in Installed and retain their chip.
