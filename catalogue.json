@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T04:55:16.003774+00:00",
+  "published_at": "2026-09-26T04:56:46.772144+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -197,14 +197,14 @@
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
       "beta": false,
-      "version": "0.4.3",
-      "tag": "v0.4.3",
+      "version": "0.4.4",
+      "tag": "v0.4.4",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.3\n\n- Promote the controller to Alpha following standards and single-site/multisite verification.\n- Set bundled catalogue readiness to non-beta; retain the 0.4.2 card cleanup and 0.4.1 lifecycle grouping fixes.\n",
-      "sha256": "2c955b7180e63108dfa362a41a6ca3f127639dd6feac0c1a0a3b2847acb273e9"
+      "body": "## 0.4.4\n\n- Remove the redundant Update discovery heading and introductory text from Settings.\n",
+      "sha256": "a14bed695788fd23e8f16f96d714b2d402714b6127d240c90a0cb987723610dc"
     },
     {
       "id": "as-utm-relay",
