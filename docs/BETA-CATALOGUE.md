@@ -17,3 +17,7 @@ AS Local CSS 0.4.3 removes its independent updater, integrates with AS Update Co
 - Fresh-request CSS output stayed identical; block-editor CSS loading and authored CSS remained intact. Repeated metadata reads made zero HTTP calls.
 
 No customer site has been changed. Optional third-party integration combinations were not exhaustively tested. Catalogue automation still needs GitHub workflow permissions; these catalogues are manually verified and published.
+
+## Published-release verification
+
+The actual GitHub AS Local CSS 0.4.3 ZIP upgraded 0.4.2 successfully and preserved activation, settings, snippets and generated files. Fresh-request rendering/editor checks passed on PHP 7.4.30. Both controllers upgraded from 0.2.0 to their published 0.3.0 ZIPs, preserving activation and state. The Techn catalogue was pinned to the verified published commit for this last test because the main-branch CDN cache briefly returned the previous document; production cache behaviour was not changed. All three installed release packages loaded successfully on PHP 7.4.30.
