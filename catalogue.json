@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T04:56:46.772144+00:00",
+  "published_at": "2026-09-26T05:01:38.370932+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -184,7 +184,12 @@
       "dependencies": [],
       "controller_api": 0,
       "body": "## 0.2.0 - 2026-07-23\n\n- Renamed the generated discussion layer from Themes to Topics in the WordPress admin UI.\n- Added a separate Theme post type for higher-level umbrella concepts inferred from topics.\n- Added a Commitment post type for actions and expectations, with direction, status, source evidence, and duplicate prevention.\n- Extended AI processing so transcripts and email threads now create or update topics, themes, and commitments in one pass.\n- Added relationship navigation between sources, topics, themes, commitments, contacts, and organisations.\n- Added dashboard widgets for top topics, top themes, recent sources, contacts, organisations, I Owe, and Owed To Me.\n- Updated workspace ranking to score topics, themes, and commitments together.",
-      "sha256": "ab9784b2b09e773fe17f1130a437777c92e81ffc4adb6952deddbf78e7f01afa"
+      "sha256": "ab9784b2b09e773fe17f1130a437777c92e81ffc4adb6952deddbf78e7f01afa",
+      "allowed_domains": [
+        "alphasys.com.au",
+        "localhost"
+      ],
+      "include_subdomains": true
     },
     {
       "id": "as-update-controller",
@@ -197,14 +202,14 @@
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
       "beta": false,
-      "version": "0.4.4",
-      "tag": "v0.4.4",
+      "version": "0.4.5",
+      "tag": "v0.4.5",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.4\n\n- Remove the redundant Update discovery heading and introductory text from Settings.\n",
-      "sha256": "a14bed695788fd23e8f16f96d714b2d402714b6127d240c90a0cb987723610dc"
+      "body": "## 0.4.5\n\n- Support exact localhost allowlist entries alongside domain/subdomain restrictions. Restrict Transcript Themes to alphasys.com.au, its subdomains and localhost.\n",
+      "sha256": "a1057d7717aa70c1ad133fef8502524ba4dfc80df73ee10cf5c6a3e02279fd58"
     },
     {
       "id": "as-utm-relay",
