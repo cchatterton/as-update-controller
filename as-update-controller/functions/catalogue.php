@@ -1,8 +1,18 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
-function asuc_registry(): array {
+function asuc_bundled_registry(): array {
     static $registry;
     if ($registry === null) { $registry = json_decode((string) file_get_contents(ASUC_DIR . 'data/registry.json'), true) ?: []; }
+    return $registry;
+}
+/** The approved publisher may add branded identities; executable legacy trust stays bundled. */
+function asuc_registry(): array {
+    $registry = asuc_bundled_registry();
+    foreach (asuc_catalogue()['plugins'] ?? [] as $id => $entry) {
+        $legacy = $registry[$id]['legacy'] ?? [];
+        $registry[$id] = array_merge($registry[$id] ?? [], $entry);
+        $registry[$id]['legacy'] = $legacy;
+    }
     return $registry;
 }
 function asuc_catalogue(): array { return (array) asuc_get('catalogue'); }
@@ -46,14 +56,25 @@ function asuc_validate_catalogue($candidate) {
     if (!is_array($candidate) || ($candidate['schema'] ?? 0) !== 1 || !is_array($candidate['plugins'] ?? null) || count($candidate['plugins']) > 200 || !is_string($candidate['published_at'] ?? null) || strtotime($candidate['published_at']) === false) {
         return new WP_Error('catalogue_schema', 'The catalogue format is not supported.');
     }
-    $registry = asuc_registry(); $result = []; $seen = [];
+    $registry = asuc_registry(); $result = []; $seen = []; $files = [];
     foreach ($candidate['plugins'] as $entry) {
         if (!is_array($entry) || !is_string($entry['id'] ?? null) || isset($seen[$entry['id']])) { return new WP_Error('catalogue_entry', 'The catalogue contains duplicate or invalid entries.'); }
         $id = $entry['id']; $seen[$id] = true;
-        if (!isset($registry[$id])) { continue; } // A controller release approves new installation identities.
+        if (($entry['owner'] ?? '') !== 'cchatterton' || ($entry['author'] ?? '') !== 'AlphaSys') { return new WP_Error('catalogue_brand', 'A catalogue identity belongs to another publisher or brand.'); }
         foreach (['owner', 'repo', 'file', 'slug', 'asset', 'author'] as $key) {
-            if (($entry[$key] ?? null) !== $registry[$id][$key]) { return new WP_Error('catalogue_identity', 'A catalogue plugin identity does not match the trusted registry.'); }
+            if (!is_string($entry[$key] ?? null) || (isset($registry[$id]) && $entry[$key] !== $registry[$id][$key])) { return new WP_Error('catalogue_identity', 'Invalid or changed plugin identity.'); }
         }
+        if (!isset($registry[$id])) {
+            foreach (['id', 'repo', 'slug'] as $key) {
+                if (!is_string($entry[$key] ?? null) || !preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/D', $entry[$key])) { return new WP_Error('catalogue_identity', 'Invalid plugin identity.'); }
+            }
+            if (!is_string($entry['file'] ?? null) || !preg_match('/^' . preg_quote($entry['slug'], '/') . '\/[a-zA-Z0-9_-]+\.php$/D', $entry['file']) || ($entry['asset'] ?? '') !== $entry['slug'] . '.zip' || isset($files[$entry['file']])) { return new WP_Error('catalogue_identity', 'Unsafe or duplicate plugin package identity.'); }
+        }
+        if (isset($files[$entry['file']])) { return new WP_Error('catalogue_identity', 'Duplicate plugin file.'); }
+        foreach ($registry as $known_id => $known) {
+            if ($known_id !== $id && ($known['file'] === $entry['file'] || $known['slug'] === $entry['slug'] || $known['repo'] === $entry['repo'])) { return new WP_Error('catalogue_identity', 'A new entry conflicts with an existing plugin identity.'); }
+        }
+        $files[$entry['file']] = true;
         foreach (['version', 'requires', 'requires_php'] as $key) {
             if (!is_string($entry[$key] ?? null) || !preg_match('/^\d+\.\d+(?:\.\d+){0,2}$/D', $entry[$key])) { return new WP_Error('catalogue_version', 'A catalogue version is invalid.'); }
         }
@@ -65,13 +86,14 @@ function asuc_validate_catalogue($candidate) {
         }
         if (array_key_exists('beta', $entry) && !is_bool($entry['beta'])) { return new WP_Error('catalogue_beta', 'A catalogue beta status is invalid.'); }
         $entry['beta'] = $entry['beta'] ?? ($registry[$id]['beta'] ?? true);
-        // Availability rules are approved in controller releases, never expanded by remote metadata.
-        $entry['allowed_domains'] = $registry[$id]['allowed_domains'] ?? [];
-        $entry['include_subdomains'] = $registry[$id]['include_subdomains'] ?? false;
-        $entry['name'] = $registry[$id]['name'];
-        $entry['description'] = sanitize_text_field((string) ($entry['description'] ?? $registry[$id]['description']));
+        $entry['allowed_domains'] = $entry['allowed_domains'] ?? [];
+        $entry['include_subdomains'] = $entry['include_subdomains'] ?? false;
+        if (!asuc_valid_domain_policy($entry)) { return new WP_Error('catalogue_domains', 'Invalid plugin domain metadata.'); }
+        $entry['name'] = sanitize_text_field((string) ($registry[$id]['name'] ?? $entry['name'] ?? $id));
+        $entry['description'] = sanitize_text_field((string) ($entry['description'] ?? $registry[$id]['description'] ?? ''));
         $entry['body'] = sanitize_textarea_field((string) ($entry['body'] ?? ''));
         unset($entry['legacy']); // Legacy code trust is bundled, never accepted remotely.
+        $registry[$id] = $entry;
         $result[$id] = $entry;
     }
     if (!$result) { return new WP_Error('catalogue_empty', 'No recognised releases were found.'); }

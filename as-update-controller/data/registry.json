@@ -249,12 +249,7 @@
         "sha256": "7aa722d3dae1ab01ab96501e72488b7fbdca9912b43995f6fd9b890c3bec3635"
       }
     ],
-    "beta": true,
-    "allowed_domains": [
-      "alphasys.com.au",
-      "localhost"
-    ],
-    "include_subdomains": true
+    "beta": true
   },
   "as-ms-reporting": {
     "id": "as-ms-reporting",
@@ -272,11 +267,7 @@
         "sha256": "0e50f7193bedd0fde671e5a500f114b53f00641de1fc76f619985ea8e731d9e4"
       }
     ],
-    "beta": true,
-    "allowed_domains": [
-      "alphasys.com.au"
-    ],
-    "include_subdomains": true
+    "beta": true
   },
   "as-update-controller": {
     "id": "as-update-controller",

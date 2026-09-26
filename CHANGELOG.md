@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 - 2026-09-26
+
+- Read domain restrictions from plugin release headers via the verified catalogue. Show all catalogue plugins on localhost. Accept new approved same-brand catalogue entries without controller releases; keep executable legacy trust bundled.
+
 ## 0.4.5 - 2026-09-26
 
 - Support exact localhost allowlist entries alongside domain/subdomain restrictions. Restrict Transcript Themes to alphasys.com.au, its subdomains and localhost.

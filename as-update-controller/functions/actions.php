@@ -1,14 +1,30 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
-/** Restrictions use configured site/network URLs, never the request Host header. */
+/** Validate published/header policy without any remote lookups. */
+function asuc_valid_domain_policy(array $rule): bool {
+    if (!is_array($rule['allowed_domains'] ?? null) || !is_bool($rule['include_subdomains'] ?? null)) { return false; }
+    foreach ($rule['allowed_domains'] as $domain) {
+        if (!is_string($domain) || strlen($domain) > 253 || !preg_match('/^(?:localhost|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+)$/D', $domain)) { return false; }
+    }
+    return true;
+}
+/** Restrictions come from release headers in the catalogue, or installed headers with a cold cache. */
 function asuc_domain_allowed(array $entry): bool {
-    $rule = asuc_registry()[$entry['id'] ?? ''] ?? $entry;
-    $domains = $rule['allowed_domains'] ?? [];
-    if (!$domains) { return true; }
     $host = strtolower(rtrim((string) wp_parse_url(is_multisite() ? network_home_url('/') : home_url('/'), PHP_URL_HOST), '.'));
-    foreach ($domains as $domain) {
-        $domain = strtolower($domain);
-        if ($host === $domain || ($domain !== 'localhost' && !empty($rule['include_subdomains']) && substr($host, -strlen('.' . $domain)) === '.' . $domain)) { return true; }
+    if ($host === 'localhost') { return true; }
+    $rule = asuc_catalogue()['plugins'][$entry['id'] ?? ''] ?? null;
+    if (!$rule) {
+        $path = WP_PLUGIN_DIR . '/' . ($entry['file'] ?? '');
+        if (!is_file($path)) { return false; } // Load release metadata before advertising uninstalled plugins.
+        $headers = get_file_data($path, ['domains' => 'Allowed Domains', 'subdomains' => 'Allow Subdomains']);
+        $rule = ['allowed_domains' => $headers['domains'] === '' ? [] : array_map('trim', explode(',', strtolower($headers['domains']))), 'include_subdomains' => strtolower($headers['subdomains']) === 'true'];
+        if (!in_array(strtolower($headers['subdomains']), ['', 'true', 'false'], true)) { return false; }
+    }
+    $rule += ['allowed_domains' => [], 'include_subdomains' => false];
+    if (!asuc_valid_domain_policy($rule)) { return false; }
+    if (!$rule['allowed_domains']) { return true; }
+    foreach ($rule['allowed_domains'] as $domain) {
+        if ($host === $domain || ($domain !== 'localhost' && $rule['include_subdomains'] && substr($host, -strlen('.' . $domain)) === '.' . $domain)) { return true; }
     }
     return false;
 }

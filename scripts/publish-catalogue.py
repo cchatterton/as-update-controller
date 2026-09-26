@@ -13,14 +13,17 @@ def header(text, key, default=""):
     match = re.search(r"^\s*\*?\s*" + re.escape(key) + r":\s*(.+)$", text, re.M)
     return match.group(1).strip() if match else default
 
+def domain_policy(text):
+    raw = header(text, "Allowed Domains")
+    domains = [d.strip().lower() for d in raw.split(",")] if raw else []
+    subdomains = header(text, "Allow Subdomains", "false").lower()
+    if subdomains not in ("true", "false") or any(len(d) > 253 or not re.fullmatch(r"localhost|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+", d) for d in domains):
+        raise ValueError("Invalid Allowed Domains / Allow Subdomains plugin headers")
+    return {"allowed_domains": domains, "include_subdomains": subdomains == "true"}
+
 def collect(entry):
     if type(entry.get("beta")) is not bool:
         raise ValueError("Registry entries require an explicit boolean beta status")
-    domains = entry.get("allowed_domains", [])
-    if not isinstance(domains, list) or any(not isinstance(d, str) or (d != "localhost" and not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+", d)) for d in domains):
-        raise ValueError("Domain allowlists require lower-case hostnames without schemes, paths or wildcards")
-    if type(entry.get("include_subdomains", False)) is not bool:
-        raise ValueError("include_subdomains must be a boolean")
     if entry["owner"] != "cchatterton" or entry["author"] != BRAND:
         raise ValueError("Registry ownership is outside this controller")
     release = json.loads(subprocess.check_output(["gh", "api", "repos/" + entry["owner"] + "/" + entry["repo"] + "/releases/latest"]))
@@ -52,6 +55,7 @@ def collect(entry):
         if not header(text, "Plugin Name") or release["tag_name"] not in (version, "v" + version, "V" + version):
             raise ValueError("Plugin header/tag mismatch: " + entry["id"])
         record = {k: v for k, v in entry.items() if k not in ("legacy", "author_header")}
+        record.update(domain_policy(text))
         record.update(version=version, tag=release["tag_name"], description=header(text, "Description", entry["description"]), requires=header(text, "Requires at least", "6.0"), requires_php=header(text, "Requires PHP", "8.1"), dependencies=[x.strip() for x in header(text, "Requires Plugins").split(",") if x.strip()], controller_api=int(header(text, BRAND + " Controller API", "1" if entry["id"] == SLUG else "0")), body=release.get("body") or "See the published release notes.", sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         for key in ("version", "requires", "requires_php"):
             if not re.fullmatch(r"\d+\.\d+(?:\.\d+){0,2}", record[key]):

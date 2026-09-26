@@ -12,7 +12,7 @@ Activation schedules discovery; it never upgrades other plugins automatically. R
 
 ## Ownership and coexistence
 
-Only exact approved repository identities with AlphaSys authorship enter this catalogue. A committed registry fixes each owner, repo, author, plugin basename and asset name. New identities require a controller release. Techn has its own independent TN Update Controller; both may run on the same site with separate hooks, data, schedules and locks. Unrelated plugins retain their own providers.
+Only exact approved repository identities with AlphaSys authorship enter this catalogue. A committed registry fixes each owner, repo, author, plugin basename and asset name. Approved new identities are delivered through the verified catalogue without a controller release. Domain availability comes from plugin release headers; see docs/DOMAIN-METADATA.md. Techn has its own independent TN Update Controller; both may run on the same site with separate hooks, data, schedules and locks. Unrelated plugins retain their own providers.
 
 ## Performance
 
