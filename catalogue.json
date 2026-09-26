@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T04:35:07.628716+00:00",
+  "published_at": "2026-09-26T04:47:15.068020+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -197,14 +197,14 @@
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
       "beta": true,
-      "version": "0.4.0",
-      "tag": "v0.4.0",
+      "version": "0.4.1",
+      "tag": "v0.4.1",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.0 - 2026-09-26\n\n- Replace the Installed tab with Updates available; retain the full catalogue.\n- Add card activation/deactivation and confirmed deletion, with network scope and active-site deletion protection.\n- Enforce configured domain allowlists for catalogue visibility and managed downloads.\n- Remove Manage plugin and place small Beta chips at the bottom-right of cards.\n",
-      "sha256": "9baf3d96ae3db259e464cb5ef06a98ed0ce0341dac352fb2b7f5ccc217d00137"
+      "body": "## 0.4.1\n\n- Add Installed between Active and Available; keep beta installed plugins in Installed and retain their chip.\n- Active cards offer Deactivate; Installed cards offer Activate and Delete; uninstalled Available/Beta cards offer Install. Updates remain on Updates available.\n- Render refreshed state through authenticated AJAX instead of fetching potentially cached page HTML. Preserve successful action feedback if the refresh fails.\n",
+      "sha256": "8ea80fa8462522f626f1b3860839bade01140d5f9c2de65d02e356c29032e783"
     },
     {
       "id": "as-utm-relay",
