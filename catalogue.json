@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T03:10:03.732313+00:00",
+  "published_at": "2026-09-26T03:29:27.981308+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -183,14 +183,14 @@
       "name": "AS Update Controller",
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
-      "version": "0.1.1",
-      "tag": "v0.1.1",
+      "version": "0.2.0",
+      "tag": "v0.2.0",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.1.1 - 2026-09-26\n\n- Support PHP 7.4 to match the minimum PHP version for WordPress 7.0.\n- Replace PHP 8-only union return declarations with equivalent PHPDoc types without changing updater behaviour.\n- Align the client installation contract with PHP 7.4 compatibility.\n",
-      "sha256": "f8388e64652f6609dc588dcf87a0dbbcbc9b579507660b23b6840717dc3b8399"
+      "body": "## 0.2.0 - 2026-09-26\n\n- Split installed and available versions into separate columns; link available versions to release notes and add a GitHub column.\n- Remove per-row checks, update-management text, setup notices, persistent success/history panels and settings recovery/status sections.\n- Simplify catalogue cards by removing repeated brand banners and author labels.\n- Add modal checking feedback and animated, per-plugin update progress with concise completion results and expandable failures.\n- Refresh lists in place; retain interruption recovery and compact access to unresolved results.\n- Add keyboard focus handling, reduced-motion styling, disabled selection explanations and selection-aware update controls.\n- Preserve PHP 7.4 compatibility, separate brand catalogues and network-free metadata rendering.\n",
+      "sha256": "469955811a9dd06755c98eed8421d8176ae34ba2a2232c6aba290a28824e91fb"
     },
     {
       "id": "as-utm-relay",
