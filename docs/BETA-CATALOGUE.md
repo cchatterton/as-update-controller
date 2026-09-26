@@ -21,3 +21,7 @@ No customer site has been changed. Optional third-party integration combinations
 ## Published-release verification
 
 The actual GitHub AS Local CSS 0.4.3 ZIP upgraded 0.4.2 successfully and preserved activation, settings, snippets and generated files. Fresh-request rendering/editor checks passed on PHP 7.4.30. Both controllers upgraded from 0.2.0 to their published 0.3.0 ZIPs, preserving activation and state. The Techn catalogue was pinned to the verified published commit for this last test because the main-branch CDN cache briefly returned the previous document; production cache behaviour was not changed. All three installed release packages loaded successfully on PHP 7.4.30.
+
+## Controller Alpha promotion — 0.4.3
+
+Both controllers are now reviewed Alpha (`beta: false`), following the controller integration, security/recovery, lifecycle grouping, state-refresh, domain policy and single-site/multisite checks. Earlier statements about controller Beta status describe the 0.3.0 rollout. Version 0.4.3 also retains the removal of card status strips and the catalogue search toolbar from 0.4.2.

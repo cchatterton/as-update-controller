@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.3 - 2026-09-26
+
+- Promote the controller to Alpha following standards and single-site/multisite verification.
+- Set bundled catalogue readiness to non-beta; retain the 0.4.2 card cleanup and 0.4.1 lifecycle grouping fixes.
+
 ## 0.4.2 - 2026-09-26
 
 - Remove the catalogue heading/search toolbar.

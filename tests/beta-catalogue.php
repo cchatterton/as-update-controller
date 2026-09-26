@@ -2,7 +2,7 @@
 /** Run only on disposable WordPress with both controllers active. No plugin activation hooks are invoked. */
 wp_set_current_user(1);
 function beta_assert($ok,$message){if(!$ok){throw new RuntimeException($message);}echo "PASS: $message\n";}
-$stable=['help-guides','menubot','persona26','tn-authenticator','tn-content-planner','tn-environments','tn-pallet','tn-qrcodes','tn-user-management','tn-wp-migrate-code-diff','as-local-css','gf-sf-webhook','as-content-stream','raiven-connector','gravity-forms-data-retention-policy'];
+$stable=['as-update-controller','tn-update-controller','help-guides','menubot','persona26','tn-authenticator','tn-content-planner','tn-environments','tn-pallet','tn-qrcodes','tn-user-management','tn-wp-migrate-code-diff','as-local-css','gf-sf-webhook','as-content-stream','raiven-connector','gravity-forms-data-retention-policy'];
 $requests=0;$http=function()use(&$requests){$requests++;return new WP_Error('test_http','Unexpected metadata request');};add_filter('pre_http_request',$http,10,3);
 $active=[];$filter=function()use(&$active){return $active;};add_filter('option_active_plugins',$filter);
 try{

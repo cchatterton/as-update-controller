@@ -284,6 +284,6 @@
     "author": "AlphaSys",
     "description": "A cached plugin catalogue, background discovery and guided updates for AlphaSys plugins.",
     "legacy": [],
-    "beta": true
+    "beta": false
   }
 }
