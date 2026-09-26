@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 - 2026-09-26
+
+- Add Installed between Active and Available; keep beta installed plugins in Installed and retain their chip.
+- Active cards offer Deactivate; Installed cards offer Activate and Delete; uninstalled Available/Beta cards offer Install. Updates remain on Updates available.
+- Render refreshed state through authenticated AJAX instead of fetching potentially cached page HTML. Preserve successful action feedback if the refresh fails.
+
 ## 0.4.0 - 2026-09-26
 
 - Replace the Installed tab with Updates available; retain the full catalogue.

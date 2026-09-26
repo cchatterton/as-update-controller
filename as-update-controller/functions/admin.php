@@ -72,7 +72,7 @@ function asuc_details_link(array $entry): void { echo '<a href="' . esc_url(asuc
 function asuc_render_catalogue(array $registry, array $releases, array $plugins): void {
     echo '<div class="asuc-toolbar"><h2>Plugin catalogue</h2><label>Find a plugin <input type="search" id="asuc-search" placeholder="Search name or description"></label></div>';
     if (!$releases) { echo '<p class="asuc-intro">This library lists the plugins recognised by this controller. Refresh the catalogue to load verified releases and enable installation.</p>'; }
-    $labels = ['active' => 'Active plugins', 'available' => 'Available plugins', 'beta' => 'Beta plugins'];
+    $labels = ['active' => 'Active', 'installed' => 'Installed', 'available' => 'Available', 'beta' => 'Beta'];
     foreach (asuc_catalogue_groups($registry, $releases, $plugins) as $group => $entries) {
     echo '<section class="asuc-catalogue-group" data-catalogue-group="' . esc_attr($group) . '" aria-labelledby="asuc-group-' . esc_attr($group) . '"' . (!$entries ? ' hidden' : '') . '><h2 id="asuc-group-' . esc_attr($group) . '">' . esc_html($labels[$group]) . '</h2><div class="asuc-grid">';
     foreach ($entries as $id=>$identity) {
@@ -82,7 +82,7 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
         echo '<article class="asuc-card" data-search="' . esc_attr(strtolower($e['name'] . ' ' . $e['description'])) . '"><div class="asuc-card-content"><h3>' . esc_html($e['name']) . '</h3><p class="asuc-card-description">' . esc_html($e['description']) . '</p><p class="asuc-card-state">' . ($update ? 'Update available' : ($active ? 'Active' : ($has ? 'Installed · inactive' : 'Not installed'))) . '</p><p class="description">' . (isset($releases[$id]) ? esc_html('Version ' . $e['version'] . ' · WordPress ' . $e['requires'] . '+ · PHP ' . $e['requires_php'] . '+') : 'Release not checked') . '</p>';
         if ($issue) { echo '<p class="asuc-warning">' . esc_html($issue) . '</p>'; }
         echo '<div class="asuc-card-actions">';
-        if (!$issue && (!$has || $update)) { echo '<button class="button button-primary" data-install="' . esc_attr($id) . '" data-kind="' . ($has ? 'update' : 'install') . '"' . (!asuc_authorised($has ? 'update_plugins' : 'install_plugins') ? ' disabled' : '') . '>' . ($has ? 'Update' : 'Install') . '</button>'; }
+        if (!$has) { echo '<button class="button button-primary" data-install="' . esc_attr($id) . '" data-kind="install"' . ($issue || !asuc_authorised('install_plugins') || !wp_is_file_mod_allowed('asuc') ? ' disabled' : '') . '>Install</button>'; }
         asuc_card_actions($e, $has, $conflict);
         if (isset($releases[$id])) { asuc_details_link($e); }
         echo '</div>' . asuc_beta_badge($e) . '</div></article>';

@@ -19,17 +19,17 @@ try{
   if(!isset($registry[$id])){$id=$slug;}
   $known=$registry[$id];$plugins=[$known['file']=>['Version'=>'0.0.1']];
   $active=[];$groups=$group($registry,[],$plugins);
-  beta_assert(isset($groups['beta'][$id]) && !isset($groups['active'][$id]),"$prefix inactive installed beta stays in Beta");
+  beta_assert(isset($groups['installed'][$id]) && !isset($groups['active'][$id]),"$prefix inactive installed beta stays in Installed");
   $active=[$known['file']];$groups=$group($registry,[],$plugins);
   beta_assert(isset($groups['active'][$id]) && !isset($groups['beta'][$id]),"$prefix active beta moves only to Active");
   beta_assert(strpos(($prefix.'_beta_badge')($known),'Beta')!==false,"$prefix active beta retains visible chip");
-  beta_assert(array_keys($groups)===['active','available','beta'],"$prefix group order is stable");
+  beta_assert(array_keys($groups)===['active','installed','available','beta'],"$prefix group order is stable");
   beta_assert(array_sum(array_map('count',$groups))===count(array_filter($registry, $prefix.'_domain_allowed')),"$prefix every card appears exactly once");
   $active=[];$promoted=$known;$promoted['beta']=false;$groups=$group($registry,[$id=>$promoted],$plugins);
-  beta_assert(isset($groups['available'][$id]) && !isset($groups['beta'][$id]),"$prefix explicit catalogue promotion moves inactive plugin to Available");
+  beta_assert(isset($groups['installed'][$id]) && !isset($groups['beta'][$id]),"$prefix explicit catalogue promotion keeps installed plugin in Installed");
   beta_assert(($prefix.'_beta_badge')($promoted)==='',"$prefix promoted entry has no beta chip");
   if($prefix==='tnuc'){
-   $id='menubot';$active=[];$groups=$group($registry,[],[$registry[$id]['file']=>['Version'=>'1.0']]);beta_assert(isset($groups['available'][$id]),'inactive migrated plugin is Available');
+   $id='menubot';$active=[];$groups=$group($registry,[],[$registry[$id]['file']=>['Version'=>'1.0']]);beta_assert(isset($groups['installed'][$id]),'inactive migrated plugin is Installed');
    $active=[$registry[$id]['file']];$groups=$group($registry,[],[$registry[$id]['file']=>['Version'=>'1.0']]);beta_assert(isset($groups['active'][$id]),'active migrated plugin is Active');
   }
  }

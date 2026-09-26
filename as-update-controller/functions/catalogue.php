@@ -15,12 +15,12 @@ function asuc_beta_badge(array $entry): string {
     return asuc_is_beta($entry) ? '<span class="asuc-beta">Beta</span>' : '';
 }
 function asuc_catalogue_groups(array $registry, array $releases, array $plugins): array {
-    $groups = ['active' => [], 'available' => [], 'beta' => []];
+    $groups = ['active' => [], 'installed' => [], 'available' => [], 'beta' => []];
     foreach ($registry as $id => $identity) {
         if (!asuc_domain_allowed($identity)) { continue; }
         $entry = $releases[$id] ?? $identity;
         $active = isset($plugins[$identity['file']]) && (is_multisite() ? is_plugin_active_for_network($identity['file']) : is_plugin_active($identity['file']));
-        $group = $active ? 'active' : (asuc_is_beta($entry) ? 'beta' : 'available');
+        $group = $active ? 'active' : (isset($plugins[$identity['file']]) ? 'installed' : (asuc_is_beta($entry) ? 'beta' : 'available'));
         $groups[$group][$id] = $identity;
     }
     return $groups;

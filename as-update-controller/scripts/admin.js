@@ -58,9 +58,9 @@
         if (update) update.disabled = selected.length === 0;
     };
     const refresh = async () => {
-        const response = await fetch(window.location.href, { credentials: 'same-origin', cache: 'no-store' });
-        if (!response.ok) throw new Error('Could not refresh the plugin list.');
-        const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+        const tab = new URL(window.location.href).searchParams.get('tab') || 'installed';
+        const result = await call('view', { tab });
+        const page = new DOMParser().parseFromString(result.html, 'text/html');
         const view = page.getElementById('asuc-view');
         if (!view) throw new Error('Could not refresh the plugin list.');
         document.getElementById('asuc-view').replaceChildren(...view.childNodes);
@@ -141,8 +141,11 @@
             if (operation === 'delete' && !window.confirm(`Delete ${name(id)}? WordPress will remove its files and run its uninstall routine, which may delete saved data.`)) return;
             return void execute(`${operation === 'delete' ? 'Deleting' : operation === 'activate' ? 'Activating' : 'Deactivating'} ${name(id)}`, async () => {
                 const result = await call('plugin_action', { plugin_id: id, plugin_action: operation });
-                await refresh();
                 title.textContent = 'Complete'; message.textContent = result.message;
+                try { await refresh(); } catch (_) {
+                    message.textContent += ' Close to reload the plugin list.';
+                    reloadOnClose = true;
+                }
                 setBusy(false); close.focus();
             });
         }
