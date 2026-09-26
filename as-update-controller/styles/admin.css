@@ -52,3 +52,6 @@
 .asuc-catalogue-group { margin-top: 1.75rem; }
 .asuc-catalogue-group > h2 { margin-bottom: .75rem; }
 .asuc-catalogue-group[hidden] { display: none; }
+
+.asuc-card-content { position: relative; padding-bottom: 2.25rem; }
+.asuc-card-content > .asuc-beta { position: absolute; bottom: 0.5rem; right: 0.75rem; font-size: 0.625rem; padding: 0 0.3rem; }

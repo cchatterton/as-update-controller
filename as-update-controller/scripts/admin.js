@@ -133,9 +133,19 @@
         await finish(result.batch);
     };
     root.addEventListener('click', event => {
-        const button = event.target.closest('[data-check], [data-install], [data-resume], [data-results], #asuc-update-selected');
+        const button = event.target.closest('[data-plugin-action], [data-check], [data-install], [data-resume], [data-results], #asuc-update-selected');
         if (!button || busy) return;
         event.preventDefault();
+        if (button.hasAttribute('data-plugin-action')) {
+            const operation = button.dataset.pluginAction, id = button.dataset.pluginId;
+            if (operation === 'delete' && !window.confirm(`Delete ${name(id)}? WordPress will remove its files and run its uninstall routine, which may delete saved data.`)) return;
+            return void execute(`${operation === 'delete' ? 'Deleting' : operation === 'activate' ? 'Activating' : 'Deactivating'} ${name(id)}`, async () => {
+                const result = await call('plugin_action', { plugin_id: id, plugin_action: operation });
+                await refresh();
+                title.textContent = 'Complete'; message.textContent = result.message;
+                setBusy(false); close.focus();
+            });
+        }
         if (button.hasAttribute('data-check')) return void execute('Checking for updates', check);
         if (button.hasAttribute('data-results')) return void execute('Update results', results);
         if (button.hasAttribute('data-resume')) return void execute('Updating plugins', () => resume(button.dataset.resume));

@@ -69,7 +69,7 @@
         "sha256": "1bb5efd44cc2cb727c9cd2040782823179e027e9cb82faf7888f34e52620da86"
       }
     ],
-    "beta": true
+    "beta": false
   },
   "gf-sf-webhook": {
     "id": "gf-sf-webhook",
@@ -87,7 +87,7 @@
         "sha256": "a0b8f9760bfcc166a60155d5cc441b450209d72ccd41b7ae0569593f6978f2e6"
       }
     ],
-    "beta": true
+    "beta": false
   },
   "as-gated-content": {
     "id": "as-gated-content",
@@ -159,7 +159,7 @@
         "sha256": "269243fe91bc08e37ac8fe10cc391222532b079f45ec9c419de4c8c68a290c4d"
       }
     ],
-    "beta": true
+    "beta": false
   },
   "as-shopify-catalog-link": {
     "id": "as-shopify-catalog-link",
@@ -213,7 +213,7 @@
         "sha256": "14e720820da00f01e0252981c37a88401ec63ebc0a919ff21fc8325be77afe13"
       }
     ],
-    "beta": true
+    "beta": false
   },
   "wfc-cart": {
     "id": "wfc-cart",
@@ -267,7 +267,11 @@
         "sha256": "0e50f7193bedd0fde671e5a500f114b53f00641de1fc76f619985ea8e731d9e4"
       }
     ],
-    "beta": true
+    "beta": true,
+    "allowed_domains": [
+      "alphasys.com.au"
+    ],
+    "include_subdomains": true
   },
   "as-update-controller": {
     "id": "as-update-controller",

@@ -2,14 +2,14 @@
 /** Run only on disposable WordPress with both controllers active. No plugin activation hooks are invoked. */
 wp_set_current_user(1);
 function beta_assert($ok,$message){if(!$ok){throw new RuntimeException($message);}echo "PASS: $message\n";}
-$stable=['help-guides','menubot','persona26','tn-authenticator','tn-content-planner','tn-environments','tn-pallet','tn-qrcodes','tn-user-management','tn-wp-migrate-code-diff','as-local-css'];
+$stable=['help-guides','menubot','persona26','tn-authenticator','tn-content-planner','tn-environments','tn-pallet','tn-qrcodes','tn-user-management','tn-wp-migrate-code-diff','as-local-css','gf-sf-webhook','as-content-stream','raiven-connector','gravity-forms-data-retention-policy'];
 $requests=0;$http=function()use(&$requests){$requests++;return new WP_Error('test_http','Unexpected metadata request');};add_filter('pre_http_request',$http,10,3);
 $active=[];$filter=function()use(&$active){return $active;};add_filter('option_active_plugins',$filter);
 try{
  foreach(['tnuc'=>'tn-update-controller','asuc'=>'as-update-controller'] as $prefix=>$slug){
   $registry=($prefix.'_registry')();$is_beta=$prefix.'_is_beta';$group=$prefix.'_catalogue_groups';$validate=$prefix.'_validate_catalogue';
   foreach($registry as $id=>$entry){beta_assert(is_bool($entry['beta']) && $entry['beta']===!in_array($id,$stable,true),"$prefix explicit readiness: $id");}
-  $candidate=json_decode(file_get_contents(dirname(constant(strtoupper($prefix).'_DIR')).'/catalogue.json'),true);
+  $candidate=json_decode(file_get_contents((getenv(strtoupper($prefix).'_TEST_REPO') ?: dirname(constant(strtoupper($prefix).'_DIR'))).'/catalogue.json'),true);
   $validated=$validate($candidate);beta_assert(!is_wp_error($validated),"$prefix accepts current catalogue");
   $legacy=$candidate;foreach($legacy['plugins'] as &$e){unset($e['beta']);}unset($e);
   $fallback=$validate($legacy);beta_assert(!is_wp_error($fallback),"$prefix accepts older catalogue without beta field");
@@ -24,7 +24,7 @@ try{
   beta_assert(isset($groups['active'][$id]) && !isset($groups['beta'][$id]),"$prefix active beta moves only to Active");
   beta_assert(strpos(($prefix.'_beta_badge')($known),'Beta')!==false,"$prefix active beta retains visible chip");
   beta_assert(array_keys($groups)===['active','available','beta'],"$prefix group order is stable");
-  beta_assert(array_sum(array_map('count',$groups))===count($registry),"$prefix every card appears exactly once");
+  beta_assert(array_sum(array_map('count',$groups))===count(array_filter($registry, $prefix.'_domain_allowed')),"$prefix every card appears exactly once");
   $active=[];$promoted=$known;$promoted['beta']=false;$groups=$group($registry,[$id=>$promoted],$plugins);
   beta_assert(isset($groups['available'][$id]) && !isset($groups['beta'][$id]),"$prefix explicit catalogue promotion moves inactive plugin to Available");
   beta_assert(($prefix.'_beta_badge')($promoted)==='',"$prefix promoted entry has no beta chip");

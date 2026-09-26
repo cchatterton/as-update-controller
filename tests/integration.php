@@ -3,9 +3,9 @@
 if (!defined('ABSPATH') || !defined('TNUC_VERSION') || !defined('ASUC_VERSION')) { throw new RuntimeException('Activate both controllers in a disposable WordPress installation.'); }
 wp_set_current_user(1);
 function check_test($condition, string $label): void { if (!$condition) { throw new RuntimeException('FAIL: ' . $label); } echo "PASS: $label\n"; }
-$root = dirname(TNUC_DIR);
+$root = getenv('TNUC_TEST_REPO') ?: dirname(TNUC_DIR);
 $techn = json_decode(file_get_contents($root . '/catalogue.json'), true);
-$alpha = json_decode(file_get_contents(dirname(ASUC_DIR) . '/catalogue.json'), true);
+$alpha = json_decode(file_get_contents((getenv('ASUC_TEST_REPO') ?: dirname(ASUC_DIR)) . '/catalogue.json'), true);
 $fixture_mode = 'good'; $calls = [];
 $intercept = static function ($pre, $args, $url) use (&$fixture_mode, &$calls, $techn, $alpha) {
     $calls[] = $url;

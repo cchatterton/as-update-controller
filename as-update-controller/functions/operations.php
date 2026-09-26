@@ -71,6 +71,7 @@ function asuc_step_batch(string $id) {
 /** @return array|WP_Error */
 function asuc_dispatch(string $op, array $input) {
     if (!asuc_authorised()) { return new WP_Error('permission', 'You cannot manage plugin updates.'); }
+    if ($op === 'plugin_action') { return asuc_plugin_action(sanitize_text_field($input['plugin_id'] ?? ''), sanitize_key($input['plugin_action'] ?? '')); }
     if ($op === 'check') {
         $id = sanitize_text_field($input['plugin_id'] ?? '');
         if ($id && !isset(asuc_registry()[$id])) { return new WP_Error('unknown', 'Unknown plugin.'); }

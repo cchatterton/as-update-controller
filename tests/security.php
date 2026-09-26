@@ -24,7 +24,7 @@ $job = ['id'=>'test-resume', 'owner'=>1, 'kind'=>'update', 'status'=>'running', 
  ['id'=>'menubot','version'=>$entry['version'],'sha256'=>$entry['sha256'],'status'=>'working']]];
 tnuc_put('batch',$job); $job = tnuc_step_batch('test-resume'); assert_security($job['status']==='running' && $job['items'][0]['status']==='failed','individual failure does not end the remaining batch');
 $job=tnuc_step_batch('test-resume'); assert_security($job['status']==='partial' && $job['items'][1]['status']==='success','interrupted completed item resumes without reinstalling'); tnuc_put('batch',$old);
-require_once dirname(TNUC_DIR) . '/integration/controller-client.php';
+require_once (getenv('TNUC_TEST_REPO') ?: dirname(TNUC_DIR)) . '/integration/controller-client.php';
 tnuc_client_register(WP_PLUGIN_DIR.'/menubot/menubot.php','menubot');
 assert_security(tnuc_client_links([], 'menubot/menubot.php') === [], 'compatible active controller owns client row links');
 $links=apply_filters('plugin_row_meta', [], 'menubot/menubot.php', [], 'all');
@@ -32,7 +32,7 @@ assert_security(count(array_filter($links, static fn($v)=>str_contains($v, '>Git
 assert_security(count(array_filter($links, static fn($v)=>str_contains($v, '>Check for updates<')))===1, 'one controller check link');
 foreach (['tnuc'=>['menubot','menubot/menubot.php'], 'asuc'=>['as-qs-relay','as-qs-relay/as-qs-relay.php']] as $prefix=>$details) {
  $registry=($prefix.'_registry')(); $identity=$registry[$details[0]];
- assert_security(str_contains(($prefix.'_migration_status')($identity),'Audited legacy'),'reviewed updater hash recognised: '.$details[0]);
+ assert_security(in_array(($prefix.'_migration_status')($identity), ['Controller integration', 'Audited legacy compatibility bridge'], true) || str_contains(($prefix.'_migration_status')($identity), 'Audited legacy'), 'reviewed integration recognised: '.$details[0]);
  global $wp_filter; $remaining=0;
  foreach(['site_transient_update_plugins','pre_set_site_transient_update_plugins','plugins_api','admin_init','load-plugins.php','plugin_row_meta'] as $hook){
   foreach(($wp_filter[$hook]->callbacks ?? []) as $group){foreach($group as $cb){

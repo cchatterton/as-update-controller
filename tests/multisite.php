@@ -12,7 +12,7 @@ multi_assert(tnuc_get('test_network')==='shared','subsite and main site share co
 multi_assert(tnuc_lock('test_network')===false,'subsite and main site share atomic lock');tnuc_unlock('test_network',$lock);
 multi_assert((bool)wp_next_scheduled('tnuc_scheduled_check'),'schedule stored on network main site');
 switch_to_blog(2); multi_assert(!wp_next_scheduled('tnuc_scheduled_check'),'no duplicate subsite schedule');restore_current_blog();
-$id=username_exists('subsite-manager');if(!$id){$id=wp_create_user('subsite-manager',wp_generate_password(),'subsite@example.test');}add_user_to_blog(2,$id,'administrator');
+$id=email_exists('subsite@example.test') ?: username_exists('subsite-manager');if(!$id){$id=wp_create_user('subsite-manager',wp_generate_password(),'subsite@example.test');}if (is_wp_error($id)) { throw new RuntimeException($id->get_error_message()); } add_user_to_blog(2,$id,'administrator');
 switch_to_blog(2);wp_set_current_user($id);
 multi_assert(!tnuc_authorised() && is_wp_error(tnuc_start_batch(['tn-qrcodes'],'install')),'subsite admin cannot change network plugin files');
 restore_current_blog();wp_set_current_user(1);

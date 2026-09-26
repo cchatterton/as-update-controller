@@ -17,8 +17,9 @@ function asuc_beta_badge(array $entry): string {
 function asuc_catalogue_groups(array $registry, array $releases, array $plugins): array {
     $groups = ['active' => [], 'available' => [], 'beta' => []];
     foreach ($registry as $id => $identity) {
+        if (!asuc_domain_allowed($identity)) { continue; }
         $entry = $releases[$id] ?? $identity;
-        $active = isset($plugins[$identity['file']]) && (is_plugin_active($identity['file']) || is_plugin_active_for_network($identity['file']));
+        $active = isset($plugins[$identity['file']]) && (is_multisite() ? is_plugin_active_for_network($identity['file']) : is_plugin_active($identity['file']));
         $group = $active ? 'active' : (asuc_is_beta($entry) ? 'beta' : 'available');
         $groups[$group][$id] = $identity;
     }
@@ -64,6 +65,9 @@ function asuc_validate_catalogue($candidate) {
         }
         if (array_key_exists('beta', $entry) && !is_bool($entry['beta'])) { return new WP_Error('catalogue_beta', 'A catalogue beta status is invalid.'); }
         $entry['beta'] = $entry['beta'] ?? ($registry[$id]['beta'] ?? true);
+        // Availability rules are approved in controller releases, never expanded by remote metadata.
+        $entry['allowed_domains'] = $registry[$id]['allowed_domains'] ?? [];
+        $entry['include_subdomains'] = $registry[$id]['include_subdomains'] ?? false;
         $entry['name'] = $registry[$id]['name'];
         $entry['description'] = sanitize_text_field((string) ($entry['description'] ?? $registry[$id]['description']));
         $entry['body'] = sanitize_textarea_field((string) ($entry['body'] ?? ''));
@@ -111,6 +115,7 @@ function asuc_refresh(bool $manual = true) {
 }
 function asuc_compatibility(array $entry): string {
     global $wp_version;
+    if (!asuc_domain_allowed($entry)) { return 'This plugin is unavailable for this domain.'; }
     if (version_compare(PHP_VERSION, $entry['requires_php'], '<')) { return 'Requires PHP ' . $entry['requires_php']; }
     if (version_compare($wp_version, $entry['requires'], '<')) { return 'Requires WordPress ' . $entry['requires']; }
     if ($entry['controller_api'] > ASUC_API_VERSION && $entry['id'] !== 'as-update-controller') { return 'Update AlphaSys Update Controller first.'; }

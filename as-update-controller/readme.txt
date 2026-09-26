@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,12 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.4.0 =
+* Show only available updates on the first tab. Add catalogue activation, deactivation and deletion.
+* Enforce domain availability, network permissions and deletion protection across sites.
+* Move smaller Beta chips to the bottom-right of cards.
+
 
 = 0.3.0 =
 * Group the catalogue into Active, Available and Beta plugins.

@@ -10,6 +10,7 @@ function asuc_project_updates($transient): object {
     $plugins = asuc_plugins();
     foreach (asuc_catalogue()['plugins'] ?? [] as $entry) {
         if (!asuc_match($entry, $plugins)) { continue; }
+        if (!asuc_domain_allowed($entry)) { unset($transient->response[$entry['file']], $transient->no_update[$entry['file']]); continue; }
         $file = $entry['file']; $update = asuc_update_object($entry);
         if (version_compare($entry['version'], $plugins[$file]['Version'], '>')) {
             $transient->response[$file] = $update; unset($transient->no_update[$file]);
@@ -24,6 +25,7 @@ function asuc_plugin_information($result, string $action, $args) {
     foreach (asuc_registry() as $id => $identity) {
         if (($args->slug ?? '') !== $identity['slug']) { continue; }
         $entry = asuc_catalogue()['plugins'][$id] ?? null;
+        if ($entry && !asuc_domain_allowed($entry)) { return new WP_Error('unavailable', 'This plugin is unavailable for this domain.'); }
         if (!$entry) { return new WP_Error('asuc_no_metadata', 'Open Plugins > AlphaSys Plugins and check the catalogue first.'); }
         return (object) ['name' => $entry['name'], 'slug' => $entry['slug'], 'version' => $entry['version'], 'author' => esc_html($entry['author']), 'homepage' => 'https://github.com/' . $entry['owner'] . '/' . $entry['repo'], 'download_link' => asuc_compatibility($entry) === '' ? asuc_package($entry) : '', 'requires' => $entry['requires'], 'requires_php' => $entry['requires_php'], 'sections' => ['description' => '<p>' . esc_html($entry['description']) . '</p>', 'changelog' => '<pre style="white-space:pre-wrap">' . esc_html($entry['body']) . '</pre>']];
     }
@@ -51,9 +53,14 @@ function asuc_row_meta(array $links, string $file, array $data = [], string $sta
     return $links;
 }
 function asuc_verify_download($reply, string $package, $upgrader, array $extra = []) {
+    foreach (asuc_registry() as $identity) {
+        $prefix = 'https://github.com/' . $identity['owner'] . '/' . $identity['repo'] . '/';
+        if (strpos($package, $prefix) === 0 && !asuc_domain_allowed($identity)) { return new WP_Error('domain', 'This plugin is unavailable for this domain.'); }
+    }
     if ($reply !== false) { return $reply; }
     foreach (asuc_catalogue()['plugins'] ?? [] as $entry) {
         if ($package !== asuc_package($entry)) { continue; }
+        if (!asuc_domain_allowed($entry)) { return new WP_Error('unavailable', 'This plugin is unavailable for this domain.'); }
         $temp = wp_tempnam($entry['asset']);
         if (!$temp) { return new WP_Error('asuc_temp', 'A temporary package file could not be created.'); }
         $url = $package;

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 - 2026-09-26
+
+- Replace the Installed tab with Updates available; retain the full catalogue.
+- Add card activation/deactivation and confirmed deletion, with network scope and active-site deletion protection.
+- Enforce configured domain allowlists for catalogue visibility and managed downloads.
+- Remove Manage plugin and place small Beta chips at the bottom-right of cards.
+
 ## 0.3.0 - 2026-09-26
 
 - Group catalogue cards into Active plugins, inactive/non-installed Available plugins, and inactive/non-installed Beta plugins.
