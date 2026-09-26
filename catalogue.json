@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T04:47:15.068020+00:00",
+  "published_at": "2026-09-26T04:54:23.090223+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -197,14 +197,14 @@
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
       "beta": true,
-      "version": "0.4.1",
-      "tag": "v0.4.1",
+      "version": "0.4.2",
+      "tag": "v0.4.2",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.1\n\n- Add Installed between Active and Available; keep beta installed plugins in Installed and retain their chip.\n- Active cards offer Deactivate; Installed cards offer Activate and Delete; uninstalled Available/Beta cards offer Install. Updates remain on Updates available.\n- Render refreshed state through authenticated AJAX instead of fetching potentially cached page HTML. Preserve successful action feedback if the refresh fails.\n",
-      "sha256": "8ea80fa8462522f626f1b3860839bade01140d5f9c2de65d02e356c29032e783"
+      "body": "## 0.4.2\n\n- Remove the catalogue heading/search toolbar.\n- Remove redundant catalogue card status strips, including Not installed, Active and Installed/inactive. Group headings and state-specific actions already convey lifecycle state.\n- Retain version requirements, Beta chips and compatibility warnings.\n",
+      "sha256": "e85546fbaed80f0539659663ffd28cb41018ea6f5550dd8b445bcd650afe1a5b"
     },
     {
       "id": "as-utm-relay",
