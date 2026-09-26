@@ -10,6 +10,7 @@ Run on 26 September 2026 in an isolated local WordPress 7.1.2 installation with 
 - Native official release ZIP installation and old-to-current updates for Menubot and AS QS Relay; checksum and root/version verification; newly installed plugins remain inactive; update preserves activation and an existing settings option.
 - Tampered package and unexpected archive root rejection; PHP/dependency requirements; disabled file modifications; partial-batch results and safe interrupted-request recovery.
 - Audited legacy hooks removed for Menubot and AS QS Relay; active client/controller metadata produces one GitHub link and one controller check link.
+- Absent/inactive controller bootstrap: correct Install/Activate actions, repeated helper inclusion without duplicate handlers, and zero HTTP.
 - Multisite: network-scoped state and locks, main-site-only scheduling, no subsite schedule duplication, subsite-admin install denial and rejection of a merely site-active controller as a network provider.
 - Browser: desktop cards, 390-pixel layout, live catalogue search, manual-mode settings save, and independent AlphaSys catalogue.
 

@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T02:09:51.051247+00:00",
+  "published_at": "2026-09-26T02:21:47.094026+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
-      "repo": "AS-Relevansi",
       "owner": "cchatterton",
+      "repo": "AS-Relevansi",
       "file": "as-relevansi/as-relevansi.php",
       "slug": "as-relevansi",
       "asset": "as-relevansi.zip",
@@ -17,20 +17,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "## 0.1.21 - 2026-07-13\n\n- Added a Search Bot setting for the search results suggested terms headline.\n- Smoothed Search Bot entrance timing so the launcher appears before the panel opens.",
-      "sha256": "2902c2a3ff9465e941664738295b60d968c49d911b03d3c11736814b03680cd5",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/updater.php",
-          "sha256": "d5e6c6b78eee1cb1b8c7c6cf6e3a3838937d3191d0290b73b199d9332644de96"
-        }
-      ]
+      "body": "## 0.1.21 - 2026-07-13\n\n- Added a Search Bot setting for the search results suggested terms headline.\n- Smoothed Search Bot entrance timing so the launcher appears before the panel opens.",
+      "sha256": "2902c2a3ff9465e941664738295b60d968c49d911b03d3c11736814b03680cd5"
     },
     {
       "id": "as-content-stream",
-      "repo": "as-content-stream",
       "owner": "cchatterton",
+      "repo": "as-content-stream",
       "file": "as-content-stream/as-content-stream.php",
       "slug": "as-content-stream",
       "asset": "as-content-stream.zip",
@@ -42,20 +36,14 @@
       "requires": "6.0",
       "requires_php": "7.4",
       "dependencies": [],
-      "body": "- Preserves the selected Sites tab in the URL and after Clean actions, so the user returns to the same destination site panel.",
-      "sha256": "57764e46191c2732df9e638e049bfb340e60df8a1d129b435adea78114853403",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "includes/class-as-content-stream-github-updater.php",
-          "sha256": "1bb5efd44cc2cb727c9cd2040782823179e027e9cb82faf7888f34e52620da86"
-        }
-      ]
+      "body": "- Preserves the selected Sites tab in the URL and after Clean actions, so the user returns to the same destination site panel.",
+      "sha256": "57764e46191c2732df9e638e049bfb340e60df8a1d129b435adea78114853403"
     },
     {
       "id": "as-gated-content",
-      "repo": "as-gated-content",
       "owner": "cchatterton",
+      "repo": "as-gated-content",
       "file": "as-gated-content/as-gated-content.php",
       "slug": "as-gated-content",
       "asset": "as-gated-content.zip",
@@ -67,20 +55,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "## 0.2.5 - 2026-08-13\n\n- Added optional Independent Analytics Pro gate conversion tracking through custom form submissions.",
-      "sha256": "35c3e19a67221f2f8982dd5cb7b71343dbe198ddee99550c0ba77c290347a67a",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "c7665d40764cb33142c9a42c340073026ef8f607744ae67b8a38c56fedfd8e6d"
-        }
-      ]
+      "body": "## 0.2.5 - 2026-08-13\n\n- Added optional Independent Analytics Pro gate conversion tracking through custom form submissions.",
+      "sha256": "35c3e19a67221f2f8982dd5cb7b71343dbe198ddee99550c0ba77c290347a67a"
     },
     {
       "id": "as-image-governance",
-      "repo": "as-image-governance",
       "owner": "cchatterton",
+      "repo": "as-image-governance",
       "file": "as-image-governance/as-image-governance.php",
       "slug": "as-image-governance",
       "asset": "as-image-governance.zip",
@@ -92,20 +74,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "- Stop storing failed GitHub lookups in the release cache used for update checks.\\n- Store short-lived diagnostics for GitHub updater HTTP, WordPress, and JSON errors.\\n- Clear updater diagnostics whenever release cache is cleared.",
-      "sha256": "a2f550cd155bfa19a651a36bcd7b4233bd3903c5df8f617a7e3b52b0f13bd6a2",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "323156ad923431122dd29d7063a1ba0e38af34824c5a027e8c7324389ea540ae"
-        }
-      ]
+      "body": "- Stop storing failed GitHub lookups in the release cache used for update checks.\\n- Store short-lived diagnostics for GitHub updater HTTP, WordPress, and JSON errors.\\n- Clear updater diagnostics whenever release cache is cleared.",
+      "sha256": "a2f550cd155bfa19a651a36bcd7b4233bd3903c5df8f617a7e3b52b0f13bd6a2"
     },
     {
       "id": "as-local-css",
-      "repo": "as-local-css",
       "owner": "cchatterton",
+      "repo": "as-local-css",
       "file": "as-local-css/as-local-css.php",
       "slug": "as-local-css",
       "asset": "as-local-css.zip",
@@ -117,20 +93,14 @@
       "requires": "6.0",
       "requires_php": "7.4",
       "dependencies": [],
-      "body": "## 0.4.2\n\n- Promoted Local CSS stylesheet nodes after Gutenberg\u2019s native block styles inside iframe and non-iframe editor canvases.\n- Preserved authored selectors and declarations unchanged instead of adding `!important` or rewriting CSS.\n- Reapplied final cascade order when Gutenberg dynamically adds further native styles.",
-      "sha256": "2e8c43becc98188c80b62048592a17db6c9bf7c000a7b566bac51dd8620c3b48",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "includes/github-updater.php",
-          "sha256": "eb732ecbe0aa4f68c36626ef0d457813eadb6f73592393d0483a0bc9505b7fe9"
-        }
-      ]
+      "body": "## 0.4.2\n\n- Promoted Local CSS stylesheet nodes after Gutenberg\u2019s native block styles inside iframe and non-iframe editor canvases.\n- Preserved authored selectors and declarations unchanged instead of adding `!important` or rewriting CSS.\n- Reapplied final cascade order when Gutenberg dynamically adds further native styles.",
+      "sha256": "2e8c43becc98188c80b62048592a17db6c9bf7c000a7b566bac51dd8620c3b48"
     },
     {
       "id": "as-ms-reporting",
-      "repo": "as-ms-reporting",
       "owner": "cchatterton",
+      "repo": "as-ms-reporting",
       "file": "as-ms-reporting/as-ms-reporting.php",
       "slug": "as-ms-reporting",
       "asset": "as-ms-reporting.zip",
@@ -142,20 +112,14 @@
       "requires": "7.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "Restores the Pace Guidance heatmap, changes Month Actuals to portfolio dollar totals for Month -3 through Month -1, and sizes both three-column heatmaps to exactly one quarter of the twelve-column agreement-age table.",
-      "sha256": "14b84516adebd9443bd0e6646ef705d1db29e59f370611cfd55785ed6477d1c3",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "0e50f7193bedd0fde671e5a500f114b53f00641de1fc76f619985ea8e731d9e4"
-        }
-      ]
+      "body": "Restores the Pace Guidance heatmap, changes Month Actuals to portfolio dollar totals for Month -3 through Month -1, and sizes both three-column heatmaps to exactly one quarter of the twelve-column agreement-age table.",
+      "sha256": "14b84516adebd9443bd0e6646ef705d1db29e59f370611cfd55785ed6477d1c3"
     },
     {
       "id": "as-qs-relay",
-      "repo": "as-qs-relay",
       "owner": "cchatterton",
+      "repo": "as-qs-relay",
       "file": "as-qs-relay/as-qs-relay.php",
       "slug": "as-qs-relay",
       "asset": "as-qs-relay.zip",
@@ -167,20 +131,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "- Stores the relay cookie as readable text formatted around timestamp key/value blocks.\\n- Converts readable cookie text back into a structured timestamp-indexed payload for internal processing and JavaScript use.\\n- Continues to read prior encoded JSON cookie values for upgrade tolerance.",
-      "sha256": "46581382737e490c82ad835b92528c6ee682bcee49cd144e572d696711954d0c",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/updater.php",
-          "sha256": "6ebc5658b60f042f4f73c62977e50924ce316c1d164642a453272d15d09290a1"
-        }
-      ]
+      "body": "- Stores the relay cookie as readable text formatted around timestamp key/value blocks.\\n- Converts readable cookie text back into a structured timestamp-indexed payload for internal processing and JavaScript use.\\n- Continues to read prior encoded JSON cookie values for upgrade tolerance.",
+      "sha256": "46581382737e490c82ad835b92528c6ee682bcee49cd144e572d696711954d0c"
     },
     {
       "id": "as-shopify-catalog-link",
-      "repo": "as-shopify-catalog-link",
       "owner": "cchatterton",
+      "repo": "as-shopify-catalog-link",
       "file": "as-shopify-catalog-link/as-shopify-catalog-link.php",
       "slug": "as-shopify-catalog-link",
       "asset": "as-shopify-catalog-link.zip",
@@ -192,20 +150,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "## 0.2.0 - 2026-09-04\n\n- Renamed the plugin, repository, text domain, package, and release asset slug to `as-shopify-catalog-link` to follow the AlphaSys repository convention.\n- Added a WordPress-native GitHub release updater with manifest-first discovery, public-release fallbacks, bounded caching, failure backoff, plugin details, and a nonce-protected manual update check.\n- Added a reproducible release build, release verification, committed root ZIP, and update manifest.",
-      "sha256": "f08698b6bbf9c65cb9e81bdefd9ecc43b05e7769e951148029de93d6b11c7000",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "includes/class-ascl-github-updater.php",
-          "sha256": "6ced58f1c23b10688d8303c61aaa33e45a5554708bee4ab4b97ca8fc1a88ecbc"
-        }
-      ]
+      "body": "## 0.2.0 - 2026-09-04\n\n- Renamed the plugin, repository, text domain, package, and release asset slug to `as-shopify-catalog-link` to follow the AlphaSys repository convention.\n- Added a WordPress-native GitHub release updater with manifest-first discovery, public-release fallbacks, bounded caching, failure backoff, plugin details, and a nonce-protected manual update check.\n- Added a reproducible release build, release verification, committed root ZIP, and update manifest.",
+      "sha256": "f08698b6bbf9c65cb9e81bdefd9ecc43b05e7769e951148029de93d6b11c7000"
     },
     {
       "id": "as-transcript-themes",
-      "repo": "as-transcript-themes",
       "owner": "cchatterton",
+      "repo": "as-transcript-themes",
       "file": "as-transcript-themes/as-transcript-themes.php",
       "slug": "as-transcript-themes",
       "asset": "as-transcript-themes.zip",
@@ -217,20 +169,33 @@
       "requires": "7.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "## 0.2.0 - 2026-07-23\n\n- Renamed the generated discussion layer from Themes to Topics in the WordPress admin UI.\n- Added a separate Theme post type for higher-level umbrella concepts inferred from topics.\n- Added a Commitment post type for actions and expectations, with direction, status, source evidence, and duplicate prevention.\n- Extended AI processing so transcripts and email threads now create or update topics, themes, and commitments in one pass.\n- Added relationship navigation between sources, topics, themes, commitments, contacts, and organisations.\n- Added dashboard widgets for top topics, top themes, recent sources, contacts, organisations, I Owe, and Owed To Me.\n- Updated workspace ranking to score topics, themes, and commitments together.",
-      "sha256": "ab9784b2b09e773fe17f1130a437777c92e81ffc4adb6952deddbf78e7f01afa",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/updater.php",
-          "sha256": "7aa722d3dae1ab01ab96501e72488b7fbdca9912b43995f6fd9b890c3bec3635"
-        }
-      ]
+      "body": "## 0.2.0 - 2026-07-23\n\n- Renamed the generated discussion layer from Themes to Topics in the WordPress admin UI.\n- Added a separate Theme post type for higher-level umbrella concepts inferred from topics.\n- Added a Commitment post type for actions and expectations, with direction, status, source evidence, and duplicate prevention.\n- Extended AI processing so transcripts and email threads now create or update topics, themes, and commitments in one pass.\n- Added relationship navigation between sources, topics, themes, commitments, contacts, and organisations.\n- Added dashboard widgets for top topics, top themes, recent sources, contacts, organisations, I Owe, and Owed To Me.\n- Updated workspace ranking to score topics, themes, and commitments together.",
+      "sha256": "ab9784b2b09e773fe17f1130a437777c92e81ffc4adb6952deddbf78e7f01afa"
+    },
+    {
+      "id": "as-update-controller",
+      "owner": "cchatterton",
+      "repo": "as-update-controller",
+      "file": "as-update-controller/as-update-controller.php",
+      "slug": "as-update-controller",
+      "asset": "as-update-controller.zip",
+      "name": "AS Update Controller",
+      "author": "AlphaSys",
+      "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
+      "version": "0.1.0",
+      "tag": "v0.1.0",
+      "requires": "6.5",
+      "requires_php": "8.1",
+      "dependencies": [],
+      "controller_api": 1,
+      "body": "# Changelog\n\n## 0.1.0 - 2026-09-26\n\n- Add a AlphaSys-only verified plugin catalogue with Installed, Catalogue and Settings views.\n- Add background/manual discovery with durable metadata, atomic locking and retry backoff.\n- Integrate native WordPress updates, inactive plugins, checksummed packages and resumable batches.\n- Add audited legacy-updater suppression and migration status without replacing feature plugins on activation.\n- Publish the version 1 client bootstrap contract and controller recovery instructions.\n",
+      "sha256": "7357a51adb2535d0eb11f3a0ef78003636d2a9781083bd1e6f705954640daeaf"
     },
     {
       "id": "as-utm-relay",
-      "repo": "as-utm-relay",
       "owner": "cchatterton",
+      "repo": "as-utm-relay",
       "file": "as-utm-relay/as-utm-relay.php",
       "slug": "as-utm-relay",
       "asset": "as-utm-relay.zip",
@@ -242,20 +207,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "- Added progressive UTM query-string capture into a first-party JSON cookie.\\n- Added query-string commands to reset the relay cookie or hydrate it from the current Independent Analytics session.\\n- Added front-end JavaScript exposure through window.ASUR_UTM_RELAY.\\n- Added GitHub release updater support.",
-      "sha256": "d921d01b3a3356ea19cbe1d973087f2c88bf50138fb0f6a99d6054723e25e8e2",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/updater.php",
-          "sha256": "a4a2410f4ae94913e425e5a8774fab7ca7906c20af39791620ec65859f6dfa90"
-        }
-      ]
+      "body": "- Added progressive UTM query-string capture into a first-party JSON cookie.\\n- Added query-string commands to reset the relay cookie or hydrate it from the current Independent Analytics session.\\n- Added front-end JavaScript exposure through window.ASUR_UTM_RELAY.\\n- Added GitHub release updater support.",
+      "sha256": "d921d01b3a3356ea19cbe1d973087f2c88bf50138fb0f6a99d6054723e25e8e2"
     },
     {
       "id": "gf-sf-webhook",
-      "repo": "gf-sf-webhook",
       "owner": "cchatterton",
+      "repo": "gf-sf-webhook",
       "file": "gf-sf-webhook/gf-sf-webhook.php",
       "slug": "gf-sf-webhook",
       "asset": "gf-sf-webhook.zip",
@@ -267,20 +226,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "Fixed Time fields being omitted from webhook payloads when Gravity Forms stores the submitted time against the main field ID.",
-      "sha256": "332690160d520877ed6e434867247f8fd767635732cbf24e0d18b1c0e4b5146e",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "a0b8f9760bfcc166a60155d5cc441b450209d72ccd41b7ae0569593f6978f2e6"
-        }
-      ]
+      "body": "Fixed Time fields being omitted from webhook payloads when Gravity Forms stores the submitted time against the main field ID.",
+      "sha256": "332690160d520877ed6e434867247f8fd767635732cbf24e0d18b1c0e4b5146e"
     },
     {
       "id": "gravity-forms-data-retention-policy",
-      "repo": "gravity-forms-data-retention-policy",
       "owner": "cchatterton",
+      "repo": "gravity-forms-data-retention-policy",
       "file": "gravity-forms-data-retention-policy/gravity-forms-data-retention-policy.php",
       "slug": "gravity-forms-data-retention-policy",
       "asset": "gravity-forms-data-retention-policy.zip",
@@ -292,20 +245,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "## 1.2.6 - 2026-09-04\n\n- Changed the activation control to the same proven white-background, blue-text treatment used by the visible scan control.\n- Added an allow-listed inline contrast fallback for Gravity Forms button overrides.",
-      "sha256": "5f875349a8f0c3d5351bfb5c622d44d124eac9445d373a599e0b12a34bf1f028",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "14e720820da00f01e0252981c37a88401ec63ebc0a919ff21fc8325be77afe13"
-        }
-      ]
+      "body": "## 1.2.6 - 2026-09-04\n\n- Changed the activation control to the same proven white-background, blue-text treatment used by the visible scan control.\n- Added an allow-listed inline contrast fallback for Gravity Forms button overrides.",
+      "sha256": "5f875349a8f0c3d5351bfb5c622d44d124eac9445d373a599e0b12a34bf1f028"
     },
     {
       "id": "raiven-connector",
-      "repo": "raiven-connector",
       "owner": "cchatterton",
+      "repo": "raiven-connector",
       "file": "raiven-connector/raiven-connector.php",
       "slug": "raiven-connector",
       "asset": "raiven-connector.zip",
@@ -317,20 +264,14 @@
       "requires": "7.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "Added rAIven > Logs for all outgoing connector exchanges, including native AI Client generation, model discovery, chat and memory. Logs use a per-site custom database table with 10-day retention, paginated request/response details, HTTP status and timing. API credentials are redacted; administrators alone can view logs. Bodies are capped at 2 MiB with an explicit truncation marker.\n\nLogging starts on update. Cached model lookups do not send requests and create no exchange. Retention cleanup needs WP-Cron or site activity; deactivation retains stored data.\n\nValidated with 60 automated checks, multisite isolation tests, browser list/detail review, PHP syntax checks and successful live console/native requests with stored logs. Existing settings and transcripts are preserved.\n",
-      "sha256": "db65e6790f826200d6469079b1441e1c7d23008b73ec34dd16ef8a649ce75661",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "269243fe91bc08e37ac8fe10cc391222532b079f45ec9c419de4c8c68a290c4d"
-        }
-      ]
+      "body": "Added rAIven > Logs for all outgoing connector exchanges, including native AI Client generation, model discovery, chat and memory. Logs use a per-site custom database table with 10-day retention, paginated request/response details, HTTP status and timing. API credentials are redacted; administrators alone can view logs. Bodies are capped at 2 MiB with an explicit truncation marker.\n\nLogging starts on update. Cached model lookups do not send requests and create no exchange. Retention cleanup needs WP-Cron or site activity; deactivation retains stored data.\n\nValidated with 60 automated checks, multisite isolation tests, browser list/detail review, PHP syntax checks and successful live console/native requests with stored logs. Existing settings and transcripts are preserved.\n",
+      "sha256": "db65e6790f826200d6469079b1441e1c7d23008b73ec34dd16ef8a649ce75661"
     },
     {
       "id": "web-force-connect-27",
-      "repo": "web-force-connect-27",
       "owner": "cchatterton",
+      "repo": "web-force-connect-27",
       "file": "alphasys-web-force-connect-27/alphasys-web-force-connect-27.php",
       "slug": "alphasys-web-force-connect-27",
       "asset": "alphasys-web-force-connect-27.zip",
@@ -342,20 +283,14 @@
       "requires": "6.0",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "Adds daily configurable sync-log retention. Empty successful syncs default to 7 days, packet-bearing syncs to 90 days, and failed Salesforce syncs to 365 days. Packet records are preserved.",
-      "sha256": "9ddfc6961b8724c4a69ca85715bf80a8032d2b85fcc3c631ef7b397db4c4a6ca",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "c614d9fc3485a43997868570d3e0b7ce8e2d6496158d34b8db8bdde92b9e23b2"
-        }
-      ]
+      "body": "Adds daily configurable sync-log retention. Empty successful syncs default to 7 days, packet-bearing syncs to 90 days, and failed Salesforce syncs to 365 days. Packet records are preserved.",
+      "sha256": "9ddfc6961b8724c4a69ca85715bf80a8032d2b85fcc3c631ef7b397db4c4a6ca"
     },
     {
       "id": "wfc-cart",
-      "repo": "wfc-cart",
       "owner": "cchatterton",
+      "repo": "wfc-cart",
       "file": "wfc-cart/wfc-cart.php",
       "slug": "wfc-cart",
       "asset": "wfc-cart.zip",
@@ -367,15 +302,9 @@
       "requires": "6.4",
       "requires_php": "8.1",
       "dependencies": [],
-      "body": "# WFC Cart 0.9.0\n\nPhase 9 adds configurable CRM ownership and a Gravity Forms-entry-only donor\nPII boundary for WordPress CRM mode.\n\n## Added\n\n- Salesforce and WordPress CRM data-location modes.\n- Conditional Salesforce queueing, scheduling, health, administration, and\n  production readiness.\n- Schema 9 mode inference for existing sites.\n- Generic CRM state reporting and privacy-safe cart-entry links.\n- Operational metadata PII guards and opaque import references.\n- Phase 9 migration, readiness, retention, and recurring-mode contracts.\n\n## Upgrade notes\n\n- Sites with complete existing Salesforce Client ID and Client Secret settings\n  retain Salesforce mode.\n- Sites without those credentials move to WordPress mode and the Salesforce\n  delivery schedule is removed.\n- Known historical WFC-prefixed donor metadata copies, including Salesforce\n  Contact IDs, are removed while financial and Gravity Forms records remain.\n- Fresh installations default to WordPress mode.\n- WordPress mode supports one-off packages only. Recurring and SetupIntent\n  packages require Salesforce CRM mode in this release.\n- Existing Phase 8 release approvals do not carry forward to version 0.9.0;\n  rerun the readiness audit and release gates.\n\n## Release artifact\n\nInstall or update using the attached `wfc-cart.zip`. The archive contains the\ntop-level `wfc-cart/` plugin directory.\n",
-      "sha256": "27e1a78a2f7e4e3af9c148ea7dffe0a58c6aaf1e38374c49fcbec75b5ea6c2b0",
       "controller_api": 0,
-      "legacy": [
-        {
-          "path": "functions/github-updater.php",
-          "sha256": "ce22b1dd6b6a63430be28a2089682c9b5b904bdd21ccc54e68ae8be674fc6c0d"
-        }
-      ]
+      "body": "# WFC Cart 0.9.0\n\nPhase 9 adds configurable CRM ownership and a Gravity Forms-entry-only donor\nPII boundary for WordPress CRM mode.\n\n## Added\n\n- Salesforce and WordPress CRM data-location modes.\n- Conditional Salesforce queueing, scheduling, health, administration, and\n  production readiness.\n- Schema 9 mode inference for existing sites.\n- Generic CRM state reporting and privacy-safe cart-entry links.\n- Operational metadata PII guards and opaque import references.\n- Phase 9 migration, readiness, retention, and recurring-mode contracts.\n\n## Upgrade notes\n\n- Sites with complete existing Salesforce Client ID and Client Secret settings\n  retain Salesforce mode.\n- Sites without those credentials move to WordPress mode and the Salesforce\n  delivery schedule is removed.\n- Known historical WFC-prefixed donor metadata copies, including Salesforce\n  Contact IDs, are removed while financial and Gravity Forms records remain.\n- Fresh installations default to WordPress mode.\n- WordPress mode supports one-off packages only. Recurring and SetupIntent\n  packages require Salesforce CRM mode in this release.\n- Existing Phase 8 release approvals do not carry forward to version 0.9.0;\n  rerun the readiness audit and release gates.\n\n## Release artifact\n\nInstall or update using the attached `wfc-cart.zip`. The archive contains the\ntop-level `wfc-cart/` plugin directory.\n",
+      "sha256": "27e1a78a2f7e4e3af9c148ea7dffe0a58c6aaf1e38374c49fcbec75b5ea6c2b0"
     }
   ]
 }
