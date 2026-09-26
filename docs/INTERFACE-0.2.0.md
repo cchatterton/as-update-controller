@@ -16,3 +16,5 @@ Tested on a disposable WordPress 7.0 site with PHP 8.1.23 in the browser. PHP 7.
 Browser checks covered checking and retry after simulated connection failure; two real GitHub plugin updates; interrupted-batch resume; partial failure details; retrying the failed plugin; AlphaSys catalogue installation without automatic activation; and catalogue/settings layout. Completed operations preserve settings and activation behaviour. Rendering all three tabs for both brands performs zero metadata HTTP.
 
 Progress measures completed plugins rather than download bytes. No customer website was changed. The catalogue publishing workflow still requires GitHub workflow permissions; release catalogues are verified and published manually.
+
+Both controllers also upgraded successfully from their previous official releases (TN 0.1.2 and AS 0.1.1) to the published 0.2.0 ZIPs on PHP 8.1.23, preserving activation and controller state. The installed 0.2.0 packages subsequently loaded successfully on PHP 7.4.30.
