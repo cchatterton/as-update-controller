@@ -14,6 +14,8 @@ def header(text, key, default=""):
     return match.group(1).strip() if match else default
 
 def collect(entry):
+    if type(entry.get("beta")) is not bool:
+        raise ValueError("Registry entries require an explicit boolean beta status")
     if entry["owner"] != "cchatterton" or entry["author"] != BRAND:
         raise ValueError("Registry ownership is outside this controller")
     release = json.loads(subprocess.check_output(["gh", "api", "repos/" + entry["owner"] + "/" + entry["repo"] + "/releases/latest"]))

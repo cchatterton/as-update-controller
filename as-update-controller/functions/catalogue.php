@@ -6,6 +6,24 @@ function asuc_registry(): array {
     return $registry;
 }
 function asuc_catalogue(): array { return (array) asuc_get('catalogue'); }
+/** Readiness is catalogue metadata, separate from activation and GitHub prerelease channels. */
+function asuc_is_beta(array $entry): bool {
+    if (is_bool($entry['beta'] ?? null)) { return $entry['beta']; }
+    return asuc_registry()[$entry['id'] ?? '']['beta'] ?? true;
+}
+function asuc_beta_badge(array $entry): string {
+    return asuc_is_beta($entry) ? '<span class="asuc-beta">Beta</span>' : '';
+}
+function asuc_catalogue_groups(array $registry, array $releases, array $plugins): array {
+    $groups = ['active' => [], 'available' => [], 'beta' => []];
+    foreach ($registry as $id => $identity) {
+        $entry = $releases[$id] ?? $identity;
+        $active = isset($plugins[$identity['file']]) && (is_plugin_active($identity['file']) || is_plugin_active_for_network($identity['file']));
+        $group = $active ? 'active' : (asuc_is_beta($entry) ? 'beta' : 'available');
+        $groups[$group][$id] = $identity;
+    }
+    return $groups;
+}
 function asuc_plugins(): array {
     require_once ABSPATH . 'wp-admin/includes/plugin.php';
     return get_plugins();
@@ -44,6 +62,8 @@ function asuc_validate_catalogue($candidate) {
         foreach ($entry['dependencies'] as $dependency) {
             if (!is_string($dependency) || !preg_match('/^[a-z0-9-]+$/D', $dependency)) { return new WP_Error('catalogue_dependencies', 'A dependency is invalid.'); }
         }
+        if (array_key_exists('beta', $entry) && !is_bool($entry['beta'])) { return new WP_Error('catalogue_beta', 'A catalogue beta status is invalid.'); }
+        $entry['beta'] = $entry['beta'] ?? ($registry[$id]['beta'] ?? true);
         $entry['name'] = $registry[$id]['name'];
         $entry['description'] = sanitize_text_field((string) ($entry['description'] ?? $registry[$id]['description']));
         $entry['body'] = sanitize_textarea_field((string) ($entry['body'] ?? ''));
@@ -67,7 +87,7 @@ function asuc_refresh(bool $manual = true) {
         if (($state['retry_at'] ?? 0) > time()) { return new WP_Error('backoff', 'The remote service is in backoff. Please retry later.'); }
         if (($state['last_success'] ?? 0) > time() - 60) { return ['message' => 'Using the recently completed catalogue check.']; }
         $state['last_attempt'] = $now; $state['job_id'] = wp_generate_uuid4(); $state['status'] = 'running'; asuc_put('check', $state);
-        $response = wp_safe_remote_get(ASUC_CATALOGUE_URL, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'AS-Update-Controller/' . ASUC_VERSION]]);
+        $response = wp_safe_remote_get(ASUC_CATALOGUE_URL, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'TN-Update-Controller/' . ASUC_VERSION]]);
         $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
         $validated = $code === 200 ? asuc_validate_catalogue(json_decode(wp_remote_retrieve_body($response), true)) : new WP_Error('catalogue_http', 'The catalogue could not be refreshed. Previous results are preserved.');
         if (is_wp_error($validated)) {

@@ -173,6 +173,9 @@
             card.hidden = !card.dataset.search.includes(event.target.value.trim().toLowerCase());
             if (!card.hidden) visible++;
         });
+        root.querySelectorAll('[data-catalogue-group]').forEach(group => {
+            group.hidden = !group.querySelector('.asuc-card:not([hidden])');
+        });
         document.getElementById('asuc-no-results').hidden = visible > 0;
     });
     retry.addEventListener('click', () => { if (!busy && retryAction) void retryAction(); });

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 - 2026-09-26
+
+- Group catalogue cards into Active plugins, inactive/non-installed Available plugins, and inactive/non-installed Beta plugins.
+- Keep active beta plugins in Active and show a Beta chip in cards and the installed list.
+- Add explicit boolean beta metadata, validate published values and use bundled defaults for older cached catalogues.
+- Mark the ten migrated Techn plugins non-beta; all other Techn entries and all AlphaSys entries except the migrated AS Local CSS remain beta until reviewed against the new standards.
+- Keep search working across groups and hide sections with no matching cards.
+- Preserve PHP 7.4 compatibility and existing installation/update behaviour.
+
 ## 0.2.0 - 2026-09-26
 
 - Split installed and available versions into separate columns; link available versions to release notes and add a GitHub column.
