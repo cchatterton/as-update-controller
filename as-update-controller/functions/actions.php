@@ -8,7 +8,7 @@ function asuc_domain_allowed(array $entry): bool {
     $host = strtolower(rtrim((string) wp_parse_url(is_multisite() ? network_home_url('/') : home_url('/'), PHP_URL_HOST), '.'));
     foreach ($domains as $domain) {
         $domain = strtolower($domain);
-        if ($host === $domain || (!empty($rule['include_subdomains']) && substr($host, -strlen('.' . $domain)) === '.' . $domain)) { return true; }
+        if ($host === $domain || ($domain !== 'localhost' && !empty($rule['include_subdomains']) && substr($host, -strlen('.' . $domain)) === '.' . $domain)) { return true; }
     }
     return false;
 }

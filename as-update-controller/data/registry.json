@@ -249,7 +249,12 @@
         "sha256": "7aa722d3dae1ab01ab96501e72488b7fbdca9912b43995f6fd9b890c3bec3635"
       }
     ],
-    "beta": true
+    "beta": true,
+    "allowed_domains": [
+      "alphasys.com.au",
+      "localhost"
+    ],
+    "include_subdomains": true
   },
   "as-ms-reporting": {
     "id": "as-ms-reporting",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.5 - 2026-09-26
+
+- Support exact localhost allowlist entries alongside domain/subdomain restrictions. Restrict Transcript Themes to alphasys.com.au, its subdomains and localhost.
+
 ## 0.4.4 - 2026-09-26
 
 - Remove the redundant Update discovery heading and introductory text from Settings.

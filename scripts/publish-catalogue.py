@@ -17,7 +17,7 @@ def collect(entry):
     if type(entry.get("beta")) is not bool:
         raise ValueError("Registry entries require an explicit boolean beta status")
     domains = entry.get("allowed_domains", [])
-    if not isinstance(domains, list) or any(not isinstance(d, str) or not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+", d) for d in domains):
+    if not isinstance(domains, list) or any(not isinstance(d, str) or (d != "localhost" and not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+", d)) for d in domains):
         raise ValueError("Domain allowlists require lower-case hostnames without schemes, paths or wildcards")
     if type(entry.get("include_subdomains", False)) is not bool:
         raise ValueError("include_subdomains must be a boolean")
