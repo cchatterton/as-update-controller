@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-09-26T03:54:36.634989+00:00",
+  "published_at": "2026-09-26T04:35:07.628716+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -32,15 +32,15 @@
       "name": "Content Stream",
       "author": "AlphaSys",
       "description": "Network content stream queue and WPML capability discovery for AlphaSys multisite networks.",
-      "beta": true,
-      "version": "0.1.94",
-      "tag": "v0.1.94",
-      "requires": "6.0",
+      "beta": false,
+      "version": "0.1.95",
+      "tag": "v0.1.95",
+      "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
-      "controller_api": 0,
-      "body": "- Preserves the selected Sites tab in the URL and after Clean actions, so the user returns to the same destination site panel.",
-      "sha256": "57764e46191c2732df9e638e049bfb340e60df8a1d129b435adea78114853403"
+      "controller_api": 1,
+      "body": "## 0.1.95 - 2026-09-26\n\n- Replace independent GitHub updater with the guarded AlphaSys controller client.\n- Standardise metadata, links, licensing and WordPress 7.0 / PHP 7.4 compatibility.\n- Preserve existing functionality, settings, hooks and package identity.\n\n",
+      "sha256": "f9449d4d6cf76714cf0b49663c4cb5dd280b51662b84389dd65524c6378944c4"
     },
     {
       "id": "as-gated-content",
@@ -113,6 +113,10 @@
       "author": "AlphaSys",
       "description": "Provides managed-services account reporting, access controls, data imports, and AI-assisted summaries.",
       "beta": true,
+      "allowed_domains": [
+        "alphasys.com.au"
+      ],
+      "include_subdomains": true,
       "version": "1.4.14",
       "tag": "v1.4.14",
       "requires": "7.0",
@@ -193,14 +197,14 @@
       "author": "AlphaSys",
       "description": "One catalogue, background update checks and guided updates for AlphaSys plugins.",
       "beta": true,
-      "version": "0.3.0",
-      "tag": "v0.3.0",
+      "version": "0.4.0",
+      "tag": "v0.4.0",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.3.0 - 2026-09-26\n\n- Group catalogue cards into Active plugins, inactive/non-installed Available plugins, and inactive/non-installed Beta plugins.\n- Keep active beta plugins in Active and show a Beta chip in cards and the installed list.\n- Add explicit boolean beta metadata, validate published values and use bundled defaults for older cached catalogues.\n- Mark the ten migrated Techn plugins non-beta; all other Techn entries and all AlphaSys entries except the migrated AS Local CSS remain beta until reviewed against the new standards.\n- Keep search working across groups and hide sections with no matching cards.\n- Preserve PHP 7.4 compatibility and existing installation/update behaviour.\n",
-      "sha256": "2bf2205f62569152862ea8c371dabfda36e541d11443ca3879a4053d92a2f429"
+      "body": "## 0.4.0 - 2026-09-26\n\n- Replace the Installed tab with Updates available; retain the full catalogue.\n- Add card activation/deactivation and confirmed deletion, with network scope and active-site deletion protection.\n- Enforce configured domain allowlists for catalogue visibility and managed downloads.\n- Remove Manage plugin and place small Beta chips at the bottom-right of cards.\n",
+      "sha256": "9baf3d96ae3db259e464cb5ef06a98ed0ce0341dac352fb2b7f5ccc217d00137"
     },
     {
       "id": "as-utm-relay",
@@ -232,15 +236,15 @@
       "name": "GF SF Webhook",
       "author": "AlphaSys",
       "description": "Sends mapped Gravity Forms submissions to a configured Salesforce webhook.",
-      "beta": true,
-      "version": "1.1.3",
-      "tag": "v1.1.3",
-      "requires": "6.0",
-      "requires_php": "8.1",
+      "beta": false,
+      "version": "1.1.4",
+      "tag": "v1.1.4",
+      "requires": "7.0",
+      "requires_php": "7.4",
       "dependencies": [],
-      "controller_api": 0,
-      "body": "Fixed Time fields being omitted from webhook payloads when Gravity Forms stores the submitted time against the main field ID.",
-      "sha256": "332690160d520877ed6e434867247f8fd767635732cbf24e0d18b1c0e4b5146e"
+      "controller_api": 1,
+      "body": "## 1.1.4 - 2026-09-26\n\n- Replace independent GitHub updater with the guarded AlphaSys controller client.\n- Standardise metadata, links, licensing and WordPress 7.0 / PHP 7.4 compatibility.\n- Preserve existing functionality, settings, hooks and package identity.\n\nAll notable changes to GF SF Webhook are recorded here.\n",
+      "sha256": "3c94028382f1a1d558bbbc045e2f1090c95ca6b4106528cd0298553926b3b297"
     },
     {
       "id": "gravity-forms-data-retention-policy",
@@ -252,15 +256,15 @@
       "name": "Gravity Forms Data Retention Policy",
       "author": "AlphaSys",
       "description": "Enforces a site-wide maximum retention policy across Gravity Forms entries.",
-      "beta": true,
-      "version": "1.2.6",
-      "tag": "v1.2.6",
-      "requires": "6.0",
-      "requires_php": "8.1",
+      "beta": false,
+      "version": "1.2.7",
+      "tag": "v1.2.7",
+      "requires": "7.0",
+      "requires_php": "7.4",
       "dependencies": [],
-      "controller_api": 0,
-      "body": "## 1.2.6 - 2026-09-04\n\n- Changed the activation control to the same proven white-background, blue-text treatment used by the visible scan control.\n- Added an allow-listed inline contrast fallback for Gravity Forms button overrides.",
-      "sha256": "5f875349a8f0c3d5351bfb5c622d44d124eac9445d373a599e0b12a34bf1f028"
+      "controller_api": 1,
+      "body": "## 1.2.7 - 2026-09-26\n\n- Replace independent GitHub updater with the guarded AlphaSys controller client.\n- Standardise metadata, links, licensing and WordPress 7.0 / PHP 7.4 compatibility.\n- Preserve existing functionality, settings, hooks and package identity.\n\nAll notable changes to Gravity Forms Data Retention Policy are recorded here.\n",
+      "sha256": "c2074c17346423fe8870c1fb1494fae0774098041e1ff488ada11d2025278ae8"
     },
     {
       "id": "raiven-connector",
@@ -272,15 +276,15 @@
       "name": "rAIven Connector",
       "author": "AlphaSys",
       "description": "Adds rAIven as an AlphaSys AI connector and provides a live admin test console.",
-      "beta": true,
-      "version": "0.3.0",
-      "tag": "v0.3.0",
+      "beta": false,
+      "version": "0.3.1",
+      "tag": "v0.3.1",
       "requires": "7.0",
-      "requires_php": "8.1",
+      "requires_php": "7.4",
       "dependencies": [],
-      "controller_api": 0,
-      "body": "Added rAIven > Logs for all outgoing connector exchanges, including native AI Client generation, model discovery, chat and memory. Logs use a per-site custom database table with 10-day retention, paginated request/response details, HTTP status and timing. API credentials are redacted; administrators alone can view logs. Bodies are capped at 2 MiB with an explicit truncation marker.\n\nLogging starts on update. Cached model lookups do not send requests and create no exchange. Retention cleanup needs WP-Cron or site activity; deactivation retains stored data.\n\nValidated with 60 automated checks, multisite isolation tests, browser list/detail review, PHP syntax checks and successful live console/native requests with stored logs. Existing settings and transcripts are preserved.\n",
-      "sha256": "db65e6790f826200d6469079b1441e1c7d23008b73ec34dd16ef8a649ce75661"
+      "controller_api": 1,
+      "body": "## 0.3.1 - 2026-09-26\n\n- Replace independent GitHub updater with the guarded AlphaSys controller client.\n- Standardise metadata, links, licensing and WordPress 7.0 / PHP 7.4 compatibility.\n- Preserve existing functionality, settings, hooks and package identity.\n",
+      "sha256": "8a0a9539102abdff2cfeb9263e69c2a8c10580ac939f026cdaef69af35bc6491"
     },
     {
       "id": "web-force-connect-27",
