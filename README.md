@@ -8,7 +8,7 @@ WordPress 6.5+, PHP 7.4+. On multisite, network activate it. Open **Plugins → 
 - **Catalogue:** searchable cards, release notes, install/update/activate actions. Installation leaves new feature plugins inactive.
 - **Settings:** automatic discovery every 6, 12 or 24 hours, or manual checks only. Default: six hours.
 
-Activation offers setup and schedules discovery; it never upgrades other plugins automatically. Review updates and choose **Update selected plugins**. Each update has a separate result and an interrupted batch can be resumed. The controller updates itself last. Existing activation and settings are preserved by native WordPress installation APIs. Keep your normal backup and staging process; a batch is not an atomic transaction or a site rollback service.
+Activation schedules discovery; it never upgrades other plugins automatically. Review updates and choose **Update selected plugins**. Each update has a separate result and an interrupted batch can be resumed. The controller updates itself last. Existing activation and settings are preserved by native WordPress installation APIs. Keep your normal backup and staging process; a batch is not an atomic transaction or a site rollback service.
 
 ## Ownership and coexistence
 

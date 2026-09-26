@@ -1,62 +1,187 @@
 (() => {
     'use strict';
-    const feedback = document.getElementById('asuc-feedback');
-    if (!feedback) return;
-    let busy = false;
-    const report = (message, error = false) => {
-        feedback.textContent = message;
-        feedback.className = error ? 'notice notice-error asuc-feedback' : 'notice notice-info asuc-feedback';
+    const root = document.querySelector('.asuc-wrap');
+    const dialog = document.getElementById('asuc-dialog');
+    if (!root || !dialog) return;
+    const title = document.getElementById('asuc-dialog-title');
+    const message = document.getElementById('asuc-dialog-message');
+    const activity = dialog.querySelector('.spinner');
+    const area = document.getElementById('asuc-progress-area');
+    const progress = document.getElementById('asuc-progress');
+    const current = document.getElementById('asuc-current');
+    const failures = document.getElementById('asuc-failures');
+    const close = document.getElementById('asuc-close');
+    const retry = document.getElementById('asuc-retry');
+    let busy = false, retryAction = null, opener = null, reloadOnClose = false;
+    const name = id => asucAdmin.names[id] || id;
+    const setBusy = value => {
+        busy = value;
+        close.disabled = value;
+        activity.hidden = !value;
+        dialog.setAttribute('aria-busy', String(value));
+        progress.classList.toggle('asuc-progress-active', value);
+    };
+    const open = label => {
+        if (!dialog.open) opener = document.activeElement;
+        title.textContent = label;
+        message.textContent = 'Preparing…';
+        area.hidden = true;
+        failures.hidden = true;
+        failures.open = false;
+        failures.querySelector('ul').replaceChildren();
+        retry.hidden = true;
+        retryAction = null;
+        reloadOnClose = false;
+        if (!dialog.open) dialog.showModal();
+        setBusy(true);
+        title.focus();
     };
     const call = async (operation, values = {}) => {
         const body = new URLSearchParams({ action: 'asuc_action', operation, nonce: asucAdmin.nonce });
         Object.entries(values).forEach(([key, value]) => Array.isArray(value) ? value.forEach(v => body.append(`${key}[]`, v)) : body.set(key, value));
         const response = await fetch(asucAdmin.url, { method: 'POST', credentials: 'same-origin', body });
         let result;
-        try { result = await response.json(); } catch (_) { throw new Error('The request was interrupted. Reload this page to review results and resume safely.'); }
-        if (!result.success) throw new Error(result.data?.message || 'The action could not be completed.');
+        try { result = await response.json(); } catch (_) { throw new Error('The request was interrupted. Retry to recover the current operation.'); }
+        if (!response.ok || !result.success) throw new Error(result.data?.message || 'The action could not be completed.');
         return result.data;
     };
-    const runBatch = async (job) => {
+    const selection = () => {
+        const boxes = [...root.querySelectorAll('[name="asuc-selected"]:not(:disabled)')];
+        const selected = boxes.filter(box => box.checked);
+        const all = document.getElementById('asuc-select-all');
+        if (all) {
+            all.disabled = boxes.length === 0;
+            all.checked = boxes.length > 0 && selected.length === boxes.length;
+            all.indeterminate = selected.length > 0 && selected.length < boxes.length;
+        }
+        const update = document.getElementById('asuc-update-selected');
+        if (update) update.disabled = selected.length === 0;
+    };
+    const refresh = async () => {
+        const response = await fetch(window.location.href, { credentials: 'same-origin', cache: 'no-store' });
+        if (!response.ok) throw new Error('Could not refresh the plugin list.');
+        const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+        const view = page.getElementById('asuc-view');
+        if (!view) throw new Error('Could not refresh the plugin list.');
+        document.getElementById('asuc-view').replaceChildren(...view.childNodes);
+        selection();
+    };
+    const finish = async job => {
+        area.hidden = true;
+        current.textContent = '';
+        const failed = job.items.filter(item => item.status === 'failed');
+        const count = job.items.filter(item => item.status === 'success').length;
+        title.textContent = failed.length ? 'Finished with errors' : 'Complete';
+        const verb = job.kind === 'install' ? 'installed' : 'updated';
+        message.textContent = `${count} plugin${count === 1 ? '' : 's'} ${verb}${failed.length ? `, ${failed.length} failed` : ''}.`;
+        failures.querySelector('ul').replaceChildren();
+        failed.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${name(item.id)}: ${item.message || 'Update failed.'}`;
+            failures.querySelector('ul').append(li);
+        });
+        failures.hidden = failed.length === 0;
+        try { await refresh(); } catch (_) {
+            message.textContent += ' Close to reload the plugin list.';
+            reloadOnClose = true;
+        }
+        setBusy(false);
+        close.focus();
+    };
+    const runBatch = async job => {
+        area.hidden = false;
         while (job.status === 'running') {
-            report(`Processing selected plugins: ${job.items.filter(i => ['success', 'failed'].includes(i.status)).length} of ${job.items.length} finished. You can return here to resume if interrupted.`);
+            const done = job.items.filter(i => ['success', 'failed'].includes(i.status)).length;
+            progress.max = job.items.length;
+            progress.value = done;
+            const item = job.items.find(i => ['pending', 'working'].includes(i.status));
+            message.textContent = `${done} of ${job.items.length} completed`;
+            current.textContent = item ? `${job.kind === 'install' ? 'Installing' : 'Updating'} ${name(item.id)}…` : 'Finishing…';
             job = await call('step', { job: job.id });
         }
-        const failures = job.items.filter(i => i.status === 'failed');
-        report(failures.length ? `Finished with ${failures.length} unsuccessful updates. Reload to review each result and retry.` : 'Selected plugins completed. Reloading the verified results.', failures.length > 0);
-        window.location.reload();
+        progress.value = progress.max;
+        await finish(job);
     };
-    document.addEventListener('click', async (event) => {
-        const button = event.target.closest('[data-check], [data-install], [data-resume], #asuc-update-selected');
+    const execute = async (label, action, recover = action) => {
+        open(label);
+        try { await action(); }
+        catch (error) {
+            setBusy(false);
+            title.textContent = 'Unable to complete';
+            message.textContent = error.message || 'The request failed. Please try again.';
+            retryAction = () => execute(label, recover, recover);
+            retry.hidden = false;
+            retry.focus();
+        }
+        finally { setBusy(false); }
+    };
+    const check = async () => {
+        message.textContent = 'Checking for updates…';
+        await call('check');
+        await refresh();
+        setBusy(false);
+        dialog.close();
+    };
+    const resume = async expected => {
+        const result = await call('status');
+        if (!result.batch?.id || result.batch.id !== expected) throw new Error('The operation has changed. Close and reload the page to review it.');
+        await runBatch(result.batch);
+    };
+    const results = async () => {
+        const result = await call('status');
+        if (!result.batch?.id || result.batch.status === 'running') throw new Error('The operation has changed. Close and reload the page to review it.');
+        await finish(result.batch);
+    };
+    root.addEventListener('click', event => {
+        const button = event.target.closest('[data-check], [data-install], [data-resume], [data-results], #asuc-update-selected');
         if (!button || busy) return;
         event.preventDefault();
-        busy = true; button.disabled = true;
-        try {
-            if (button.hasAttribute('data-check')) {
-                report('Checking the published catalogue…');
-                const result = await call('check', { plugin_id: button.dataset.check });
-                report(result.message); window.location.reload();
-            } else if (button.dataset.resume) {
-                const result = await call('status');
-                if (!result.batch || result.batch.id !== button.dataset.resume) throw new Error('This batch has changed. Reload to see its current state.');
-                await runBatch(result.batch);
-            } else {
-                const ids = button.dataset.install ? [button.dataset.install] : [...document.querySelectorAll('[name="asuc-selected"]:checked')].map(i => i.value);
-                if (!ids.length) throw new Error('Select at least one eligible plugin update.');
-                report('Preparing selected plugins…');
-                await runBatch(await call('start', { ids, kind: button.dataset.kind || 'update' }));
-            }
-        } catch (error) { report(error.message, true); }
-        finally { busy = false; button.disabled = false; }
+        if (button.hasAttribute('data-check')) return void execute('Checking for updates', check);
+        if (button.hasAttribute('data-results')) return void execute('Update results', results);
+        if (button.hasAttribute('data-resume')) return void execute('Updating plugins', () => resume(button.dataset.resume));
+        const ids = button.dataset.install ? [button.dataset.install] : [...root.querySelectorAll('[name="asuc-selected"]:checked:not(:disabled)')].map(i => i.value);
+        if (!ids.length) return;
+        const kind = button.dataset.kind || 'update';
+        let jobId = null, previousJobId = null, startAttempted = false;
+        const start = async () => {
+            message.textContent = 'Preparing plugins…';
+            if (!startAttempted) previousJobId = (await call('status')).batch?.id || '';
+            startAttempted = true;
+            const job = await call('start', { ids, kind });
+            jobId = job.id;
+            await runBatch(job);
+        };
+        const recover = async () => {
+            if (!startAttempted) return await start();
+            const { batch } = await call('status');
+            // A lost start response may already have created this exact batch.
+            const matches = batch?.kind === kind && batch.items.length === ids.length && batch.items.every(i => ids.includes(i.id));
+            if (batch?.id && (batch.id === jobId || (!jobId && matches && batch.id !== previousJobId))) await runBatch(batch);
+            else if (batch?.status === 'running') throw new Error('Another operation is running. Close and use Resume updates.');
+            else await start();
+        };
+        void execute(kind === 'install' ? 'Installing plugins' : 'Updating plugins', start, recover);
     });
-    document.getElementById('asuc-select-all')?.addEventListener('change', event => {
-        document.querySelectorAll('[name="asuc-selected"]').forEach(box => { box.checked = event.target.checked; });
+    root.addEventListener('change', event => {
+        if (event.target.id === 'asuc-select-all') root.querySelectorAll('[name="asuc-selected"]:not(:disabled)').forEach(box => { box.checked = event.target.checked; });
+        if (event.target.id === 'asuc-select-all' || event.target.name === 'asuc-selected') selection();
     });
-    document.getElementById('asuc-search')?.addEventListener('input', event => {
+    root.addEventListener('input', event => {
+        if (event.target.id !== 'asuc-search') return;
         let visible = 0;
-        document.querySelectorAll('[data-search]').forEach(card => {
+        root.querySelectorAll('[data-search]').forEach(card => {
             card.hidden = !card.dataset.search.includes(event.target.value.trim().toLowerCase());
             if (!card.hidden) visible++;
         });
         document.getElementById('asuc-no-results').hidden = visible > 0;
     });
+    retry.addEventListener('click', () => { if (!busy && retryAction) void retryAction(); });
+    close.addEventListener('click', () => { if (!busy) dialog.close(); });
+    dialog.addEventListener('cancel', event => { if (busy) event.preventDefault(); });
+    dialog.addEventListener('close', () => {
+        if (reloadOnClose) { window.location.reload(); return; }
+        if (opener?.isConnected) opener.focus();
+        else root.querySelector('[data-check]')?.focus();
+    });
+    selection();
 })();

@@ -38,3 +38,7 @@ Initial feature-plugin catalogue releases still use legacy integration. Their mi
 ## PHP 7.4 correction
 
 See [PHP compatibility validation](PHP-COMPATIBILITY.md) for WordPress 7.0 runtime testing on PHP 7.4.30, 8.1.23 and 8.5.7. This supersedes the earlier PHP minimum and syntax-only compatibility notes above.
+
+## Interface 0.2.0
+
+See [interface validation](INTERFACE-0.2.0.md) for modal checking, bulk progress, failure and interruption recovery, catalogue installation and PHP 7.4 rendering checks.

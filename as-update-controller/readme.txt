@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.1.1
+Stable tag: 0.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,10 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.2.0 =
+* Simplify installed plugin columns and catalogue cards; remove persistent setup, success and recovery commentary.
+* Add accessible checking and update-progress dialogs with concise results, failure details and interruption recovery.
 
 = 0.1.1 =
 * Support PHP 7.4 by replacing PHP 8-only return declarations with equivalent PHPDoc types.
