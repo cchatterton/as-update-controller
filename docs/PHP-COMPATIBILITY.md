@@ -25,7 +25,8 @@ The controllers’ PHP 8-only union return declarations were replaced with equiv
 
 - All 125 distributed PHP files passed PHP 7.4 syntax checks.
 - WordPress 7.0 integration runs passed on PHP 7.4.30, PHP 8.1.23 (the fleet version), and PHP 8.5.7: both controllers, Persona26 and Content Planner.
-- Ten-plugin bulk installation passed on WordPress 7.0/PHP 7.4 using verified candidate packages. Saved settings and activation state were preserved, and completed batches remained idempotent.
+- Ten-plugin bulk installation passed on WordPress 7.0/PHP 7.4 using both verified candidate packages and the actual published GitHub ZIPs. Saved settings and activation state were preserved, and completed batches remained idempotent.
+- Both controllers updated from their previous published releases to the corrected releases on WordPress 7.0/PHP 8.1.23 using live GitHub downloads; activation and controller settings were preserved.
 - Controller integration tests cover both brand catalogues, cold/warm cache reads with zero metadata HTTP, rate-limit backoff, locks, capability checks and scheduling.
 - All eight WP Migrate standalone suites passed on PHP 7.4; QR image generation passed on PHP 7.4 and PHP 8.1.23.
 
