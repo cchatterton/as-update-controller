@@ -91,7 +91,7 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
 function asuc_render_settings(): void {
     $settings = asuc_settings();
     asuc_form_start('settings');
-    echo '<h2>Update discovery</h2><p>Checks only discover releases. They never install updates or change WordPress auto-update preferences.</p><table class="form-table"><tr><th scope="row"><label for="asuc-mode">Check mode</label></th><td><select id="asuc-mode" name="mode"><option value="scheduled"' . selected($settings['mode'], 'scheduled', false) . '>Scheduled background checks</option><option value="manual"' . selected($settings['mode'], 'manual', false) . '>Manual checks only</option></select><p class="description">Manual mode discovers new releases only when an administrator checks.</p></td></tr><tr><th scope="row"><label for="asuc-hours">Check interval</label></th><td><select id="asuc-hours" name="hours">';
+    echo '<table class="form-table"><tr><th scope="row"><label for="asuc-mode">Check mode</label></th><td><select id="asuc-mode" name="mode"><option value="scheduled"' . selected($settings['mode'], 'scheduled', false) . '>Scheduled background checks</option><option value="manual"' . selected($settings['mode'], 'manual', false) . '>Manual checks only</option></select><p class="description">Manual mode discovers new releases only when an administrator checks.</p></td></tr><tr><th scope="row"><label for="asuc-hours">Check interval</label></th><td><select id="asuc-hours" name="hours">';
     foreach ([6,12,24] as $hours) { echo '<option value="' . $hours . '"' . selected($settings['hours'], $hours, false) . '>Every ' . $hours . ' hours</option>'; }
     echo '</select></td></tr></table>'; submit_button('Save settings'); echo '</form>';
 }

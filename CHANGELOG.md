@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.4 - 2026-09-26
+
+- Remove the redundant Update discovery heading and introductory text from Settings.
+
 ## 0.4.3 - 2026-09-26
 
 - Promote the controller to Alpha following standards and single-site/multisite verification.
