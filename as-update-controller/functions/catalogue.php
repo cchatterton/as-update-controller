@@ -10,8 +10,10 @@ function asuc_registry(): array {
     $registry = asuc_bundled_registry();
     foreach (asuc_catalogue()['plugins'] ?? [] as $id => $entry) {
         $legacy = $registry[$id]['legacy'] ?? [];
+        $legacy_identity = $registry[$id]['legacy_identity'] ?? [];
         $registry[$id] = array_merge($registry[$id] ?? [], $entry);
         $registry[$id]['legacy'] = $legacy;
+        $registry[$id]['legacy_identity'] = $legacy_identity;
     }
     return $registry;
 }
@@ -42,9 +44,16 @@ function asuc_plugins(): array {
 function asuc_match(array $entry, array $plugins): bool {
     if (!isset($plugins[$entry['file']])) { return false; }
     $plugin = $plugins[$entry['file']];
+    if (($GLOBALS['asuc_clients'][$entry['file']] ?? '') === ($entry['repo'] ?? '')) { return true; }
     $uri = rtrim((string) ($plugin['UpdateURI'] ?? ''), '/');
     if ($uri !== '') { return $uri === 'https://github.com/' . $entry['owner'] . '/' . $entry['repo']; }
+    $trusted = asuc_registry()[$entry['id'] ?? ''] ?? $entry;
     $author = strtolower(trim(wp_strip_all_tags((string) ($plugin['Author'] ?? ''))));
+    foreach ((array) ($trusted['legacy_identity'] ?? []) as $legacy) {
+        $legacy_author = strtolower(trim(wp_strip_all_tags((string) ($legacy['author'] ?? ''))));
+        $max_version = (string) ($legacy['max_version'] ?? '');
+        if ($legacy_author && hash_equals($legacy_author, $author) && $max_version && version_compare((string) ($plugin['Version'] ?? '0'), $max_version, '<=')) { return true; }
+    }
     return in_array($author, array_map('strtolower', [$entry['author'], $entry['author_header'] ?? $entry['author']]), true);
 }
 function asuc_package(array $entry): string {
@@ -92,7 +101,7 @@ function asuc_validate_catalogue($candidate) {
         $entry['name'] = sanitize_text_field((string) ($registry[$id]['name'] ?? $entry['name'] ?? $id));
         $entry['description'] = sanitize_text_field((string) ($entry['description'] ?? $registry[$id]['description'] ?? ''));
         $entry['body'] = sanitize_textarea_field((string) ($entry['body'] ?? ''));
-        unset($entry['legacy']); // Legacy code trust is bundled, never accepted remotely.
+        unset($entry['legacy'], $entry['legacy_identity']); // Legacy code and identity trust is bundled, never accepted remotely.
         $registry[$id] = $entry;
         $result[$id] = $entry;
     }

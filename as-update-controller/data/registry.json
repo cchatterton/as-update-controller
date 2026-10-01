@@ -293,6 +293,12 @@
     "author": "AlphaSys",
     "description": "Imports repeated HTML patterns from approved source pages into WordPress posts using saved scraping recipes.",
     "legacy": [],
+    "legacy_identity": [
+      {
+        "author": "WP Pattern Import",
+        "max_version": "0.13.0"
+      }
+    ],
     "beta": false
   }
 }

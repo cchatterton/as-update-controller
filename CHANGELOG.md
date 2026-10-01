@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.4 - 2026-10-01
+
+- Recognise audited pre-controller WP Pattern Import installs so they can be updated into the AlphaSys-managed package instead of being shown as an identity conflict.
+- Treat active feature-plugin client registration as a valid local identity signal when it matches the approved repository.
+
 ## 0.5.3 - 2026-10-01
 
 - Add a cache-busting parameter to forced manual catalogue checks so newly published catalogue entries are visible immediately through GitHub raw content.
