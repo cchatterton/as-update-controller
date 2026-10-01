@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.3 - 2026-10-01
+
+- Add a cache-busting parameter to forced manual catalogue checks so newly published catalogue entries are visible immediately through GitHub raw content.
+
 ## 0.5.2 - 2026-10-01
 
 - Force an immediate remote catalogue refresh when an authorised user clicks Check for updates, while still respecting in-progress checks and remote retry backoff.
