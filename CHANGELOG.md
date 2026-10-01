@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1 - 2026-10-01
+
+- Bundle WP Pattern Import in the approved AlphaSys registry so refreshed catalogues and installed controller packages recognise the production plugin identity.
+- Republish the verified catalogue with WP Pattern Import 0.13.0.
+
 ## 0.5.0 - 2026-09-26
 
 - Read domain restrictions from plugin release headers via the verified catalogue. Show all catalogue plugins on localhost. Accept new approved same-brand catalogue entries without controller releases; keep executable legacy trust bundled.
