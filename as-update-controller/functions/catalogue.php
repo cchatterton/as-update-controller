@@ -100,10 +100,10 @@ function asuc_validate_catalogue($candidate) {
     return ['published_at' => $candidate['published_at'], 'plugins' => $result];
 }
 /** @return array|WP_Error */
-function asuc_refresh(bool $manual = true) {
+function asuc_refresh(bool $manual = true, bool $force = false) {
     $state = (array) asuc_get('check'); $now = time();
     if (($state['retry_at'] ?? 0) > $now) { return new WP_Error('backoff', 'A previous check failed. Retry after ' . gmdate('Y-m-d H:i', $state['retry_at']) . ' UTC.'); }
-    if (($state['last_success'] ?? 0) > $now - 60) { return ['message' => 'The catalogue was checked less than a minute ago. Showing those results.']; }
+    if (!$force && ($state['last_success'] ?? 0) > $now - 60) { return ['message' => 'The catalogue was checked less than a minute ago. Showing those results.']; }
     if (!$manual && ($state['next_check'] ?? 0) > $now) { return ['message' => 'The next scheduled check is not due.']; }
     $lock = asuc_lock('discovery', 60);
     if (!$lock) { return new WP_Error('check_running', 'A catalogue check is already running.'); }
@@ -111,9 +111,9 @@ function asuc_refresh(bool $manual = true) {
         // Recheck after atomic acquisition: another worker may have just completed.
         $state = (array) asuc_get('check');
         if (($state['retry_at'] ?? 0) > time()) { return new WP_Error('backoff', 'The remote service is in backoff. Please retry later.'); }
-        if (($state['last_success'] ?? 0) > time() - 60) { return ['message' => 'Using the recently completed catalogue check.']; }
+        if (!$force && ($state['last_success'] ?? 0) > time() - 60) { return ['message' => 'Using the recently completed catalogue check.']; }
         $state['last_attempt'] = $now; $state['job_id'] = wp_generate_uuid4(); $state['status'] = 'running'; asuc_put('check', $state);
-        $response = wp_safe_remote_get(ASUC_CATALOGUE_URL, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'TN-Update-Controller/' . ASUC_VERSION]]);
+        $response = wp_safe_remote_get(ASUC_CATALOGUE_URL, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'AS-Update-Controller/' . ASUC_VERSION]]);
         $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
         $validated = $code === 200 ? asuc_validate_catalogue(json_decode(wp_remote_retrieve_body($response), true)) : new WP_Error('catalogue_http', 'The catalogue could not be refreshed. Previous results are preserved.');
         if (is_wp_error($validated)) {

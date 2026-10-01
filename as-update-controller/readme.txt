@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -42,7 +42,7 @@ No. Feature plugins continue to operate without it. Legacy updater suppression o
 Only explicitly approved AlphaSys-authored WordPress plugin packages are included. Themes, blocks, unrelated authors and ambiguous packages are excluded. New package identities require a registry update.
 
 = Are checks immediate? =
-Manual checks bypass the normal six-hour interval, but reuse a successful check made within the last minute and respect in-progress checks and remote retry limits.
+Manual checks bypass the normal six-hour interval and the recent-success cache, but respect in-progress checks and remote retry limits.
 
 == External services ==
 
@@ -52,6 +52,11 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.5.2 =
+* Force an immediate remote catalogue refresh when an authorised user clicks Check for updates, while still respecting in-progress checks and remote retry backoff.
+* Keep newly published catalogue items discoverable without requiring a controller package release.
+* Identify catalogue requests with the AS Update Controller User-Agent.
 
 = 0.5.1 =
 * Bundle WP Pattern Import in the approved AlphaSys registry so refreshed catalogues and installed controller packages recognise the production plugin identity.

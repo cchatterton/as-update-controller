@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2 - 2026-10-01
+
+- Force an immediate remote catalogue refresh when an authorised user clicks Check for updates, while still respecting in-progress checks and remote retry backoff.
+- Keep newly published catalogue items discoverable without requiring a controller package release.
+- Identify catalogue requests with the AS Update Controller User-Agent.
+
 ## 0.5.1 - 2026-10-01
 
 - Bundle WP Pattern Import in the approved AlphaSys registry so refreshed catalogues and installed controller packages recognise the production plugin identity.
