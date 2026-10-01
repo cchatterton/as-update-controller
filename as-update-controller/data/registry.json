@@ -281,5 +281,18 @@
     "description": "A cached plugin catalogue, background discovery and guided updates for AlphaSys plugins.",
     "legacy": [],
     "beta": false
+  },
+  "wp-pattern-import": {
+    "id": "wp-pattern-import",
+    "owner": "cchatterton",
+    "repo": "wp-pattern-import",
+    "file": "wp-pattern-import/wp-pattern-import.php",
+    "slug": "wp-pattern-import",
+    "asset": "wp-pattern-import.zip",
+    "name": "WP Pattern Import",
+    "author": "AlphaSys",
+    "description": "Imports repeated HTML patterns from approved source pages into WordPress posts using saved scraping recipes.",
+    "legacy": [],
+    "beta": false
   }
 }
