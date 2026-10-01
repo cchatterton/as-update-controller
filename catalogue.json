@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-01T01:07:08.444283+00:00",
+  "published_at": "2026-10-01T01:15:21.554660+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.5.3",
-      "tag": "v0.5.3",
+      "version": "0.5.4",
+      "tag": "v0.5.4",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "\n- Add a cache-busting parameter to forced manual catalogue checks so newly published catalogue entries are visible immediately through GitHub raw content.\n\n",
-      "sha256": "83e8fb3c8c4b99af37684863452ffc850f3d06ccb75d1cffa523af8736abb855"
+      "body": "\n- Recognise audited pre-controller WP Pattern Import installs so they can be updated into the AlphaSys-managed package instead of being shown as an identity conflict.\n- Treat active feature-plugin client registration as a valid local identity signal when it matches the approved repository.\n\n",
+      "sha256": "7fe56d02da1f79e9b79729bfff5daea7959478a233154e4ddec1dd43c447fb89"
     },
     {
       "id": "as-utm-relay",
@@ -371,14 +371,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.13.0",
-      "tag": "v0.13.0",
+      "version": "0.13.1",
+      "tag": "v0.13.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "\n- Align plugin metadata with AlphaSys WordPress and GitHub update standards.\n- Add AS Update Controller client integration and GitHub update identity.\n- Add release packaging, readme, changelog, and GPL licensing files.\n\n",
-      "sha256": "281316cffae21b81875e497028eef061142d59dc3f03df6b3f7a53bda0b6a094"
+      "body": "\n- Refresh the production package as an AlphaSys-managed release so pre-controller installs can update cleanly through AS Update Controller.\n\n",
+      "sha256": "a7cc31499e8339a68ba19271ccfd801db49db54ce7e8a2386231d05736888c66"
     }
   ]
 }

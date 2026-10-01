@@ -54,7 +54,7 @@ def collect(entry):
             raise ValueError("Release Update URI differs from approved repository")
         if not header(text, "Plugin Name") or release["tag_name"] not in (version, "v" + version, "V" + version):
             raise ValueError("Plugin header/tag mismatch: " + entry["id"])
-        record = {k: v for k, v in entry.items() if k not in ("legacy", "author_header")}
+        record = {k: v for k, v in entry.items() if k not in ("legacy", "legacy_identity", "author_header")}
         record.update(domain_policy(text))
         record.update(version=version, tag=release["tag_name"], description=header(text, "Description", entry["description"]), requires=header(text, "Requires at least", "6.0"), requires_php=header(text, "Requires PHP", "8.1"), dependencies=[x.strip() for x in header(text, "Requires Plugins").split(",") if x.strip()], controller_api=int(header(text, BRAND + " Controller API", "1" if entry["id"] == SLUG else "0")), body=release.get("body") or "See the published release notes.", sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         for key in ("version", "requires", "requires_php"):
