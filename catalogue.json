@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-01T01:15:21.554660+00:00",
+  "published_at": "2026-10-01T01:24:55.909931+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -371,14 +371,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.13.1",
-      "tag": "v0.13.1",
+      "version": "0.13.2",
+      "tag": "v0.13.2",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "\n- Refresh the production package as an AlphaSys-managed release so pre-controller installs can update cleanly through AS Update Controller.\n\n",
-      "sha256": "a7cc31499e8339a68ba19271ccfd801db49db54ce7e8a2386231d05736888c66"
+      "body": "\n- Add hourly scheduled imports alongside manual and daily schedules.\n- Require a mapped unique key before saving hourly or daily schedules.\n\n",
+      "sha256": "7d01f1d75861ae91b32f7cce82723bc5b2ec4b668c99078f785559b6dc601443"
     }
   ]
 }
