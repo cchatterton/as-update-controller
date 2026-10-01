@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-01T01:02:21.962423+00:00",
+  "published_at": "2026-10-01T01:05:29.239173+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.5.1",
-      "tag": "v0.5.1",
+      "version": "0.5.2",
+      "tag": "v0.5.2",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "\n- Bundle WP Pattern Import in the approved AlphaSys registry so refreshed catalogues and installed controller packages recognise the production plugin identity.\n- Republish the verified catalogue with WP Pattern Import 0.13.0.\n\n",
-      "sha256": "6e3f7114b515e6517c9d511e90b2b045e4ae0df20c985970577e24c512f07681"
+      "body": "\n- Force an immediate remote catalogue refresh when an authorised user clicks Check for updates, while still respecting in-progress checks and remote retry backoff.\n- Keep newly published catalogue items discoverable without requiring a controller package release.\n- Identify catalogue requests with the AS Update Controller User-Agent.\n\n",
+      "sha256": "2ced49e28c99ef4d668ccf35fe119c18bd1e0f02b6d32fbda9942ece278f0904"
     },
     {
       "id": "as-utm-relay",
