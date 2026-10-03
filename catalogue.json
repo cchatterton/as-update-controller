@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-03T04:20:23.564421+00:00",
+  "published_at": "2026-10-03T04:32:18.339286+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -103,14 +103,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.6",
-      "tag": "v0.4.6",
+      "version": "0.4.7",
+      "tag": "v0.4.7",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.6 - 2026-10-03\n\n- Added a Related Content column to the custom code list table with same-tab editor links to each related content item.\n\nSHA-256: 12f559c86245d19203addf6a54de502ed6d4c9a3f2d43a9b5b2e27d34c631952\n",
-      "sha256": "12f559c86245d19203addf6a54de502ed6d4c9a3f2d43a9b5b2e27d34c631952"
+      "body": "## 0.4.7 - 2026-10-03\n\n- Ensure the Related Content list-table column remains available when column-layout tools filter the custom code columns.\n\nSHA-256: 08d4633fe725f4074b8bc6257ff8a1b1cfdfa6d25c3dec1f535de443ffbadf35\n",
+      "sha256": "08d4633fe725f4074b8bc6257ff8a1b1cfdfa6d25c3dec1f535de443ffbadf35"
     },
     {
       "id": "as-ms-reporting",
