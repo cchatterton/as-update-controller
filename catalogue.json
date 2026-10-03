@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-03T04:32:18.339286+00:00",
+  "published_at": "2026-10-03T04:37:22.037946+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -103,14 +103,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.7",
-      "tag": "v0.4.7",
+      "version": "0.4.8",
+      "tag": "v0.4.8",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.7 - 2026-10-03\n\n- Ensure the Related Content list-table column remains available when column-layout tools filter the custom code columns.\n\nSHA-256: 08d4633fe725f4074b8bc6257ff8a1b1cfdfa6d25c3dec1f535de443ffbadf35\n",
-      "sha256": "08d4633fe725f4074b8bc6257ff8a1b1cfdfa6d25c3dec1f535de443ffbadf35"
+      "body": "## 0.4.8 - 2026-10-03\n\n- Add a rendered-table fallback so the Related Content column appears on saved custom-code column layouts.\n\nSHA-256: 74b8e6b7c751ab8e75f3bfbafba956cc7021ae8db67b8710abc7957939f3ba19\n",
+      "sha256": "74b8e6b7c751ab8e75f3bfbafba956cc7021ae8db67b8710abc7957939f3ba19"
     },
     {
       "id": "as-ms-reporting",
