@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-03T03:02:53.227787+00:00",
+  "published_at": "2026-10-03T03:09:08.206978+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -103,14 +103,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.4",
-      "tag": "v0.4.4",
+      "version": "0.4.5",
+      "tag": "v0.4.5",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "\n- Added bidirectional related content and custom code meta boxes.\n- Added searchable repeaters for linking custom code to editable content from supported post types.\n- Added new-tab edit links for related content and related custom code.\n- Added content-side Create CSS and Create JS actions that create draft custom code and preconfigure the relationship.\n\n",
-      "sha256": "68ac30a2e50a2423445840e612f2cf38ae80b985997e44415d7ad146468d9026"
+      "body": "## 0.4.5 - 2026-10-03\n\n- Load related-content metabox registration from the top-level admin bootstrap so it is not skipped by legacy class guards.\n- Register the custom code relationship metabox on the post-type-specific metabox hook and move relationship boxes higher in the sidebar.\n- Keep the Related Content metabox in the original custom code editor allowed side metabox list.\n\nSHA-256: 2cfa59ae71b3e4a7d430a85a19df692d1408fd7c7e95fd17f50f085cfcacaee6\n",
+      "sha256": "2cfa59ae71b3e4a7d430a85a19df692d1408fd7c7e95fd17f50f085cfcacaee6"
     },
     {
       "id": "as-ms-reporting",
