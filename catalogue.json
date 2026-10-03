@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-01T01:24:55.909931+00:00",
+  "published_at": "2026-10-03T02:53:25.745211+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -103,14 +103,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.3",
-      "tag": "v0.4.3",
+      "version": "0.4.4",
+      "tag": "v0.4.4",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.3 - 2026-09-26\n\n- Replace the independent updater with AS Update Controller API 1 and guarded local Install/Activate/Check actions.\n- Standardise AlphaSys author metadata and declare WordPress 7.0 / PHP 7.4 compatibility.\n- Include the GPL-3.0 license while retaining upstream attribution and third-party notices.\n- Preserve existing snippets, options, upload paths, capabilities and front-end/block-editor behaviour.\n",
-      "sha256": "7d2e25f3f19f912c76c49d15ac37cb29a3779497b39efc1b5e68ce383c229f0a"
+      "body": "\n- Added bidirectional related content and custom code meta boxes.\n- Added searchable repeaters for linking custom code to editable content from supported post types.\n- Added new-tab edit links for related content and related custom code.\n- Added content-side Create CSS and Create JS actions that create draft custom code and preconfigure the relationship.\n\n",
+      "sha256": "68ac30a2e50a2423445840e612f2cf38ae80b985997e44415d7ad146468d9026"
     },
     {
       "id": "as-ms-reporting",
