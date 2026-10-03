@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AS Update Controller
  * Description: One catalogue, background update checks and guided updates for AlphaSys plugins.
- * Version: 0.5.4
+ * Version: 0.5.5
  * Author: AlphaSys
  * Author URI: https://alphasys.com.au
  * Update URI: https://github.com/cchatterton/as-update-controller
@@ -14,7 +14,7 @@
  * Text Domain: as-update-controller
  */
 if (!defined('ABSPATH')) { exit; }
-define('ASUC_VERSION', '0.5.4');
+define('ASUC_VERSION', '0.5.5');
 define('ASUC_API_VERSION', 1);
 define('ASUC_FILE', __FILE__);
 define('ASUC_DIR', __DIR__ . '/');
@@ -38,6 +38,7 @@ function asuc_boot(): void {
     add_filter('upgrader_pre_download', 'asuc_verify_download', 10, 4);
     add_filter('upgrader_source_selection', 'asuc_verify_source', 20, 4);
     add_action('asuc_scheduled_check', 'asuc_scheduled_check');
+    add_action('admin_init', 'asuc_refresh_on_native_forced_check', 1);
     add_action('admin_menu', 'asuc_menu');
     add_action('network_admin_menu', 'asuc_menu');
     add_action('admin_enqueue_scripts', 'asuc_assets');

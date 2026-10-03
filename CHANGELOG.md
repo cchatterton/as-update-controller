@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.5 - 2026-10-03
+
+- Refresh the AlphaSys catalogue during WordPress native forced update checks so newly published plugin releases appear in the standard update flow.
+
 ## 0.5.4 - 2026-10-01
 
 - Recognise audited pre-controller WP Pattern Import installs so they can be updated into the AlphaSys-managed package instead of being shown as an identity conflict.

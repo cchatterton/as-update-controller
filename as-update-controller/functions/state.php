@@ -40,6 +40,11 @@ function asuc_scheduled_check(): void {
     asuc_refresh(false);
     asuc_schedule();
 }
+function asuc_refresh_on_native_forced_check(): void {
+    if (empty($_GET['force-check']) || !asuc_authorised()) { return; }
+    asuc_refresh(true, true);
+    asuc_schedule();
+}
 /**
  * Unique option_name provides atomic acquisition; compare-and-delete protects a replacement owner.
  * @return string|false
