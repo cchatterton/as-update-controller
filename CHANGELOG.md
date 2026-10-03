@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.6 - 2026-10-03
+
+- Read the catalogue through GitHub's contents API and decode the verified catalogue payload so manual checks are not blocked by stale raw-file caches.
+
 ## 0.5.5 - 2026-10-03
 
 - Refresh the AlphaSys catalogue during WordPress native forced update checks so newly published plugin releases appear in the standard update flow.

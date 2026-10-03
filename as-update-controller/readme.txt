@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.5.5
+Stable tag: 0.5.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,9 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.5.6 =
+* Read the catalogue through GitHub's contents API and decode the verified catalogue payload so manual checks are not blocked by stale raw-file caches.
 
 = 0.5.5 =
 * Refresh the AlphaSys catalogue during WordPress native forced update checks so newly published plugin releases appear in the standard update flow.

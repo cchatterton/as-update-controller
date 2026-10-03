@@ -60,6 +60,16 @@ function asuc_package(array $entry): string {
     return 'https://github.com/' . $entry['owner'] . '/' . $entry['repo'] . '/releases/download/' . rawurlencode($entry['tag']) . '/' . rawurlencode($entry['asset']);
 }
 function asuc_release_url(array $entry): string { return 'https://github.com/' . $entry['owner'] . '/' . $entry['repo'] . '/releases/tag/' . rawurlencode($entry['tag']); }
+function asuc_decode_catalogue_response(string $body) {
+    $decoded = json_decode($body, true);
+    if (!is_array($decoded)) { return null; }
+    if (($decoded['schema'] ?? 0) === 1) { return $decoded; }
+    if (($decoded['encoding'] ?? '') !== 'base64' || !is_string($decoded['content'] ?? null)) { return null; }
+    $content = base64_decode(preg_replace('/\s+/', '', $decoded['content']), true);
+    if (!is_string($content)) { return null; }
+    $catalogue = json_decode($content, true);
+    return is_array($catalogue) ? $catalogue : null;
+}
 /** @return array|WP_Error */
 function asuc_validate_catalogue($candidate) {
     if (!is_array($candidate) || ($candidate['schema'] ?? 0) !== 1 || !is_array($candidate['plugins'] ?? null) || count($candidate['plugins']) > 200 || !is_string($candidate['published_at'] ?? null) || strtotime($candidate['published_at']) === false) {
@@ -125,7 +135,8 @@ function asuc_refresh(bool $manual = true, bool $force = false) {
         $catalogue_url = $force ? add_query_arg('asuc_cache_bust', (string) $now, ASUC_CATALOGUE_URL) : ASUC_CATALOGUE_URL;
         $response = wp_safe_remote_get($catalogue_url, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'AS-Update-Controller/' . ASUC_VERSION]]);
         $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
-        $validated = $code === 200 ? asuc_validate_catalogue(json_decode(wp_remote_retrieve_body($response), true)) : new WP_Error('catalogue_http', 'The catalogue could not be refreshed. Previous results are preserved.');
+        $candidate = $code === 200 ? asuc_decode_catalogue_response((string) wp_remote_retrieve_body($response)) : null;
+        $validated = $candidate ? asuc_validate_catalogue($candidate) : new WP_Error('catalogue_http', 'The catalogue could not be refreshed. Previous results are preserved.');
         if (is_wp_error($validated)) {
             $failures = min(8, (int) ($state['failures'] ?? 0) + 1);
             $retry = $now + min(DAY_IN_SECONDS, 600 * (2 ** ($failures - 1))) + wp_rand(0, 60);
