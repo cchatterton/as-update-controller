@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.7 - 2026-10-03
+
+- Clarify active catalogue cards by showing the installed plugin version and the latest catalogue version separately.
+
 ## 0.5.6 - 2026-10-03
 
 - Read the catalogue through GitHub's contents API and decode the verified catalogue payload so manual checks are not blocked by stale raw-file caches.

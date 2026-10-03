@@ -69,6 +69,17 @@ function asuc_render_dialog(): void {
     echo '<dialog id="asuc-dialog" class="asuc-dialog" aria-labelledby="asuc-dialog-title" aria-describedby="asuc-dialog-message"><h2 id="asuc-dialog-title" tabindex="-1">Checking for updates</h2><div class="asuc-activity"><span class="spinner is-active" aria-hidden="true"></span><p id="asuc-dialog-message" role="status" aria-live="polite"></p></div><div id="asuc-progress-area" hidden><progress id="asuc-progress" max="1" value="0" aria-label="Plugins processed"></progress><p id="asuc-current"></p></div><details id="asuc-failures" hidden><summary>Failed plugins</summary><ul></ul></details><div class="asuc-dialog-actions"><button type="button" class="button" id="asuc-retry" hidden>Retry</button><button type="button" class="button button-primary" id="asuc-close" disabled>Close</button></div></dialog>';
 }
 function asuc_details_link(array $entry): void { echo '<a href="' . esc_url(asuc_release_url($entry)) . '" target="_blank" rel="noopener noreferrer">Release notes<span class="screen-reader-text"> (opens in a new tab)</span></a>'; }
+function asuc_catalogue_version_label(array $entry, array $plugins, bool $installed): string {
+    $requirements = 'WordPress ' . $entry['requires'] . '+ · PHP ' . $entry['requires_php'] . '+';
+    if (!$installed || !isset($plugins[$entry['file']]['Version'])) {
+        return 'Version ' . $entry['version'] . ' · ' . $requirements;
+    }
+    $installed_version = (string) $plugins[$entry['file']]['Version'];
+    if (version_compare($entry['version'], $installed_version, '>')) {
+        return 'Installed ' . $installed_version . ' · Latest ' . $entry['version'] . ' · ' . $requirements;
+    }
+    return 'Installed ' . $installed_version . ' · Latest ' . $entry['version'] . ' · ' . $requirements;
+}
 function asuc_render_catalogue(array $registry, array $releases, array $plugins): void {
     if (!$releases) { echo '<p class="asuc-intro">This library lists the plugins recognised by this controller. Refresh the catalogue to load verified releases and enable installation.</p>'; }
     $labels = ['active' => 'Active', 'installed' => 'Installed', 'available' => 'Available', 'beta' => 'Beta'];
@@ -77,7 +88,7 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     foreach ($entries as $id=>$identity) {
         $e = $releases[$id] ?? $identity; $has = isset($plugins[$e['file']]);
         $conflict = $has && !asuc_match($e, $plugins); $issue = $conflict ? 'Installed plugin identity needs review.' : (isset($releases[$id]) ? asuc_compatibility($e) : 'Check the catalogue to load this release.');
-        echo '<article class="asuc-card" data-search="' . esc_attr(strtolower($e['name'] . ' ' . $e['description'])) . '"><div class="asuc-card-content"><h3>' . esc_html($e['name']) . '</h3><p class="asuc-card-description">' . esc_html($e['description']) . '</p><p class="description">' . (isset($releases[$id]) ? esc_html('Version ' . $e['version'] . ' · WordPress ' . $e['requires'] . '+ · PHP ' . $e['requires_php'] . '+') : 'Release not checked') . '</p>';
+        echo '<article class="asuc-card" data-search="' . esc_attr(strtolower($e['name'] . ' ' . $e['description'])) . '"><div class="asuc-card-content"><h3>' . esc_html($e['name']) . '</h3><p class="asuc-card-description">' . esc_html($e['description']) . '</p><p class="description">' . (isset($releases[$id]) ? esc_html(asuc_catalogue_version_label($e, $plugins, $has)) : 'Release not checked') . '</p>';
         if ($issue) { echo '<p class="asuc-warning">' . esc_html($issue) . '</p>'; }
         echo '<div class="asuc-card-actions">';
         if (!$has) { echo '<button class="button button-primary" data-install="' . esc_attr($id) . '" data-kind="install"' . ($issue || !asuc_authorised('install_plugins') || !wp_is_file_mod_allowed('asuc') ? ' disabled' : '') . '>Install</button>'; }
