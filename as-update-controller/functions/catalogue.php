@@ -3,15 +3,20 @@ if (!defined('ABSPATH')) { exit; }
 function asuc_bundled_registry(): array {
     static $registry;
     if ($registry === null) { $registry = json_decode((string) file_get_contents(ASUC_DIR . 'data/registry.json'), true) ?: []; }
-    return $registry;
+    return array_filter($registry, static function ($entry) {
+        if (!is_array($entry) || !empty($entry['exclude']) || !empty($entry['superseded_by'])) { return false; }
+        foreach (['id', 'owner', 'repo', 'file', 'slug', 'asset', 'author'] as $key) { if (!is_string($entry[$key] ?? null)) { return false; } }
+        return true;
+    });
 }
 /** The approved publisher may add branded identities; executable legacy trust stays bundled. */
 function asuc_registry(): array {
-    $registry = asuc_bundled_registry();
+    $bundled = asuc_bundled_registry();
+    $registry = asuc_catalogue() ? [] : $bundled;
     foreach (asuc_catalogue()['plugins'] ?? [] as $id => $entry) {
-        $legacy = $registry[$id]['legacy'] ?? [];
-        $legacy_identity = $registry[$id]['legacy_identity'] ?? [];
-        $registry[$id] = array_merge($registry[$id] ?? [], $entry);
+        $legacy = $bundled[$id]['legacy'] ?? [];
+        $legacy_identity = $bundled[$id]['legacy_identity'] ?? [];
+        $registry[$id] = array_merge($bundled[$id] ?? [], $entry);
         $registry[$id]['legacy'] = $legacy;
         $registry[$id]['legacy_identity'] = $legacy_identity;
     }
@@ -120,17 +125,17 @@ function asuc_validate_catalogue($candidate) {
 }
 /** @return array|WP_Error */
 function asuc_refresh(bool $manual = true, bool $force = false) {
+    if (!$manual || (defined('DOING_CRON') && DOING_CRON)) { return new WP_Error('manual_only', 'Use Check for updates to refresh available plugins and installed updates.'); }
     $state = (array) asuc_get('check'); $now = time();
     if (($state['retry_at'] ?? 0) > $now) { return new WP_Error('backoff', 'A previous check failed. Retry after ' . gmdate('Y-m-d H:i', $state['retry_at']) . ' UTC.'); }
-    if (!$force && ($state['last_success'] ?? 0) > $now - 60) { return ['message' => 'The catalogue was checked less than a minute ago. Showing those results.']; }
-    if (!$manual && ($state['next_check'] ?? 0) > $now) { return ['message' => 'The next scheduled check is not due.']; }
+    if (($state['last_success'] ?? 0) > $now - 60) { return ['message' => 'The catalogue was checked less than a minute ago. Showing those results.']; }
     $lock = asuc_lock('discovery', 60);
     if (!$lock) { return new WP_Error('check_running', 'A catalogue check is already running.'); }
     try {
         // Recheck after atomic acquisition: another worker may have just completed.
         $state = (array) asuc_get('check');
         if (($state['retry_at'] ?? 0) > time()) { return new WP_Error('backoff', 'The remote service is in backoff. Please retry later.'); }
-        if (!$force && ($state['last_success'] ?? 0) > time() - 60) { return ['message' => 'Using the recently completed catalogue check.']; }
+        if (($state['last_success'] ?? 0) > time() - 60) { return ['message' => 'Using the recently completed catalogue check.']; }
         $state['last_attempt'] = $now; $state['job_id'] = wp_generate_uuid4(); $state['status'] = 'running'; asuc_put('check', $state);
         $catalogue_url = $force ? add_query_arg('asuc_cache_bust', (string) $now, ASUC_CATALOGUE_URL) : ASUC_CATALOGUE_URL;
         $response = wp_safe_remote_get($catalogue_url, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'AS-Update-Controller/' . ASUC_VERSION]]);
@@ -145,15 +150,23 @@ function asuc_refresh(bool $manual = true, bool $force = false) {
                 $reset = wp_remote_retrieve_header($response, 'x-ratelimit-reset');
                 $retry = max($retry, is_numeric($after) ? $now + (int) $after : (int) strtotime((string) $after), is_numeric($reset) ? (int) $reset : 0);
             }
-            $state = array_merge($state, ['status' => 'failed', 'failures' => $failures, 'http_code' => $code, 'error' => $validated->get_error_message(), 'retry_at' => $retry, 'next_check' => $retry]);
+            $state = array_merge($state, ['status' => 'failed', 'failures' => $failures, 'http_code' => $code, 'error' => $validated->get_error_message(), 'retry_at' => $retry]);
             asuc_put('check', $state);
             return $validated;
         }
-        asuc_put('catalogue', $validated);
-        asuc_put('check', ['status' => 'success', 'job_id' => $state['job_id'], 'last_attempt' => $now, 'last_success' => $now, 'failures' => 0, 'retry_at' => 0, 'next_check' => $now + asuc_settings()['hours'] * HOUR_IN_SECONDS + wp_rand(0, 300)]);
         $transient = get_site_transient('update_plugins');
+        // Remove only our withdrawn identities; leave other providers untouched.
+        foreach (asuc_catalogue()['plugins'] ?? [] as $id => $old) {
+            if (isset($validated['plugins'][$id]) || !is_object($transient)) { continue; }
+            foreach (['response', 'no_update'] as $bucket) {
+                $item = $transient->{$bucket}[$old['file']] ?? null;
+                if (is_object($item) && ($item->id ?? '') === 'https://github.com/' . $old['owner'] . '/' . $old['repo']) { unset($transient->{$bucket}[$old['file']]); }
+            }
+        }
+        asuc_put('catalogue', $validated);
+        asuc_put('check', ['status' => 'success', 'job_id' => $state['job_id'], 'last_attempt' => $now, 'last_success' => $now, 'failures' => 0, 'retry_at' => 0]);
         set_site_transient('update_plugins', asuc_project_updates($transient));
-        return ['message' => 'Catalogue checked. Native WordPress update notices now reflect the available releases.'];
+        return ['message' => 'Available plugins and installed plugin update status refreshed.'];
     } finally { asuc_unlock('discovery', $lock); }
 }
 function asuc_compatibility(array $entry): string {

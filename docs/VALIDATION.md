@@ -42,3 +42,17 @@ See [PHP compatibility validation](PHP-COMPATIBILITY.md) for WordPress 7.0 runti
 ## Interface 0.2.0
 
 See [interface validation](INTERFACE-0.2.0.md) for modal checking, bulk progress, failure and interruption recovery, catalogue installation and PHP 7.4 rendering checks.
+
+## Manual discovery 0.6.0 — 4 October 2026
+
+Executed in a new disposable WordPress 7.0 installation and then converted to multisite, with an isolated MySQL 8.0.35 database. No customer site changed.
+
+- Both publishers: 12 offline tests each; live paginated discovery and published ZIP verification for both brands. New unregistered matching releases are found; cross-brand packages are excluded.
+- PHP 7.4.30: syntax validation of all packaged PHP and the manual-discovery runtime suite on multisite. PHP 8.1.23: single-site integration, manual-discovery, security/recovery, beta grouping and admin UI assertions; multisite scope/lock/permission and manual-discovery suites.
+- Both standalone domain-metadata suites pass, including cold caches, hostname boundaries and localhost policy.
+- Native WordPress installation and old-to-current upgrade of Menubot and AS QS Relay pass with checksum verification, activation and settings preservation. Tampered downloads and wrong package roots are rejected.
+- Manual regression tests verify legacy schedule removal, ignored scheduled preferences, no HTTP for cron/generic force-check/background calls, one request for both new capability discovery and installed updates, cooldown, denied users, and withdrawal cleanup.
+- Existing integration tests cover rate-limit backoff, invalid metadata, last-good preservation, atomic locks, cold/warm cache reads and third-party update preservation.
+- Author Branded interfaces retain existing AlphaSys/Techn styling and accessible modal labels/status markup. All three tabs render without discovery HTTP. The only settings UI change replaces scheduling controls with a fixed manual-only explanation.
+
+Limitations: browser visual/viewport and keyboard verification was attempted but the local browser session encountered a redirect error; no new visual validation claim is made. Older fixture-dependent feature/action tests require a larger preinstalled plugin set and were not completed in this fresh runtime. All feature-plugin behaviour, unknown legacy updater code, credentials-based filesystem transports and production rollout remain outside this validation. New releases require explicit feed publication before a site manual check can discover them. Existing historical validation notes above describe earlier versions, including their now-removed scheduling behaviour.

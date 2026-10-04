@@ -7,7 +7,7 @@ function asuc_available(): bool {
 }
 function asuc_get(string $key, $default = []) { return get_site_option('asuc_' . $key, $default); }
 function asuc_put(string $key, $value): void { update_site_option('asuc_' . $key, $value); }
-function asuc_settings(): array { return array_merge(['mode' => 'scheduled', 'hours' => 6], (array) asuc_get('settings')); }
+function asuc_settings(): array { return ['mode' => 'manual']; }
 function asuc_url(string $tab = 'installed'): string { return add_query_arg(['page' => 'asuc', 'tab' => $tab], network_admin_url('plugins.php')); }
 function asuc_authorised(string $cap = 'update_plugins'): bool {
     return current_user_can($cap) && (!is_multisite() || current_user_can('manage_network_plugins'));
@@ -25,26 +25,20 @@ function asuc_on_main(callable $callback) {
     if ($switch) { switch_to_blog(get_main_site_id()); }
     try { return $callback(); } finally { if ($switch) { restore_current_blog(); } }
 }
+/** Compatibility shim: old callers can only remove obsolete jobs. */
 function asuc_schedule(): void {
-    asuc_on_main(static function () {
-        wp_clear_scheduled_hook('asuc_scheduled_check');
-        $settings = asuc_settings();
-        if ($settings['mode'] === 'scheduled') {
-            $at = max(time() + 60, (int) (asuc_get('check')['next_check'] ?? (time() + 300)));
-            wp_schedule_single_event($at, 'asuc_scheduled_check');
-        }
-    });
+    asuc_on_main(static function () { wp_clear_scheduled_hook('asuc_scheduled_check'); });
 }
-function asuc_scheduled_check(): void {
-    if (asuc_settings()['mode'] !== 'scheduled') { return; }
-    asuc_refresh(false);
+function asuc_migrate_manual_checks(): void {
+    if (asuc_get('manual_checks_version', 0) === 1) { return; }
     asuc_schedule();
+    asuc_put('settings', ['mode' => 'manual']);
+    $state = (array) asuc_get('check'); unset($state['next_check']); asuc_put('check', $state);
+    asuc_put('manual_checks_version', 1);
 }
-function asuc_refresh_on_native_forced_check(): void {
-    if (empty($_GET['force-check']) || !asuc_authorised()) { return; }
-    asuc_refresh(true, true);
-    asuc_schedule();
-}
+/** Obsolete entry points deliberately perform no discovery. */
+function asuc_scheduled_check(): void { asuc_schedule(); }
+function asuc_refresh_on_native_forced_check(): void {}
 /**
  * Unique option_name provides atomic acquisition; compare-and-delete protects a replacement owner.
  * @return string|false

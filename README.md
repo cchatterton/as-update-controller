@@ -6,19 +6,19 @@ WordPress 6.5+, PHP 7.4+. On multisite, network activate it. Open **Plugins → 
 
 - **Installed:** version comparisons, update-management status, per-plugin checks and selected bulk updates.
 - **Catalogue:** searchable cards, release notes, install/update/activate actions. Installation leaves new feature plugins inactive.
-- **Settings:** automatic discovery every 6, 12 or 24 hours, or manual checks only. Default: six hours.
+- **Settings:** explains fixed manual-only checks. **Check for updates** refreshes available plugins and installed update status together.
 
-Activation schedules discovery; it never upgrades other plugins automatically. Review updates and choose **Update selected plugins**. Each update has a separate result and an interrupted batch can be resumed. The controller updates itself last. Existing activation and settings are preserved by native WordPress installation APIs. Keep your normal backup and staging process; a batch is not an atomic transaction or a site rollback service.
+Activation removes obsolete controller schedules. It performs no discovery or plugin upgrades. Review updates and choose **Update selected plugins**. Each update has a separate result and an interrupted batch can be resumed. The controller updates itself last. Existing activation and settings are preserved by native WordPress installation APIs. Keep your normal backup and staging process; a batch is not an atomic transaction or a site rollback service.
 
 ## Ownership and coexistence
 
-Only exact approved repository identities with AlphaSys authorship enter this catalogue. A committed registry fixes each owner, repo, author, plugin basename and asset name. Approved new identities are delivered through the verified catalogue without a controller release. Domain availability comes from plugin release headers; see docs/DOMAIN-METADATA.md. Techn has its own independent TN Update Controller; both may run on the same site with separate hooks, data, schedules and locks. Unrelated plugins retain their own providers.
+Public stable releases from cchatterton with verified AlphaSys package authorship are discovered by default, regardless of repository prefix. Ordinary new plugins need no registry entry. The registry holds reviewed exceptions: ambiguous authors, explicit includes/excludes, domain restrictions, aliases/supersession, legacy compatibility and readiness overrides. The generated catalogue is the verified feed, not a manually maintained registration list. See [discovery and exceptions](docs/DISCOVERY.md). Both controllers retain separate brand identities, namespaces and locks.
 
 ## Performance
 
-Page rendering, update transient filters, notices and plugin details read local state only, even with missing or expired caches. One explicit or scheduled check fetches one aggregate JSON document; it does not interrogate every GitHub repository. No tokens or site inventory are sent. Successful checks have a 60-second cooldown. Failed requests preserve the last good result and use exponential backoff with jitter and GitHub retry deadlines. Discovery timeout: eight seconds; maximum response: 1 MiB. Downloads run only on explicit installation/update operations, with SHA-256 validation, HTTPS host restrictions, at most four hops, 30 seconds per hop and a 64 MiB limit.
+Page rendering, update transient filters, notices and plugin details read local state only, even with missing or expired caches. One explicit manual check fetches one aggregate JSON document; it does not interrogate every GitHub repository. No tokens or site inventory are sent. Successful checks have a 60-second cooldown. Failed requests preserve the last good result and use exponential backoff with jitter and GitHub retry deadlines. Discovery timeout: eight seconds; maximum response: 1 MiB. Downloads run only on explicit installation/update operations, with SHA-256 validation, HTTPS host restrictions, at most four hops, 30 seconds per hop and a 64 MiB limit.
 
-WP-Cron must be run by traffic or your host scheduler. Settings displays the scheduled time and disabled/overdue status. Manual checks remain available. Native WordPress plugin auto-update preferences remain WordPress's responsibility; scheduling metadata discovery does not opt plugins into auto-updates.
+No controller cron, background polling or automatic checker runs. Upgrade migration clears old controller schedules and ignores saved scheduled-mode preferences. Generic WordPress force-check query parameters cannot initiate discovery. Native WordPress auto-update preferences remain WordPress's responsibility.
 
 ## Existing plugins
 
@@ -28,7 +28,7 @@ A complete migration still requires a new release of each feature plugin removin
 
 ## Release catalogue publishing
 
-The ready-to-enable GitHub workflow template runs every six hours and supports manual dispatch after feature-plugin releases. **Automatic catalogue publishing is not enabled in this initial handoff:** the publishing credential lacked GitHub workflow scope. Until enabled, run the publisher manually after releases. See [workflow setup](docs/WORKFLOW-SETUP.md). `python3 scripts/publish-catalogue.py` uses authenticated GitHub CLI to download the **published stable release asset**, verify its package root, main file, author, Update URI, header/tag versions and size, and compute its checksum. All registered releases must verify before the catalogue changes. It never trusts repository source as a substitute for a missing release asset and never expands the legacy compatibility allowlist. Site checks consume this static document without a GitHub API token. A newly published release appears after catalogue publication plus the next site check.
+Run `python3 scripts/publish-catalogue.py` explicitly after releases, then commit and push the verified `catalogue.json`. The publisher enumerates all public owner repositories, verifies stable release ZIPs and applies exceptions. It validates package roots, main files, author, Update URI, versions, requirements, domain metadata and checksums before replacing the snapshot atomically. Failures retain the previous feed. `--check` performs the same verification without writing. The optional workflow template is manual-dispatch only; no periodic publishing scans are configured. Site checks read the latest published snapshot. A release becomes discoverable after publication plus the next manual site check.
 
 ## Build and recovery
 

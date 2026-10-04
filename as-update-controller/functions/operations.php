@@ -83,7 +83,7 @@ function asuc_dispatch(string $op, array $input) {
     if ($op === 'check') {
         $id = sanitize_text_field($input['plugin_id'] ?? '');
         if ($id && !isset(asuc_registry()[$id])) { return new WP_Error('unknown', 'Unknown plugin.'); }
-        $result = asuc_refresh(true, true); asuc_schedule(); return $result;
+        return asuc_refresh(true, true);
     }
     if ($op === 'start') { return asuc_start_batch(array_map('sanitize_text_field', (array) ($input['ids'] ?? [])), sanitize_key($input['kind'] ?? 'update')); }
     if ($op === 'step') { return asuc_step_batch(sanitize_text_field($input['job'] ?? '')); }
@@ -91,11 +91,8 @@ function asuc_dispatch(string $op, array $input) {
     if ($op === 'dismiss') { asuc_put('setup_pending', false); return ['message' => 'Setup reminder dismissed.']; }
     if ($op === 'settings') {
         if (!current_user_can(is_multisite() ? 'manage_network_options' : 'manage_options')) { return new WP_Error('permission', 'You cannot change these settings.'); }
-        $mode = ($input['mode'] ?? '') === 'manual' ? 'manual' : 'scheduled';
-        $hours = (int) ($input['hours'] ?? 6); if (!in_array($hours, [6, 12, 24], true)) { $hours = 6; }
-        asuc_put('settings', ['mode' => $mode, 'hours' => $hours]);
-        $state = asuc_get('check'); $state['next_check'] = max(time() + $hours * HOUR_IN_SECONDS, (int) ($state['retry_at'] ?? 0)); asuc_put('check', $state);
-        asuc_schedule(); return ['message' => 'Check settings saved.'];
+        asuc_put('settings', ['mode' => 'manual']);
+        asuc_schedule(); return ['message' => 'Update checks are manual only.'];
     }
     return new WP_Error('operation', 'Unknown action.');
 }

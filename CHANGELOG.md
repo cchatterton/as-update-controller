@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 - 2026-10-04
+
+- Discover public stable plugins from verified owner and package authorship without per-plugin registration; keep reviewed exceptions and identity pins.
+- Make checks strictly manual, remove old schedules on upgrade, and disable generic force-check and background discovery paths.
+- Refresh available capabilities and installed update status together while respecting cooldowns, locks, backoff and last-good metadata.
+- Withdraw excluded capabilities and their controller-owned stale update notices without touching unrelated providers.
+- Add publisher and WordPress regression tests and document the explicit publication workflow.
+
 ## 0.5.7 - 2026-10-03
 
 - Clarify active catalogue cards by showing the installed plugin version and the latest catalogue version separately.

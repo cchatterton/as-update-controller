@@ -10,7 +10,7 @@ $lock=tnuc_lock('test_network');
 restore_current_blog();
 multi_assert(tnuc_get('test_network')==='shared','subsite and main site share controller state');
 multi_assert(tnuc_lock('test_network')===false,'subsite and main site share atomic lock');tnuc_unlock('test_network',$lock);
-multi_assert((bool)wp_next_scheduled('tnuc_scheduled_check'),'schedule stored on network main site');
+multi_assert(!wp_next_scheduled('tnuc_scheduled_check'),'no scheduled checks on network main site');
 switch_to_blog(2); multi_assert(!wp_next_scheduled('tnuc_scheduled_check'),'no duplicate subsite schedule');restore_current_blog();
 $id=email_exists('subsite@example.test') ?: username_exists('subsite-manager');if(!$id){$id=wp_create_user('subsite-manager',wp_generate_password(),'subsite@example.test');}if (is_wp_error($id)) { throw new RuntimeException($id->get_error_message()); } add_user_to_blog(2,$id,'administrator');
 switch_to_blog(2);wp_set_current_user($id);

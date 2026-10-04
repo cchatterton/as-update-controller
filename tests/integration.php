@@ -51,7 +51,7 @@ check_test(!is_wp_error(tnuc_dispatch('settings',['mode'=>'manual','hours'=>6]))
 $before=count($calls);tnuc_scheduled_check();check_test(count($calls)===$before,'manual-only refuses scheduled discovery');
 tnuc_dispatch('settings',['mode'=>'scheduled','hours'=>6]);tnuc_schedule();tnuc_schedule();
 $events=tnuc_on_main(static function(){ $n=0;foreach(_get_cron_array() as $time=>$hooks){$n+=count($hooks['tnuc_scheduled_check']??[]);}return $n;});
-check_test($events===1,'schedule reconciliation creates exactly one event');
+check_test($events===0,'legacy scheduled setting cannot create an event');
 $before=count($calls);$_GET['tab']='catalogue';ob_start();tnuc_render_admin();asuc_render_admin();ob_end_clean();check_test(count($calls)===$before,'catalogue rendering after failures remains network-free');
 remove_filter('pre_http_request',$intercept,10);
 echo "All integration assertions passed.\n";

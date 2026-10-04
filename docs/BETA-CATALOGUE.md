@@ -2,7 +2,7 @@
 
 Controller release 0.3.0 groups cards into Active, Available (non-beta and not active), then Beta (not active). Empty groups are hidden. Active beta plugins appear only in Active and retain a Beta chip. The installed list also shows the chip. Search spans groups and hides empty search results.
 
-Readiness is explicit boolean `beta` metadata in the trusted registry and published catalogue. It is independent of activation and GitHub prerelease channels. Missing fields in older cached catalogues fall back to the bundled registry; malformed values are rejected. Promotion requires reviewed standards compliance, not just a version or API-header change.
+Readiness is boolean `beta` metadata in the generated catalogue. Newly discovered plugins default to beta; reviewed registry exceptions may override readiness. It is independent of activation and GitHub prerelease channels. Missing fields in older cached catalogues fall back to the bundled registry; malformed values are rejected. Promotion requires reviewed standards compliance, not just a version or API-header change.
 
 Exactly the ten previously migrated Techn plugins are non-beta. AS Local CSS is the sole non-beta AlphaSys entry. All remaining entries, including both controllers, are beta.
 

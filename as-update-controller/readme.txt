@@ -3,12 +3,12 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.5.7
+Stable tag: 0.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A cached catalogue, background update checks and guided installation for AlphaSys plugins.
+A cached catalogue, manual update checks and guided installation for AlphaSys plugins.
 
 == Description ==
 
@@ -16,7 +16,7 @@ Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories
 
 Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use one aggregate catalogue. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
 
-Automatic discovery defaults to approximately every six hours. Manual-only mode is available. Discovery does not install updates or change WordPress auto-update settings.
+Checks are strictly manual. Check for updates refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
 
 Reviewed legacy updater files are held inactive while this controller runs. This is a compatibility bridge, not a claim that all plugin repositories have been migrated. Unknown legacy implementations and site-level forced refresh code require review.
 
@@ -39,19 +39,24 @@ If filesystem credentials are required, use the native WordPress update/upload s
 No. Feature plugins continue to operate without it. Legacy updater suppression only applies while the controller is active.
 
 = Why is a GitHub repository absent? =
-Only explicitly approved AlphaSys-authored WordPress plugin packages are included. Themes, blocks, unrelated authors and ambiguous packages are excluded. New package identities require a registry update.
+Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered by default when the publisher runs. Exceptions handle ambiguous identities, exclusions and legacy packages. New releases appear after feed publication and a manual site check.
 
 = Are checks immediate? =
-Manual checks bypass the normal six-hour interval and the recent-success cache, but respect in-progress checks and remote retry limits.
+Manual checks respect the 60-second recent-success cooldown, in-progress checks and remote retry limits. No checks run automatically.
 
 == External services ==
 
-GitHub hosts the public catalogue and release packages. A scheduled or explicit manual check sends an HTTPS GET for the catalogue with the controller version in its User-Agent. It does not submit site inventory or credentials. GitHub receives the server IP address and normal connection metadata. An explicit installation/update downloads the selected release package from github.com and approved GitHub release-asset hosts. Repository/release links open GitHub only when clicked.
+GitHub hosts the public catalogue and release packages. An explicit manual check sends an HTTPS GET for the catalogue with the controller version in its User-Agent. It does not submit site inventory or credentials. GitHub receives the server IP address and normal connection metadata. An explicit installation/update downloads the selected release package from github.com and approved GitHub release-asset hosts. Repository/release links open GitHub only when clicked.
 
 Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.6.0 =
+* Discover released same-brand plugins by default; keep registry entries for exceptions.
+* Make update discovery strictly manual and remove old schedules and force-check triggers.
+* Refresh available plugins and installed updates together, preserving retry and identity safeguards.
 
 = 0.5.7 =
 * Clarify active catalogue cards by showing the installed plugin version and the latest catalogue version separately.
