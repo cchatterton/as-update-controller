@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-04T03:40:13.679921+00:00",
+  "published_at": "2026-10-04T04:05:41.287920+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.0",
-      "tag": "v0.6.0",
+      "version": "0.7.0",
+      "tag": "v0.7.0",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "- Discover public stable plugins from verified owner and package authorship without per-plugin registration; keep reviewed exceptions and identity pins.\n- Make checks strictly manual, remove old schedules on upgrade, and disable generic force-check and background discovery paths.\n- Refresh available capabilities and installed update status together while respecting cooldowns, locks, backoff and last-good metadata.\n- Withdraw excluded capabilities and their controller-owned stale update notices without touching unrelated providers.\n- Add publisher and WordPress regression tests and document the explicit publication workflow.\n",
-      "sha256": "42562858bb533a4cbbc7856bb0bfb46c0fb72a1c16716e8ce439cc5f3c178ed2"
+      "body": "Check for updates now scans GitHub directly for newly released plugins and updates to installed plugins. Separate catalogue publication is no longer required for discovery.\n\n- Verify released package ownership, brand, identity, versions, domain restrictions and checksums.\n- Show bounded progress, preserve verified results, and resume interrupted checks only after another explicit click.\n- Keep all ordinary page loads and native update filters free of discovery HTTP. No cron, background polling or automatic checker.\n- Retain reviewed registry exceptions and legacy package identities.\n\nRequires PHP 7.4+ with the ZIP extension. Initial scans can take several minutes. GitHub anonymous quotas may pause a scan until the displayed retry time; an optional server-side GitHub token is documented in README.md.\n\nValidated with both brands on disposable WordPress multisite, live GitHub discovery (including Release Management 0.11.9), PHP 7.4 regressions, package/security tests and browser progress/recovery checks. Customer sites have not been deployed.\n",
+      "sha256": "98c788163e9cb4cbb84d3d01a6cdcfae7e7427ad736bee2ea6990cd94e51f30f"
     },
     {
       "id": "as-utm-relay",
