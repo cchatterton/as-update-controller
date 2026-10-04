@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AS Update Controller
  * Description: One catalogue, manual update checks and guided updates for AlphaSys plugins.
- * Version: 0.6.0
+ * Version: 0.7.0
  * Author: AlphaSys
  * Author URI: https://alphasys.com.au
  * Update URI: https://github.com/cchatterton/as-update-controller
@@ -14,12 +14,12 @@
  * Text Domain: as-update-controller
  */
 if (!defined('ABSPATH')) { exit; }
-define('ASUC_VERSION', '0.6.0');
+define('ASUC_VERSION', '0.7.0');
 define('ASUC_API_VERSION', 1);
 define('ASUC_FILE', __FILE__);
 define('ASUC_DIR', __DIR__ . '/');
 define('ASUC_CATALOGUE_URL', 'https://api.github.com/repos/cchatterton/as-update-controller/contents/catalogue.json?ref=main');
-foreach (['state', 'catalogue', 'legacy', 'updates', 'operations', 'actions', 'admin'] as $asuc_module) {
+foreach (['state', 'catalogue', 'discovery', 'legacy', 'updates', 'operations', 'actions', 'admin'] as $asuc_module) {
     require_once ASUC_DIR . 'functions/' . $asuc_module . '.php';
 }
 unset($asuc_module);

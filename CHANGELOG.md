@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 - 2026-10-04
+
+- Check for updates now enumerates GitHub releases directly; new plugins and releases no longer wait for catalogue publication.
+- Inspect released ZIPs without executing code; verify brand, identity, version, domain policy and checksum.
+- Refresh the library and installed update notices as each package verifies, preserving previous results on failure.
+- Add bounded progress steps, interruption recovery, quota retry timing and an optional server-side GitHub token.
+- Keep all scans explicitly user-driven, including row actions; no cron, background polling or navigation-triggered scan.
+- Retain static catalogue publishing for older controller versions and release audits.
+
 ## 0.6.0 - 2026-10-04
 
 - Discover public stable plugins from verified owner and package authorship without per-plugin registration; keep reviewed exceptions and identity pins.

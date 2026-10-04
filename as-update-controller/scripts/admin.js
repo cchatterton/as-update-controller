@@ -115,12 +115,21 @@
         }
         finally { setBusy(false); }
     };
-    const check = async () => {
-        message.textContent = 'Checking for updates…';
-        await call('check');
+    const check = async (continuation = '') => {
+        let scan = continuation ? await call('scan_step', { job: continuation }) : await call('check');
+        area.hidden = false;
+        while (scan.status === 'running') {
+            message.textContent = scan.message;
+            progress.max = Math.max(1, scan.total || 1);
+            progress.value = scan.done || 0;
+            scan = await call('scan_step', { job: scan.id });
+        }
         await refresh();
+        area.hidden = true;
+        title.textContent = scan.status === 'complete' ? 'Check complete' : 'Check incomplete';
+        message.textContent = scan.message;
         setBusy(false);
-        dialog.close();
+        close.focus();
     };
     const resume = async expected => {
         const result = await call('status');
@@ -188,4 +197,5 @@
         else root.querySelector('[data-check]')?.focus();
     });
     selection();
+    if (asucAdmin.continueScan) void execute('Checking for updates', () => check(asucAdmin.continueScan), check);
 })();

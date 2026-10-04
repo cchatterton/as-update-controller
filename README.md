@@ -2,7 +2,7 @@
 
 A WordPress plugin library and update coordinator for **AlphaSys-authored plugins from cchatterton on GitHub**. Installable ZIP: [latest release](https://github.com/cchatterton/as-update-controller/releases/latest/download/as-update-controller.zip).
 
-WordPress 6.5+, PHP 7.4+. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
+WordPress 6.5+, PHP 7.4+ with the ZIP extension. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
 
 - **Installed:** version comparisons, update-management status, per-plugin checks and selected bulk updates.
 - **Catalogue:** searchable cards, release notes, install/update/activate actions. Installation leaves new feature plugins inactive.
@@ -12,11 +12,13 @@ Activation removes obsolete controller schedules. It performs no discovery or pl
 
 ## Ownership and coexistence
 
-Public stable releases from cchatterton with verified AlphaSys package authorship are discovered by default, regardless of repository prefix. Ordinary new plugins need no registry entry. The registry holds reviewed exceptions: ambiguous authors, explicit includes/excludes, domain restrictions, aliases/supersession, legacy compatibility and readiness overrides. The generated catalogue is the verified feed, not a manually maintained registration list. See [discovery and exceptions](docs/DISCOVERY.md). Both controllers retain separate brand identities, namespaces and locks.
+Public stable releases from cchatterton with verified AlphaSys package authorship are discovered by default, regardless of repository prefix. Ordinary new plugins need no registry entry. The registry holds reviewed exceptions: ambiguous authors, explicit includes/excludes, domain restrictions, aliases/supersession, legacy compatibility and readiness overrides. Check for updates builds the local catalogue directly from verified GitHub releases. See [discovery and exceptions](docs/DISCOVERY.md). Both controllers retain separate brand identities, namespaces and locks.
 
 ## Performance
 
-Page rendering, update transient filters, notices and plugin details read local state only, even with missing or expired caches. One explicit manual check fetches one aggregate JSON document; it does not interrogate every GitHub repository. No tokens or site inventory are sent. Successful checks have a 60-second cooldown. Failed requests preserve the last good result and use exponential backoff with jitter and GitHub retry deadlines. Discovery timeout: eight seconds; maximum response: 1 MiB. Downloads run only on explicit installation/update operations, with SHA-256 validation, HTTPS host restrictions, at most four hops, 30 seconds per hop and a 64 MiB limit.
+Page rendering, update transient filters, notices and plugin details read local state only, even with missing or expired caches. Clicking Check for updates scans public GitHub repositories and stable release assets, with progress. Each request handles one API lookup (8 seconds, 1 MiB) or ZIP inspection (25 seconds total, 64 MiB compressed/256 MiB expanded). Initial scans can take several minutes. Package inspection results cache for one day, keyed by asset identity, modification time and digest. Successful checks have a 60-second cooldown.
+
+Closing the page stops further steps. Click Check for updates again to resume an interrupted or rate-limited scan. Verified results remain available; failed/unvisited entries are retained. GitHub's anonymous API quota is shared by server IP, so larger scans or shared hosting can hit its limit. An optional `ASUC_GITHUB_TOKEN` constant in wp-config.php supports a GitHub token with read-only access to public repository metadata. It is sent only to api.github.com, never to package hosts or the browser. Do not commit credentials. No site inventory is sent.
 
 No controller cron, background polling or automatic checker runs. Upgrade migration clears old controller schedules and ignores saved scheduled-mode preferences. Generic WordPress force-check query parameters cannot initiate discovery. Native WordPress auto-update preferences remain WordPress's responsibility.
 
@@ -28,7 +30,7 @@ A complete migration still requires a new release of each feature plugin removin
 
 ## Release catalogue publishing
 
-Run `python3 scripts/publish-catalogue.py` explicitly after releases, then commit and push the verified `catalogue.json`. The publisher enumerates all public owner repositories, verifies stable release ZIPs and applies exceptions. It validates package roots, main files, author, Update URI, versions, requirements, domain metadata and checksums before replacing the snapshot atomically. Failures retain the previous feed. `--check` performs the same verification without writing. The optional workflow template is manual-dispatch only; no periodic publishing scans are configured. Site checks read the latest published snapshot. A release becomes discoverable after publication plus the next manual site check.
+The publisher remains for controller versions through 0.6.x and release audits: run `python3 scripts/publish-catalogue.py`, then commit/push verified `catalogue.json`. `--check` validates without writing. Controllers 0.7.0+ discover new releases directly on an explicit check and do not depend on this publication. No scheduled publishing scans are configured.
 
 ## Build and recovery
 

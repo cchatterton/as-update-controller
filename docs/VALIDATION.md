@@ -60,3 +60,18 @@ Browser follow-up: after correcting the disposable site URL and replacing a stal
 Limitations: no full screen-reader audit or exhaustive viewport matrix was performed. Older fixture-dependent feature/action tests require a larger preinstalled plugin set and were not completed in this fresh runtime. All feature-plugin behaviour, unknown legacy updater code, credentials-based filesystem transports and production rollout remain outside this validation. New releases require explicit feed publication before a site manual check can discover them. Existing historical validation notes above describe earlier versions, including their now-removed scheduling behaviour.
 
 Release delivery verified: both published v0.6.0 ZIPs match the committed root ZIPs byte-for-byte. Remote feeds match the generated snapshots and controller package checksums. Both controllers self-updated disposable old-version copies to 0.6.0 through the live feed and native WordPress upgrader, preserving network activation and stored state. The final feeds contain 17 AlphaSys and 22 Techn entries; IA GPT is newly discovered relative to the previous Techn feed.
+
+
+## 0.7.0 — direct manual GitHub discovery (4 October 2026)
+
+Validated in the isolated local WordPress multisite with both controllers network-active. No customer site was modified.
+
+- Both live scans completed across 58 public repositories using an ephemeral authenticated test API connection. Brand catalogues remained separate (17 AlphaSys, 22 Techn). Techn discovered and verified Release Management 0.11.9, including its published SHA-256, without reading the static feed.
+- Direct-scan regression fixtures exercise new unregistered identities, installed 0.11.7 to released 0.11.9 projection, cold rendering with zero HTTP, old cron removal, successful-check cooldown, quota pause, explicit cursor resume, permission rejection, brand/identity/tag/checksum rejection and policy withdrawal.
+- Public API checks can hit the hosting IP's quota. This was reproduced in the browser: an HTTP 403 paused progress, displayed a retry deadline, and retained verified results. Test authentication was supplied only to the disposable server process, never bundled or persisted in source.
+- PHP ZIP inspection requires ZipArchive; missing support is reported before starting. Initial uncached scans can take several minutes. Scans stop when the browser stops requesting steps and resume only after a fresh authorised check. Without JavaScript, row/form actions advance one bounded step per click.
+- Static catalogue and publisher support remain for older controllers. Historical validation sections above describe those earlier releases; the direct-scan behaviour replaces the one-feed-request transport on the current Check for updates path.
+
+- Final cold-start live scans also completed with empty catalogues (22 Techn, 17 AlphaSys), including the legacy Help Guides folder exception. A regression now ensures bundled identity pins survive incremental cold discovery.
+- Existing integration, package security, admin rendering and beta classification suites passed after making their fixtures independent of active client registrations and multisite activation scope. Direct-scan tests also passed on PHP 7.4. Packaged PHP passed PHP 7.4 syntax checks, JavaScript passed syntax checks, and both release ZIPs passed root/version/content verification.
+- Browser checks confirmed progress, quota-paused feedback, native plugin-row continuation and Release Management 0.11.9 in the library. No customer-site deployment or customer-specific proxy/filesystem checks were performed.

@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -39,7 +39,7 @@ If filesystem credentials are required, use the native WordPress update/upload s
 No. Feature plugins continue to operate without it. Legacy updater suppression only applies while the controller is active.
 
 = Why is a GitHub repository absent? =
-Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered by default when the publisher runs. Exceptions handle ambiguous identities, exclusions and legacy packages. New releases appear after feed publication and a manual site check.
+Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered directly from GitHub when Check for updates is clicked. Exceptions handle ambiguous identities, exclusions and legacy packages. No feed publication is required. The PHP ZIP extension is required; interrupted or rate-limited scans resume on the next explicit check.
 
 = Are checks immediate? =
 Manual checks respect the 60-second recent-success cooldown, in-progress checks and remote retry limits. No checks run automatically.
@@ -52,6 +52,11 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.7.0 =
+* Scan GitHub directly on Check for updates for both new plugins and installed releases.
+* Verify released ZIP identities and checksums in bounded, resumable steps.
+* Preserve results on interruptions and respect GitHub retry deadlines; no background checks.
 
 = 0.6.0 =
 * Discover released same-brand plugins by default; keep registry entries for exceptions.

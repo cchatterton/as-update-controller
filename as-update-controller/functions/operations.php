@@ -83,8 +83,9 @@ function asuc_dispatch(string $op, array $input) {
     if ($op === 'check') {
         $id = sanitize_text_field($input['plugin_id'] ?? '');
         if ($id && !isset(asuc_registry()[$id])) { return new WP_Error('unknown', 'Unknown plugin.'); }
-        return asuc_refresh(true, true);
+        return asuc_begin_scan();
     }
+    if ($op === 'scan_step') { return asuc_scan_step(sanitize_text_field($input['job'] ?? '')); }
     if ($op === 'start') { return asuc_start_batch(array_map('sanitize_text_field', (array) ($input['ids'] ?? [])), sanitize_key($input['kind'] ?? 'update')); }
     if ($op === 'step') { return asuc_step_batch(sanitize_text_field($input['job'] ?? '')); }
     if ($op === 'status') { return ['batch' => asuc_get('batch'), 'check' => asuc_get('check')]; }
@@ -108,6 +109,7 @@ function asuc_handle_form(): void {
     $op = sanitize_key($input['operation'] ?? '');
     if (!in_array($op, ['check', 'settings', 'dismiss'], true)) { wp_die('Unsupported form action.'); }
     $result = asuc_dispatch($op, $input);
+    if ($op === 'check' && !is_wp_error($result) && ($result['status'] ?? '') === 'running') { $result = asuc_scan_step($result['id']); if (!is_wp_error($result) && $result['status'] === 'running') { set_transient('asuc_continue_' . get_current_user_id(), $result['id'], 120); } }
     set_transient('asuc_notice_' . get_current_user_id(), ['error' => is_wp_error($result), 'message' => is_wp_error($result) ? $result->get_error_message() : ($result['message'] ?? 'Action completed.')], 120);
     wp_safe_redirect(asuc_url($op === 'settings' ? 'settings' : 'installed')); exit;
 }

@@ -5,6 +5,7 @@ function beta_assert($ok,$message){if(!$ok){throw new RuntimeException($message)
 $stable=['wp-pattern-import','as-update-controller','tn-update-controller','help-guides','menubot','persona26','tn-authenticator','tn-content-planner','tn-environments','tn-pallet','tn-qrcodes','tn-user-management','tn-wp-migrate-code-diff','as-local-css','gf-sf-webhook','as-content-stream','raiven-connector','gravity-forms-data-retention-policy'];
 $requests=0;$http=function()use(&$requests){$requests++;return new WP_Error('test_http','Unexpected metadata request');};add_filter('pre_http_request',$http,10,3);
 $active=[];$filter=function()use(&$active){return $active;};add_filter('option_active_plugins',$filter);
+$network_filter=static function()use(&$active){return array_fill_keys($active,1);};add_filter('site_option_active_sitewide_plugins',$network_filter);
 try{
  foreach(['tnuc'=>'tn-update-controller','asuc'=>'as-update-controller'] as $prefix=>$slug){
   $registry=($prefix.'_registry')();$is_beta=$prefix.'_is_beta';$group=$prefix.'_catalogue_groups';$validate=$prefix.'_validate_catalogue';
@@ -33,5 +34,5 @@ try{
    $active=[$registry[$id]['file']];$groups=$group($registry,[],[$registry[$id]['file']=>['Version'=>'1.0']]);beta_assert(isset($groups['active'][$id]),'active migrated plugin is Active');
   }
  }
-}finally{remove_filter('option_active_plugins',$filter);remove_filter('pre_http_request',$http,10);}
+}finally{remove_filter('site_option_active_sitewide_plugins',$network_filter);remove_filter('option_active_plugins',$filter);remove_filter('pre_http_request',$http,10);}
 beta_assert($requests===0,'classification and rendering metadata use zero HTTP');

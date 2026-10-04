@@ -9,7 +9,7 @@ function asuc_bundled_registry(): array {
         return true;
     });
 }
-/** The approved publisher may add branded identities; executable legacy trust stays bundled. */
+/** Verified released packages may add branded identities; executable legacy trust stays bundled. */
 function asuc_registry(): array {
     $bundled = asuc_bundled_registry();
     $registry = asuc_catalogue() ? [] : $bundled;
@@ -80,7 +80,7 @@ function asuc_validate_catalogue($candidate) {
     if (!is_array($candidate) || ($candidate['schema'] ?? 0) !== 1 || !is_array($candidate['plugins'] ?? null) || count($candidate['plugins']) > 200 || !is_string($candidate['published_at'] ?? null) || strtotime($candidate['published_at']) === false) {
         return new WP_Error('catalogue_schema', 'The catalogue format is not supported.');
     }
-    $registry = asuc_registry(); $result = []; $seen = []; $files = [];
+    $registry = array_merge(asuc_bundled_registry(), asuc_registry()); $result = []; $seen = []; $files = [];
     foreach ($candidate['plugins'] as $entry) {
         if (!is_array($entry) || !is_string($entry['id'] ?? null) || isset($seen[$entry['id']])) { return new WP_Error('catalogue_entry', 'The catalogue contains duplicate or invalid entries.'); }
         $id = $entry['id']; $seen[$id] = true;
@@ -154,18 +154,8 @@ function asuc_refresh(bool $manual = true, bool $force = false) {
             asuc_put('check', $state);
             return $validated;
         }
-        $transient = get_site_transient('update_plugins');
-        // Remove only our withdrawn identities; leave other providers untouched.
-        foreach (asuc_catalogue()['plugins'] ?? [] as $id => $old) {
-            if (isset($validated['plugins'][$id]) || !is_object($transient)) { continue; }
-            foreach (['response', 'no_update'] as $bucket) {
-                $item = $transient->{$bucket}[$old['file']] ?? null;
-                if (is_object($item) && ($item->id ?? '') === 'https://github.com/' . $old['owner'] . '/' . $old['repo']) { unset($transient->{$bucket}[$old['file']]); }
-            }
-        }
-        asuc_put('catalogue', $validated);
+        asuc_store_catalogue($validated);
         asuc_put('check', ['status' => 'success', 'job_id' => $state['job_id'], 'last_attempt' => $now, 'last_success' => $now, 'failures' => 0, 'retry_at' => 0]);
-        set_site_transient('update_plugins', asuc_project_updates($transient));
         return ['message' => 'Available plugins and installed plugin update status refreshed.'];
     } finally { asuc_unlock('discovery', $lock); }
 }
@@ -184,4 +174,18 @@ function asuc_compatibility(array $entry): string {
         if (!$found) { return 'Requires active plugin: ' . $slug; }
     }
     return '';
+}
+
+function asuc_store_catalogue(array $validated): void {
+        $transient = get_site_transient('update_plugins');
+        // Remove only our withdrawn identities; leave other providers untouched.
+        foreach (asuc_catalogue()['plugins'] ?? [] as $id => $old) {
+            if (isset($validated['plugins'][$id]) || !is_object($transient)) { continue; }
+            foreach (['response', 'no_update'] as $bucket) {
+                $item = $transient->{$bucket}[$old['file']] ?? null;
+                if (is_object($item) && ($item->id ?? '') === 'https://github.com/' . $old['owner'] . '/' . $old['repo']) { unset($transient->{$bucket}[$old['file']]); }
+            }
+        }
+        asuc_put('catalogue', $validated);
+        set_site_transient('update_plugins', asuc_project_updates($transient));
 }

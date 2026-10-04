@@ -45,7 +45,10 @@ tnuc_unlock('discovery','not-the-owner');check_test(tnuc_lock('discovery')===fal
 check_test(!is_wp_error(tnuc_refresh()),'released lock permits successful refresh');
 $bad=$techn;$bad['plugins'][0]['repo']='another-repo';check_test(is_wp_error(tnuc_validate_catalogue($bad)),'catalogue cannot change trusted repository identity');
 $bad=$techn;$bad['plugins'][]=$bad['plugins'][0];check_test(is_wp_error(tnuc_validate_catalogue($bad)),'duplicate catalogue IDs rejected');
+// Test header-only matching independently of a real active client's registration.
+$registered_clients = $GLOBALS['tnuc_clients'] ?? []; unset($GLOBALS['tnuc_clients']['menubot/menubot.php']);
 check_test(!tnuc_match(tnuc_registry()['menubot'], ['menubot/menubot.php'=>['Author'=>'Unrelated','UpdateURI'=>'']]),'unrelated author cannot claim a legacy basename');
+$GLOBALS['tnuc_clients'] = $registered_clients;
 wp_set_current_user(0);check_test(is_wp_error(tnuc_dispatch('check',[])),'unauthorised discovery rejected');check_test(is_wp_error(tnuc_start_batch(['menubot'],'install')),'unauthorised installation rejected');wp_set_current_user(1);
 check_test(!is_wp_error(tnuc_dispatch('settings',['mode'=>'manual','hours'=>6])) && !tnuc_on_main(static fn()=>wp_next_scheduled('tnuc_scheduled_check')),'manual-only clears automatic discovery');
 $before=count($calls);tnuc_scheduled_check();check_test(count($calls)===$before,'manual-only refuses scheduled discovery');
