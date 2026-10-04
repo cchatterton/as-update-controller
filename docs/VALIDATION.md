@@ -90,3 +90,5 @@ Validated in the isolated local WordPress multisite with both controllers networ
 Published release tags and ZIP bytes must be immutable. Normal checks intentionally reuse the previous verified package when the stable tag is unchanged. Settings → Recheck all repositories performs the slower asset audit, including revisiting ignored repositories; replacement bytes under an existing tag are rejected. New discovery still depends on GitHub API availability, independently of known-plugin updates.
 
 - The browser completed the normal Techn check with the success dialog. Existing 0.7.0 package-inspection caches, including other-author results, are reused while building the new durable ignore index.
+
+- Published 0.7.1 ZIPs were downloaded and matched byte-for-byte with the builds; live compatibility feeds resolve to their checksums. Official 0.7.0 copies upgraded to 0.7.1 through WordPress, preserving network activation and state. An anonymous live Techn check also completed (one API listing, 22 public version checks, and one newly changed controller package verified).
