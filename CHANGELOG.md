@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.1 - 2026-10-04
+
+- Close the check dialog after a successful check, including controller-first results, and focus the refreshed Updates available tab.
+- Keep incomplete checks and errors visible.
+
 ## 0.9.0 - 2026-10-04
 
 - Restore public JSON catalogue checking: one download per click, no GitHub API/token or per-repository scanning on WordPress.

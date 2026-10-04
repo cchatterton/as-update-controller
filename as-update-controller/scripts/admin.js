@@ -126,11 +126,17 @@
             progress.value = scan.done || 0;
             scan = await call('scan_step', { job: scan.id });
         }
-        await refresh(scan.status === 'controller_update' ? 'installed' : '');
+        const complete = ['complete', 'controller_update'].includes(scan.status);
+        await refresh(complete ? 'installed' : '');
         area.hidden = true;
         title.textContent = scan.status === 'controller_update' ? 'Controller update available' : (scan.status === 'complete' ? 'Check complete' : 'Check incomplete');
         message.textContent = scan.message;
         setBusy(false);
+        if (complete) {
+            opener = root.querySelector('.nav-tab-active');
+            dialog.close();
+            return;
+        }
         close.focus();
     };
     const resume = async expected => {
