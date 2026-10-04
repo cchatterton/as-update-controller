@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-04T07:32:01.027957+00:00",
+  "published_at": "2026-10-04T08:22:37.752817+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.0",
-      "tag": "v0.9.0",
+      "version": "0.9.1",
+      "tag": "v0.9.1",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Manual checks now download one public catalogue JSON file, regardless of plugin count. WordPress no longer scans GitHub repositories, calls REST/GraphQL APIs, requires a GitHub token or downloads inspection ZIPs during checks.\n\nThe controller evaluates its own entry first. If an update is available, only that update is listed; update the controller, then check again. Otherwise available plugins and installed update status refresh from the same JSON response. The shared github-cchatterton table retains local/released versions, installed state and alpha/beta. Failed checks preserve verified data. All checks remain manual.\n\nCatalogue publication is now a required completion step for every stable plugin/controller release. The publisher supports --repo and --expect-version to verify only the released package while retaining other verified entries. Release authors must commit/push the catalogue and verify the public JSON version, tag, asset and checksum before reporting delivery complete.\n\nValidation: PHP 7.4/8.5 integration, security, controller-first and one-request tests; 100 additional catalogue entries still require one request; fifteen immediate release changes; mixed older/newer controller load orders; publisher ownership/identity/immutable-asset tests. Live unauthenticated checks took 0.30\u20130.58 seconds, one JSON request each, on the disposable test site.\n\nIf an installed older controller is blocked by GitHub API rate limits, upload this release ZIP directly through WordPress to switch to public-catalogue checks.\n",
-      "sha256": "82f939909e4454619b77eda15b2402a6e722c178f500657d6198522a358c6dc8"
+      "body": "Successful Check for updates now closes its dialog automatically and selects/focuses Updates available, including when a controller update is found. Failed or incomplete checks remain visible for review.\n\nValidated in disposable WordPress with browser checks for success, controller-update completion, download failure and incomplete checks. Admin UI and controller-first integration assertions passed. Manual checks still download one public catalogue JSON.\n",
+      "sha256": "f454bdccede449863f0edfee16376e3245e4889dc28f9430a434c97a6f39fe4c"
     },
     {
       "id": "as-utm-relay",
