@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-04T05:51:24.385712+00:00",
+  "published_at": "2026-10-04T06:05:46.882241+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "beta": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.8.0",
-      "tag": "v0.8.0",
+      "version": "0.8.1",
+      "tag": "v0.8.1",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Both controllers now create or reuse the shared `github-cchatterton` WordPress database table. Each repository records author, released version, local version, installed state and alpha/beta readiness.\n\nEvery Check for updates fetches fresh GitHub API metadata and adds new repositories. Unchanged release assets reuse verified author/package data across both controllers. Cooldowns, timed ignore lists, stored backoff and the separate full-audit control are removed. Checks remain strictly manual.\n\nFor frequent release testing, configure `GITHUB_CCHATTERTON_TOKEN` server-side in wp-config.php with public-metadata access. Authenticated checks batch up to 100 repositories and their releases per API request. Anonymous REST remains supported but requires per-repository requests and is subject to GitHub's anonymous quota. GitHub can still reject requests; a new explicit click may retry immediately.\n\nValidation: PHP 7.4 and 8.5 integration, security and discovery fixtures; both load orders; separate branded catalogues; local-state updates; fifteen immediate changed releases; new repository discovery; 403 recovery and last-good retention. Live repeat checks covered 58 repositories in 2.21\u20132.40 seconds with one authenticated API request and no ZIP downloads. Timings vary by host.\n",
-      "sha256": "22b460bee37a611c7d6351d1709c2ee927c6d08ce52c8cdf475c3192d7003eaa"
+      "body": "Every Check for updates now checks that controller's stable release first.\n\nIf a newer controller is available, the check verifies its package, lists only that controller update and stops before requesting the owner listing or checking any other repository. Update the controller explicitly, then click Check for updates again. No automatic installation occurs.\n\nWhen the controller is current, the same check continues to the shared repository scan. A failed or invalid controller lookup stops with previous records preserved. Manual-only checks, the shared github-cchatterton table, and immediate rechecks remain unchanged.\n\nValidated on PHP 7.4 and 8.5: controller update/current/failure paths, no other repository requests before the controller is current, native update projection, controller-only update listing, REST/GraphQL discovery, rapid releases, security and admin UI. Mixed 0.8.0/new-controller load orders retain the new initial check.\n",
+      "sha256": "0f53830ef4e382022471c3739d1475346532749673eb9e7513fe46cd1f5752f5"
     },
     {
       "id": "as-utm-relay",
