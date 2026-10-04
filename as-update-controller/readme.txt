@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,12 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.7.1 =
+* Remember verified authors and ignore other-author/non-plugin repositories for 24 hours.
+* Check known stable release versions without per-repository API calls; unchanged releases need no ZIP.
+* Keep known-plugin checks working when API limits defer new-repository discovery.
+* Batch short steps to reduce WordPress request overhead; add explicit full revalidation.
 
 = 0.7.0 =
 * Scan GitHub directly on Check for updates for both new plugins and installed releases.

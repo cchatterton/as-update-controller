@@ -77,3 +77,16 @@ Validated in the isolated local WordPress multisite with both controllers networ
 - Browser checks confirmed progress, quota-paused feedback, native plugin-row continuation and Release Management 0.11.9 in the library. No customer-site deployment or customer-specific proxy/filesystem checks were performed.
 
 - Published v0.7.0 assets were downloaded and compared byte-for-byte with the committed builds. Both compatibility feeds advertise the verified 0.7.0 packages. Actual official 0.6.0 installations then self-updated through the published feed and official release ZIPs to 0.7.0, preserving network activation and saved state. Set `CONTROLLER_TEST_FROM=0.6.0` to reproduce with released copies.
+
+
+## 0.7.1 — remembered identities and lightweight version checks (4 October 2026)
+
+- On the isolated multisite, live Techn repeat-check engine time was 1.57 seconds (22 public version HEAD requests, one repository-list API request, zero ZIP downloads, five browser-step batches). AlphaSys was 1.31 seconds (17 HEAD requests, one listing, zero ZIPs, four batches). These are local engine timings; customer network and WordPress bootstrap time vary.
+- The initial learning passes took 32.19 seconds for Techn and 23.69 seconds for AlphaSys. Those passes classified previously unknown repositories. Known plugin updates ran before new discovery. Techn verified Release Management 0.11.10 during the live check.
+- Tests simulate fifteen fresh releases with short-lived check caches expired between each check: fifteen repository-list API calls, zero release API calls, and fifteen changed ZIP inspections per brand. Other-author repositories stayed skipped from durable WordPress state. No new custom database table is needed.
+- Quota fixtures verify that HTTP 403 defers new repository discovery while a known plugin still advances to its new version. Backoff is preserved. Also covered: learned-author exclusions, rule-change invalidation, cold-render zero HTTP, explicit resume, permission rejection, immutable-tag byte replacement rejection and PHP 7.4 execution.
+- Existing integration, package security, admin rendering and beta grouping suites passed. PHP 7.4 and JavaScript syntax checks passed. No customer site was modified.
+
+Published release tags and ZIP bytes must be immutable. Normal checks intentionally reuse the previous verified package when the stable tag is unchanged. Settings → Recheck all repositories performs the slower asset audit, including revisiting ignored repositories; replacement bytes under an existing tag are rejected. New discovery still depends on GitHub API availability, independently of known-plugin updates.
+
+- The browser completed the normal Techn check with the success dialog. Existing 0.7.0 package-inspection caches, including other-author results, are reused while building the new durable ignore index.

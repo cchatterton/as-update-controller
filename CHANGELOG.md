@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.1 - 2026-10-04
+
+- Persist learned other-author/non-plugin exclusions for 24 hours, with rule-change invalidation and an explicit full recheck.
+- Use the canonical public stable-release tag for known identities; reuse verified immutable releases without downloading unchanged ZIPs.
+- Verify only new versions and keep installed/library checks working independently of new-repository API quotas.
+- Process up to five short transitions per browser request to reduce WordPress bootstrap overhead.
+- Cover fifteen rapid releases and quota-exhausted discovery with regression tests.
+
 ## 0.7.0 - 2026-10-04
 
 - Check for updates now enumerates GitHub releases directly; new plugins and releases no longer wait for catalogue publication.

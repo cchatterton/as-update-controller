@@ -16,7 +16,7 @@ function asuc_assets(string $hook): void {
 }
 function asuc_check_summary(): string {
     $s = asuc_get('check');
-    if (($s['status'] ?? '') === 'partial') { return 'Check incomplete. ' . ($s['error'] ?? 'Verified results are retained. Check again to resume.'); }
+    if (($s['status'] ?? '') === 'partial') { return (!empty($s['known_checked']) ? 'Known plugins checked. ' : 'Check incomplete. ') . ($s['error'] ?? 'Verified results are retained. Check again to resume.'); }
     if (($s['status'] ?? '') === 'failed') { return 'Last check failed. ' . (!empty($s['last_success']) ? 'Showing results from ' . wp_date('j M Y, H:i', $s['last_success']) . '.' : 'No successful check yet.'); }
     if (($s['status'] ?? '') === 'running') { return ($s['last_attempt'] ?? 0) < time() - 60 ? 'Previous check was interrupted. Check again to recover.' : 'A catalogue check is running.'; }
     return !empty($s['last_success']) ? 'Last checked ' . wp_date('j M Y, H:i', $s['last_success']) : 'Never checked. Check the catalogue to discover available releases.';
@@ -104,5 +104,6 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
 }
 function asuc_render_settings(): void {
+    echo '<p>Known authors and repositories are remembered. Unchanged releases require no package download. Other-author and non-plugin repositories are skipped for 24 hours.</p><p><button class="button" data-full-check="">Recheck all repositories</button> Revisit ignored repositories and revalidate release assets. This slower audit uses the GitHub API.</p>';
     echo '<h2>Manual checks only</h2><p>Choose Check for updates to refresh available plugins and update status for installed plugins together. The scan runs in this window; closing it pauses the check. No scheduled or background checks run.</p><p>New releases remain unknown until the next successful manual check. Installing or updating a plugin is a separate action. GitHub may limit unauthenticated checks; a paused scan can be resumed after its retry time.</p>';
 }

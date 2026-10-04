@@ -41,27 +41,30 @@ function asuc_discovery_rules(): array {
     return $by_repo;
 }
 function asuc_scan_public(array $scan): array {
-    return ['id' => $scan['id'], 'status' => $scan['status'], 'done' => (int) $scan['index'], 'total' => count($scan['repos']), 'message' => $scan['message'] ?? 'Discovering released plugins…'];
+    return ['known_checked' => $scan['index'] >= ($scan['known_count'] ?? PHP_INT_MAX) && empty($scan['known_failed']), 'id' => $scan['id'], 'status' => $scan['status'], 'done' => (int) $scan['index'], 'total' => count($scan['repos']), 'message' => $scan['message'] ?? 'Discovering released plugins…'];
 }
-function asuc_begin_scan() {
+function asuc_begin_scan(bool $full = false) {
     if (!asuc_authorised() || (defined('DOING_CRON') && DOING_CRON)) { return new WP_Error('manual_only', 'Use an authorised Check for updates action.'); }
     if (!class_exists('ZipArchive')) { return new WP_Error('zip_support', 'Enable the PHP ZIP extension to inspect released plugins.'); }
     $lock = asuc_lock('discovery', 60); if (!$lock) { return new WP_Error('check_running', 'A check step is already running.'); }
     try {
         $scan = (array) asuc_get('scan'); $state = (array) asuc_get('check');
-        if (in_array($scan['status'] ?? '', ['running', 'paused'], true) && ($scan['created'] ?? 0) > time() - DAY_IN_SECONDS) {
+        if (($scan['engine'] ?? 0) === 2 && !$full && in_array($scan['status'] ?? '', ['running', 'paused'], true) && ($scan['created'] ?? 0) > time() - DAY_IN_SECONDS) {
             if (($scan['retry_at'] ?? 0) > time()) { return new WP_Error('backoff', $scan['message']); }
             $scan['status'] = 'running'; asuc_put('scan', $scan); asuc_put('check', array_merge($state, ['status' => 'running', 'last_attempt' => time(), 'retry_at' => 0])); return asuc_scan_public($scan);
         }
-        if (($state['last_success'] ?? 0) > time() - 60) { return ['id' => '', 'status' => 'complete', 'message' => 'Using the check completed less than a minute ago.']; }
-        $scan = ['id' => wp_generate_uuid4(), 'created' => time(), 'status' => 'running', 'phase' => 'repos', 'page' => 1, 'repos' => [], 'index' => 0, 'warnings' => [], 'retry_at' => 0, 'message' => 'Finding public repositories…'];
+        if (!$full && ($state['status'] ?? '') === 'success' && ($state['last_success'] ?? 0) > time() - 60) { return ['id' => '', 'status' => 'complete', 'message' => 'Using the check completed less than a minute ago.']; }
+        $known = []; $priority = []; $installed = asuc_plugins();
+        foreach (array_merge(asuc_bundled_registry(), asuc_registry()) as $entry) { $known[$entry['repo']] = $entry; $priority[$entry['repo']] = isset($installed[$entry['file']]) ? 0 : 1; }
+        $repos = array_keys($known); usort($repos, static function ($a, $b) use ($priority) { return ($priority[$a] <=> $priority[$b]) ?: strcasecmp($a, $b); });
+        $scan = ['engine' => 2, 'full' => $full, 'known' => $known, 'listed' => false, 'known_count' => count($repos), 'id' => wp_generate_uuid4(), 'created' => time(), 'status' => 'running', 'phase' => 'release', 'page' => 1, 'repos' => $repos, 'index' => 0, 'warnings' => [], 'retry_at' => 0, 'message' => 'Checking known plugins…'];
         asuc_put('scan', $scan);
         asuc_put('check', array_merge($state, ['status' => 'running', 'last_attempt' => time(), 'job_id' => $scan['id']]));
         return asuc_scan_public($scan);
     } finally { asuc_unlock('discovery', $lock); }
 }
 /** Each browser-requested step does one metadata request or one bounded ZIP inspection. No worker is scheduled. */
-function asuc_scan_step(string $id) {
+function asuc_scan_step_once(string $id) {
     if (!asuc_authorised() || (defined('DOING_CRON') && DOING_CRON)) { return new WP_Error('manual_only', 'Use an authorised Check for updates action.'); }
     $lock = asuc_lock('discovery', 60); if (!$lock) { return new WP_Error('check_running', 'A check step is already running.'); }
     try {
@@ -73,39 +76,41 @@ function asuc_scan_step(string $id) {
         $error = null;
         if ($scan['phase'] === 'repos') {
             $repos = asuc_github_json('users/cchatterton/repos?per_page=100&type=owner&page=' . (int) $scan['page']);
-            if (is_wp_error($repos)) { $error = $repos; }
+            if (is_wp_error($repos)) { $scan['warnings'][] = 'Known plugins checked; discovery of new repositories deferred: ' . $repos->get_error_message(); $scan['listed'] = true; $scan['phase'] = 'release'; }
             elseif (isset($repos['missing']) || (bool) array_filter($repos, static function ($repo) { return !is_array($repo) || !is_string($repo['name'] ?? null) || !is_string($repo['owner']['login'] ?? null) || !is_bool($repo['private'] ?? null) || !is_bool($repo['fork'] ?? null) || !is_bool($repo['archived'] ?? null); })) { $error = new WP_Error('repos_schema', 'The repository list is invalid.'); }
             else {
                 foreach ($repos as $repo) {
                     $rule = $rules[$repo['name']] ?? [];
                     if ($repo['owner']['login'] !== 'cchatterton' || $repo['private'] || !preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/D', $repo['name']) || !empty($rule['exclude']) || !empty($rule['superseded_by'])) { continue; }
                     if (($repo['fork'] || $repo['archived']) && empty($rule['include'])) { continue; }
-                    $scan['repos'][] = $repo['name'];
+                    if (!in_array($repo['name'], $scan['repos'], true) && ($scan['full'] || !asuc_ignored_repo($repo['name'], $rule))) { $scan['repos'][] = $repo['name']; }
                 }
                 if (count($repos) === 100) {
                     $scan['page']++;
                     if ($scan['page'] > 10) { $error = new WP_Error('repos_limit', 'More than 1,000 repositories require review. Previous results are retained.'); }
                 } else {
-                    $installed = asuc_plugins(); $priority = [];
-                    foreach (asuc_registry() as $entry) { $priority[$entry['repo']] = isset($installed[$entry['file']]) ? 0 : 1; }
-                    $scan['repos'] = array_values(array_unique($scan['repos']));
-                    usort($scan['repos'], static function ($a, $b) use ($priority) { return (($priority[$a] ?? 2) <=> ($priority[$b] ?? 2)) ?: strcasecmp($a, $b); });
+                    $scan['listed'] = true;
                     $scan['phase'] = 'release';
                 }
             }
+        } elseif ($scan['index'] >= count($scan['repos']) && !$scan['listed']) {
+            $scan['phase'] = 'repos';
         } elseif ($scan['index'] >= count($scan['repos'])) {
             $scan['status'] = $scan['warnings'] ? 'partial' : 'complete';
             $scan['message'] = $scan['warnings'] ? 'Verified releases refreshed; some packages need review: ' . implode('; ', $scan['warnings']) : 'Available plugins and installed updates refreshed directly from GitHub.';
             $state = (array) asuc_get('check');
-            $state = array_merge($state, ['status' => $scan['warnings'] ? 'partial' : 'success', 'error' => $scan['warnings'] ? $scan['message'] : '', 'retry_at' => 0, 'failures' => 0]);
+            $state = array_merge($state, ['known_checked' => empty($scan['known_failed']), 'status' => $scan['warnings'] ? 'partial' : 'success', 'error' => $scan['warnings'] ? $scan['message'] : '', 'retry_at' => 0, 'failures' => 0]);
             if (!$scan['warnings']) { $state['last_success'] = time(); }
             asuc_put('check', $state);
         } else {
             $repo = $scan['repos'][$scan['index']]; $rule = $rules[$repo] ?? [];
+            $known = $scan['known'][$repo] ?? null;
+            if (!empty($rule['exclude']) || !empty($rule['superseded_by'])) { $scan['index']++; asuc_put('scan', $scan); return asuc_scan_public($scan); }
             if ($scan['phase'] === 'release') {
-                $release = asuc_github_json('repos/cchatterton/' . $repo . '/releases/latest');
-                if (is_wp_error($release)) { $error = $release; }
-                elseif (!empty($release['missing'])) { if (isset(asuc_catalogue()['plugins'][$rule['id'] ?? $repo])) { $scan['warnings'][] = $repo . ': no stable release; previous verified entry retained.'; } $scan['index']++; }
+                $release = $known && !$scan['full'] ? asuc_known_release($repo, $known) : asuc_github_json('repos/cchatterton/' . $repo . '/releases/latest');
+                if (is_wp_error($release)) { if ($known) { $scan['known_failed'] = true; } $scan['warnings'][] = $repo . ': ' . $release->get_error_message(); $scan['index']++; }
+                elseif (!empty($release['unchanged'])) { $scan['index']++; }
+                elseif (!empty($release['missing'])) { if (isset(asuc_catalogue()['plugins'][$rule['id'] ?? $repo])) { $scan['known_failed'] = true; $scan['warnings'][] = $repo . ': no stable release; previous verified entry retained.'; } if (!$known) { asuc_ignore_repo($repo, $rule); } $scan['index']++; }
                 elseif (!is_bool($release['draft'] ?? null) || !is_bool($release['prerelease'] ?? null) || !is_string($release['tag_name'] ?? null) || !is_array($release['assets'] ?? null)) { $error = new WP_Error('release_schema', 'Invalid release metadata for ' . $repo); }
                 elseif ($release['draft'] || $release['prerelease']) { $scan['index']++; }
                 else {
@@ -117,6 +122,7 @@ function asuc_scan_step(string $id) {
                 $asset = $scan['assets'][$scan['asset_index']];
                 $entry = asuc_inspect_release($repo, $scan['release'], $asset, $rule);
                 if (is_wp_error($entry)) {
+                    if ($known) { $scan['known_failed'] = true; }
                     $scan['warnings'][] = $repo . ': ' . $entry->get_error_message();
                     $scan['matches'] = []; $scan['index']++; $scan['phase'] = 'release';
                 } else {
@@ -126,9 +132,10 @@ function asuc_scan_step(string $id) {
             } else {
                 if (count($scan['matches']) === 1) {
                     $result = asuc_accept_discovered($scan['matches'][0]);
-                    if (is_wp_error($result)) { $scan['warnings'][] = $repo . ': ' . $result->get_error_message(); }
+                    if (is_wp_error($result)) { if ($known) { $scan['known_failed'] = true; } $scan['warnings'][] = $repo . ': ' . $result->get_error_message(); }
                 } elseif (count($scan['matches']) > 1) { $scan['warnings'][] = $repo . ': multiple plugin ZIPs require an exception.'; }
-                elseif (isset(asuc_catalogue()['plugins'][$rule['id'] ?? $repo])) { $scan['warnings'][] = $repo . ': no matching package; previous verified entry retained.'; }
+                elseif (isset(asuc_catalogue()['plugins'][$rule['id'] ?? $repo])) { $scan['known_failed'] = true; $scan['warnings'][] = $repo . ': no matching package; previous verified entry retained.'; }
+                elseif (!$known) { asuc_ignore_repo($repo, $rule); }
                 $scan['index']++; $scan['phase'] = 'release';
                 unset($scan['release'], $scan['assets'], $scan['matches']);
             }
@@ -182,9 +189,14 @@ function asuc_inspect_zip(string $path, string $repo, array $release, array $ass
     } finally { $zip->close(); }
 }
 function asuc_inspect_release(string $repo, array $release, array $asset, array $rule) {
-    if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_.-]*\.zip$/D', $asset['name']) || ($asset['size'] ?? 0) < 1 || $asset['size'] > 67108864 || !preg_match('/^[vV]?\d+\.\d+(?:\.\d+){0,2}$/D', $release['tag_name'])) { return new WP_Error('asset', 'Invalid, oversized or unsupported release asset.'); }
-    $key = hash('sha256', json_encode([$repo, $release['tag_name'], $asset['id'] ?? '', $asset['updated_at'] ?? '', $asset['digest'] ?? '', $rule]));
+    if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_.-]*\.zip$/D', $asset['name']) || (empty($asset['direct']) && ($asset['size'] ?? 0) < 1) || ($asset['size'] ?? 0) > 67108864 || !preg_match('/^[vV]?\d+\.\d+(?:\.\d+){0,2}$/D', $release['tag_name'])) { return new WP_Error('asset', 'Invalid, oversized or unsupported release asset.'); }
+    $key = hash('sha256', json_encode([$repo, $release['tag_name'], $asset['id'] ?? '', $asset['updated_at'] ?? '', $asset['digest'] ?? '', !empty($asset['direct']), $rule]));
     $cached = get_site_transient('asuc_package_' . $key);
+    if ($cached === false && empty($asset['direct'])) {
+        // Reuse 0.7.0's already verified package/other-author result while learning the durable index.
+        $legacy_key = hash('sha256', json_encode([$repo, $release['tag_name'], $asset['id'] ?? '', $asset['updated_at'] ?? '', $asset['digest'] ?? '', $rule]));
+        $cached = get_site_transient('asuc_package_' . $legacy_key);
+    }
     if (is_array($cached)) { if (isset($cached['entry'])) { $cached['entry']['body'] = (string) ($release['body'] ?? ''); } return $cached['entry'] ?? null; }
     require_once ABSPATH . 'wp-admin/includes/file.php';
     $temp = wp_tempnam($asset['name']); if (!$temp) { return new WP_Error('temp', 'Could not create a temporary inspection file.'); }
@@ -198,7 +210,7 @@ function asuc_inspect_release(string $repo, array $release, array $asset, array 
             if (is_wp_error($response)) { return new WP_Error('download', 'The released ZIP could not be inspected.'); }
             $code = (int) wp_remote_retrieve_response_code($response);
             if (in_array($code, [301, 302, 303, 307, 308], true)) { $url = WP_Http::make_absolute_url(wp_remote_retrieve_header($response, 'location'), $url); continue; }
-            if ($code !== 200 || filesize($temp) !== $asset['size']) { return new WP_Error('download', 'The released ZIP download was incomplete.'); }
+            if ($code !== 200 || filesize($temp) < 1 || filesize($temp) >= 67108864 || (empty($asset['direct']) && filesize($temp) !== $asset['size'])) { return new WP_Error('download', 'The released ZIP download was incomplete.'); }
             if (!empty($asset['digest']) && $asset['digest'] !== 'sha256:' . hash_file('sha256', $temp)) { return new WP_Error('checksum', 'The released ZIP differs from its GitHub checksum.'); }
             $entry = asuc_inspect_zip($temp, $repo, $release, $asset, $rule);
             if (!is_wp_error($entry)) { set_site_transient('asuc_package_' . $key, ['entry' => $entry], DAY_IN_SECONDS); }
@@ -209,7 +221,10 @@ function asuc_inspect_release(string $repo, array $release, array $asset, array 
 }
 /** Commit a verified result immediately, preserving unvisited/failed entries and unrelated update providers. */
 function asuc_accept_discovered(array $entry) {
-    $plugins = asuc_catalogue()['plugins'] ?? []; $plugins[$entry['id']] = $entry;
+    $plugins = asuc_catalogue()['plugins'] ?? [];
+    $old = $plugins[$entry['id']] ?? [];
+    if (($old['tag'] ?? '') === $entry['tag'] && ($old['sha256'] ?? '') !== $entry['sha256']) { return new WP_Error('immutable_release', 'Published package bytes changed under the same tag. Publish a new version; previous verified metadata retained.'); }
+    $plugins[$entry['id']] = $entry;
     $rules = asuc_discovery_rules();
     foreach ($plugins as $id => $known) { $rule = $rules[$known['repo']] ?? []; if (!empty($rule['exclude']) || !empty($rule['superseded_by'])) { unset($plugins[$id]); } }
     $validated = asuc_validate_catalogue(['schema' => 1, 'published_at' => gmdate('c'), 'plugins' => array_values($plugins)]);
@@ -226,4 +241,49 @@ function asuc_apply_exclusions(array $rules): void {
         if (!empty($rule['exclude']) || !empty($rule['superseded_by'])) { unset($catalogue['plugins'][$id]); $changed = true; }
     }
     if ($changed) { asuc_store_catalogue($catalogue); }
+}
+
+/** A learned negative result is durable, expires after a day, and is invalidated by rule changes. */
+function asuc_ignored_repo(string $repo, array $rule): bool {
+    $entry = ((array) asuc_get('ignored_repos'))[$repo] ?? [];
+    return ($entry['until'] ?? 0) > time() && ($entry['rule'] ?? '') === hash('sha256', wp_json_encode($rule));
+}
+function asuc_ignore_repo(string $repo, array $rule): void {
+    $ignored = array_filter((array) asuc_get('ignored_repos'), static function ($entry) { return ($entry['until'] ?? 0) > time(); });
+    $ignored[$repo] = ['until' => time() + DAY_IN_SECONDS, 'rule' => hash('sha256', wp_json_encode($rule))];
+    asuc_put('ignored_repos', $ignored);
+}
+/** Known identity: public stable-release tag first; no REST API quota or ZIP when unchanged. */
+function asuc_known_release(string $repo, array $known) {
+    $key = 'asuc_latest_' . hash('sha256', $repo);
+    $state = (array) get_site_transient($key);
+    if (($state['retry_at'] ?? 0) > time()) { return new WP_Error('release_wait', 'Release lookup is paused until ' . gmdate('Y-m-d H:i', $state['retry_at']) . ' UTC.'); }
+    if (($state['checked'] ?? 0) > time() - 60 && !empty($state['tag'])) { $tag = $state['tag']; }
+    else {
+        $response = wp_safe_remote_head('https://github.com/cchatterton/' . rawurlencode($repo) . '/releases/latest', ['timeout' => 8, 'redirection' => 0]);
+        $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
+        $location = is_wp_error($response) ? '' : (string) wp_remote_retrieve_header($response, 'location');
+        $prefix = 'https://github.com/cchatterton/' . $repo . '/releases/tag/';
+        $tag = strpos($location, $prefix) === 0 ? substr($location, strlen($prefix)) : '';
+        if (!in_array($code, [301,302,303,307,308], true) || !preg_match('/^[vV]?\d+\.\d+(?:\.\d+){0,2}$/D', $tag)) {
+            $after = is_wp_error($response) ? '' : wp_remote_retrieve_header($response, 'retry-after');
+            $retry = max(time() + 600, is_numeric($after) ? time() + (int) $after : (int) strtotime((string) $after));
+            set_site_transient($key, ['retry_at' => $retry], max(600, $retry - time()));
+            return new WP_Error('release_lookup', 'Could not verify the stable release (HTTP ' . $code . '). Previous result retained. Retry after ' . gmdate('Y-m-d H:i', $retry) . ' UTC.');
+        }
+        set_site_transient($key, ['tag' => $tag, 'checked' => time()], 60);
+    }
+    $existing = asuc_catalogue()['plugins'][$known['id']] ?? [];
+    if (($existing['tag'] ?? '') === $tag && !empty($existing['sha256'])) { return ['unchanged' => true]; }
+    return ['draft' => false, 'prerelease' => false, 'tag_name' => $tag, 'body' => '', 'assets' => [['name' => $known['asset'], 'direct' => true, 'id' => $tag, 'size' => 0]]];
+}
+
+/** Amortise WordPress boot overhead while preserving short bounded steps and the shared lock. */
+function asuc_scan_step(string $id) {
+    $deadline = microtime(true) + 2;
+    for ($i = 0; $i < 5; $i++) {
+        $result = asuc_scan_step_once($id);
+        if (is_wp_error($result) || ($result['status'] ?? '') !== 'running' || microtime(true) >= $deadline) { return $result; }
+    }
+    return $result;
 }

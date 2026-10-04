@@ -115,8 +115,8 @@
         }
         finally { setBusy(false); }
     };
-    const check = async (continuation = '') => {
-        let scan = continuation ? await call('scan_step', { job: continuation }) : await call('check');
+    const check = async (continuation = '', full = false) => {
+        let scan = continuation ? await call('scan_step', { job: continuation }) : await call('check', { full: full ? '1' : '' });
         area.hidden = false;
         while (scan.status === 'running') {
             message.textContent = scan.message;
@@ -126,7 +126,7 @@
         }
         await refresh();
         area.hidden = true;
-        title.textContent = scan.status === 'complete' ? 'Check complete' : 'Check incomplete';
+        title.textContent = scan.status === 'complete' ? 'Check complete' : (scan.known_checked ? 'Plugin updates checked' : 'Check incomplete');
         message.textContent = scan.message;
         setBusy(false);
         close.focus();
@@ -142,7 +142,7 @@
         await finish(result.batch);
     };
     root.addEventListener('click', event => {
-        const button = event.target.closest('[data-plugin-action], [data-check], [data-install], [data-resume], [data-results], #asuc-update-selected');
+        const button = event.target.closest('[data-plugin-action], [data-full-check], [data-check], [data-install], [data-resume], [data-results], #asuc-update-selected');
         if (!button || busy) return;
         event.preventDefault();
         if (button.hasAttribute('data-plugin-action')) {
@@ -158,6 +158,7 @@
                 setBusy(false); close.focus();
             });
         }
+        if (button.hasAttribute('data-full-check')) return void execute('Rechecking all repositories', () => check('', true));
         if (button.hasAttribute('data-check')) return void execute('Checking for updates', check);
         if (button.hasAttribute('data-results')) return void execute('Update results', results);
         if (button.hasAttribute('data-resume')) return void execute('Updating plugins', () => resume(button.dataset.resume));
