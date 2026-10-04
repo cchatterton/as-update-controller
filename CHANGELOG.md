@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0 - 2026-10-04
+
+- Restore public JSON catalogue checking: one download per click, no GitHub API/token or per-repository scanning on WordPress.
+- Evaluate the controller entry first and stop for its update; otherwise process all entries from the same JSON.
+- Preserve shared local released/installed versions, installed state and alpha/beta; retain previous records on failed checks.
+- Make catalogue publication mandatory for every stable feature-plugin/controller release.
+- Add targeted publisher verification with --repo and --expect-version, preserving other verified entries.
+
 ## 0.8.1 - 2026-10-04
 
 - Check the initiating controller’s stable release first on every manual check.

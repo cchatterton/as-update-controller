@@ -2,7 +2,7 @@
 
 A WordPress plugin library and update coordinator for **AlphaSys-authored plugins from cchatterton on GitHub**. Installable ZIP: [latest release](https://github.com/cchatterton/as-update-controller/releases/latest/download/as-update-controller.zip).
 
-WordPress 6.5+, PHP 7.4+ with the ZIP extension. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
+WordPress 6.5+, PHP 7.4+. On multisite, network activate it. Open **Plugins → AlphaSys Plugins** (Network Admin on multisite).
 
 - **Installed:** version comparisons, update-management status, per-plugin checks and selected bulk updates.
 - **Catalogue:** searchable cards, release notes, install/update/activate actions. Installation leaves new feature plugins inactive.
@@ -12,19 +12,17 @@ Activation removes obsolete controller schedules. It performs no discovery or pl
 
 ## Ownership and coexistence
 
-Public stable releases from cchatterton with verified AlphaSys package authorship are discovered by default, regardless of repository prefix. Ordinary new plugins need no registry entry. The registry holds reviewed exceptions: ambiguous authors, explicit includes/excludes, domain restrictions, aliases/supersession, legacy compatibility and readiness overrides. Check for updates builds the local catalogue directly from verified GitHub releases. See [discovery and exceptions](docs/DISCOVERY.md). Both controllers retain separate branded catalogues and share the repository index and scan lock.
+Public stable releases from cchatterton with verified AlphaSys package authorship are discovered by default, regardless of repository prefix. Ordinary new plugins need no registry entry. The registry holds reviewed exceptions: ambiguous authors, explicit includes/excludes, domain restrictions, aliases/supersession, legacy compatibility and readiness overrides. Check for updates downloads the public catalogue JSON generated from verified releases. See [discovery and exceptions](docs/DISCOVERY.md). Both controllers retain separate branded catalogues and share the repository index and scan lock.
 
 ## Performance
 
-Both controllers create or reuse the exact table `github-cchatterton` in the WordPress database, without a WordPress prefix. One row per repository stores raw author, canonical brand, released version, local version, local installed state and `alpha_beta`, plus verification metadata. This is shared within that database, including multisite. Use a separate database for independent WordPress installations. Existing verified catalogues seed the table during the first manual check.
+Every explicit Check for updates downloads exactly one public JSON file from `raw.githubusercontent.com`, using a unique freshness query and `Cache-Control: no-cache`. It makes no REST/GraphQL API calls, owner listings, per-plugin lookups or release ZIP inspections. No GitHub token is needed on WordPress sites. Request count stays one as the catalogue grows. Checks are manual only, with no cooldown, automatic retry, cron or page-load HTTP.
 
-Every click first fetches this controller’s latest stable release through the GitHub API. If newer, it verifies and lists only that controller update and stops, without an owner listing or other plugin lookup. Update the controller explicitly, then check again. A failed controller lookup also stops and retains previous records. Only when the controller is current does the check fetch other repository/release metadata. There is no controller cooldown, timed author ignore, stored retry deadline or automatic retry. The database avoids repeating unchanged ZIP inspections, including those from another author. New or changed release assets are inspected before being advertised; same-tag replacement is rejected. Page rendering and update notices read local data only.
+The controller evaluates its own entry first. If newer, it shows only that update and stops processing other entries; update it explicitly and check again. When current, the same downloaded JSON refreshes available capabilities and installed update status together. Missing/invalid controller metadata or a failed/invalid feed retains the previous snapshot. Native package downloads and checksum/root checks happen only when installing/updating.
 
-For frequent release testing, set a server-side `GITHUB_CCHATTERTON_TOKEN` in wp-config.php with public-metadata read access. Existing `ASUC_GITHUB_TOKEN` / `TNUC_GITHUB_TOKEN` are accepted, in that order after the shared constant. After the single controller-first REST request, authenticated GraphQL fetches up to 100 repositories and their latest stable release/asset metadata per request. Without a token, public REST needs one repository-list call per 100 repos plus one latest-release call per repository. GitHub's anonymous quota is commonly 60 requests/hour per IP; the controller cannot remove GitHub's limits. Tokens are sent only to api.github.com, never browser output or download hosts. No site inventory is sent.
+The shared, unprefixed `github-cchatterton` table remains a local mirror of verified catalogue records, including author, released version, local version, installed state and alpha/beta. It is not a repository scanner. Existing other-author/non-plugin rows may remain as history. Independent WordPress installations should use separate databases. Normal rendering and native update projections read local state only.
 
-Each browser step performs up to 25 local transitions, with a two-second dispatch budget checked between operations. API requests are limited to 15 seconds/4 MiB; ZIP inspection to 25 seconds, 64 MiB compressed, 256 MiB expanded and 10,000 members. Closing the page stops requests. The next Check starts fresh and reuses verified rows. Concurrent database writes are serialised, without a waiting period between completed checks. GitHub failures retain last-good records and report incomplete results; another click is permitted immediately.
-
-No controller cron, background polling or automatic checker runs. Upgrade migration clears old controller schedules and ignores saved scheduled-mode preferences. Generic WordPress force-check query parameters cannot initiate discovery. Native WordPress auto-update preferences remain WordPress's responsibility.
+A check is bounded to ten seconds/1 MiB and one request with redirects disabled. Public file delivery can still fail; that is reported without erasing verified results. Update availability depends on catalogue publication, which is part of every plugin release.
 
 ## Existing plugins
 
@@ -32,9 +30,22 @@ The initial catalogue contains verified public release assets, not a claim that 
 
 A complete migration still requires a new release of each feature plugin removing its updater hooks, cron jobs and forced-refresh code, and adding the [client integration](docs/CLIENT-API.md). Site-level MU plugins and custom forced-refresh redirects require separate inspection. Plugin settings are not removed by controller deactivation/deletion. Controller state is retained for recovery.
 
-## Release catalogue publishing
+## Release catalogue publishing (required)
 
-The publisher remains for controller versions through 0.6.x and release audits: run `python3 scripts/publish-catalogue.py`, then commit/push verified `catalogue.json`. `--check` validates without writing. Controllers 0.7.0+ discover new releases directly on an explicit check and do not depend on this publication. No scheduled publishing scans are configured.
+Every stable same-brand plugin release, including this controller, must publish its catalogue entry after the GitHub release ZIP is verified. New plugins need no manual registry registration: the publisher verifies ownership, exact package author, identity, requirements, domain/readiness metadata and checksum.
+
+From a current checkout of this controller repository, run:
+
+```sh
+python3 scripts/publish-catalogue.py --repo <released-plugin-repo> --expect-version <released-version>
+git add catalogue.json
+git commit -m "Publish verified <released-plugin-repo> <released-version>"
+git push origin main
+```
+
+Then fetch the public `https://raw.githubusercontent.com/cchatterton/as-update-controller/main/catalogue.json` with a unique freshness query and verify the plugin's version, tag, basename, asset and SHA-256 against the published ZIP. If it is missing/stale or publication fails, the release is incomplete. Preserve other concurrent release entries; update the checkout and regenerate if a push conflicts, never force-push the catalogue.
+
+`--repo` verifies only that release and preserves other previously verified entries. A full `python3 scripts/publish-catalogue.py` scan is available for an explicit reconciliation; `--check` verifies without writing and does not count as publication. No publishing scans are scheduled. GitHub authentication is used by the release publisher, not customer WordPress sites.
 
 ## Build and recovery
 

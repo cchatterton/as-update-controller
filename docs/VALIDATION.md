@@ -110,3 +110,11 @@ PHP 7.4.30 and 8.5.7: new controller-first tests passed for both brands. A newer
 Mixed-version checks loaded the official 0.8.0 AlphaSys controller before the new Techn controller, then reversed the brands. In both cases the newer controller retained its own initial release check, independent of the older shared engine. Both versions share the writer lock and repository table.
 
 Post-publication live checks used the published 0.8.1 releases with 0.8.0 as the comparison version: each returned controller_update after exactly one controller API request and zero other repository requests. Official 0.8.0 disposable copies then upgraded through the native batch flow to the published 0.8.1 ZIPs, preserving network activation and saved state. Published asset digests match the built ZIPs.
+
+## 0.9.0 — one public catalogue download (2026-10-04)
+
+PHP 7.4.30 and 8.5.7: integration, controller-first, one-request discovery, security and admin UI tests passed. PHP 7.4 beta grouping and multisite suites passed. Fixtures cover a cold check, a new capability, installed update projection, local version/activation/readiness records, fifteen immediate version changes, and 100 extra catalogue entries: every check performs exactly one raw JSON request, with no token, API or ZIP requests. Invalid/failed feeds retain the prior snapshot, permission failures make zero requests, and ordinary reads/old cron remain HTTP-free.
+
+The controller-first fixture deliberately includes a malformed unrelated entry: a newer controller still projects its own valid update and defers all other evaluation. Current-controller checks validate the full feed from the same response. Missing controller metadata fails without losing the prior snapshot.
+
+Live unauthenticated checks of the public raw JSON completed in 0.32, 0.58 and 0.30 seconds, one request each, yielding 22 Techn / 17 AlphaSys entries and Release Management 0.11.10. These are local timings, not a host-wide guarantee. No customer site was changed. A live targeted publisher check verified the released controller while retaining other entries; both offline publisher suites pass 15 tests including targeted publication and same-tag asset replacement rejection.

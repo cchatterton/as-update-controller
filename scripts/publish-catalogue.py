@@ -155,7 +155,7 @@ def collect(repo, exception=None):
     return records[0] if records else None
 
 
-def discover(repos, exceptions, previous, collector=collect):
+def discover(repos, exceptions, previous, collector=collect, report=True):
     by_repo = {}
     for key, entry in exceptions.items():
         if not isinstance(entry, dict):
@@ -188,7 +188,8 @@ def discover(repos, exceptions, previous, collector=collect):
         processed.add(name)
         if record:
             records.append(record)
-            print(record["id"] + " " + record["version"] + " verified", flush=True)
+            if report:
+                print(record["id"] + " " + record["version"] + " verified", flush=True)
     for name, entry in by_repo.items():
         if name not in processed and not entry.get("exclude") and not entry.get("superseded_by"):
             raise ValueError("Exception is missing a public stable release: " + name)
@@ -203,6 +204,8 @@ def discover(repos, exceptions, previous, collector=collect):
             values.add(entry[key].casefold())
         if entry["id"] in old and any(entry[k] != old[entry["id"]][k] for k in IDENTITY):
             raise ValueError("Published identity changed: " + entry["id"])
+        if entry["id"] in old and entry.get("tag") == old[entry["id"]].get("tag") and entry.get("sha256") != old[entry["id"]].get("sha256"):
+            raise ValueError("Published bytes changed under the same tag: " + entry["id"])
     # A missing/invalid former release is not silently withdrawn. Exclusion is explicit.
     repos_now = {e["repo"] for e in records}
     for entry in old.values():
@@ -212,16 +215,41 @@ def discover(repos, exceptions, previous, collector=collect):
     return sorted(records, key=lambda e: e["id"])
 
 
+def discover_one(name, exceptions, previous, collector=collect):
+    """Release-time refresh of one repository; other verified entries are preserved."""
+    if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]*", name):
+        raise ValueError("Use a repository name owned by " + OWNER)
+    info = json.loads(gh("api", "repos/" + OWNER + "/" + name))
+    if info.get("name") != name or info.get("owner", {}).get("login") != OWNER or info.get("private") is not False:
+        raise ValueError("Repository is outside the public owner scope")
+    existing = {e["repo"]: e for e in previous.get("plugins", [])}
+    repos = [dict(name=repo, latestRelease={"isDraft": False, "isPrerelease": False}) for repo in existing if repo != name]
+    repos.append(dict(name=name, isFork=info.get("fork"), isArchived=info.get("archived"), latestRelease={"isDraft": False, "isPrerelease": False}))
+    records = discover(repos, exceptions, previous, lambda repo, rule: collector(repo, rule) if repo == name else existing[repo], report=False)
+    selected = next((e for e in records if e["repo"] == name), None)
+    print(name + (" " + selected["version"] + " verified" if selected else " explicitly excluded"), flush=True)
+    print(str(sum(e["repo"] != name for e in records)) + " other verified entries retained", flush=True)
+    return records
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="Verify discovery without writing metadata")
+    parser.add_argument("--repo", help="Refresh only this released repository, preserving other verified entries")
+    parser.add_argument("--expect-version", help="Fail unless --repo resolves to this released version")
     args = parser.parse_args()
+    if args.expect_version and not args.repo:
+        parser.error("--expect-version requires --repo")
     exceptions = json.loads((ROOT / SLUG / "data/registry.json").read_text())
     target = ROOT / "catalogue.json"
     previous = json.loads(target.read_text()) if target.exists() else {}
-    records = discover(repositories(), exceptions, previous)
+    records = discover_one(args.repo, exceptions, previous) if args.repo else discover(repositories(), exceptions, previous)
+    if args.expect_version:
+        entry = next((e for e in records if e["repo"] == args.repo), None)
+        if not entry or entry["version"] != args.expect_version:
+            raise ValueError("Published release does not match expected version " + args.expect_version)
     if previous.get("plugins") == records or args.check:
-        print("All release assets verified; catalogue unchanged.")
+        print("Selected release metadata verified; no catalogue file written.")
         return
     candidate = {"schema": 1, "published_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "plugins": records}
     temp = target.with_suffix(".tmp")

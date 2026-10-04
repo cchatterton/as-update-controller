@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.8.1
+Stable tag: 0.9.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ A cached catalogue, manual update checks and guided installation for AlphaSys pl
 
 Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories. Techn plugins are managed separately by TN Update Controller. Both controllers can run together.
 
-Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use the shared github-cchatterton table and fresh GitHub API metadata. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
+Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Each check downloads one public catalogue JSON file and updates the shared local github-cchatterton table. No GitHub API or token is required. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
 
 Checks are strictly manual. Each check verifies this controller first. If its update is available, only that update is listed and the check stops. Update the controller, then check again. When current, the check refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
 
@@ -39,19 +39,24 @@ If filesystem credentials are required, use the native WordPress update/upload s
 No. Feature plugins continue to operate without it. Legacy updater suppression only applies while the controller is active.
 
 = Why is a GitHub repository absent? =
-Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered directly from GitHub when Check for updates is clicked. Exceptions handle ambiguous identities, exclusions and legacy packages. No feed publication is required. The PHP ZIP extension is required; the next explicit check starts fresh while reusing verified records.
+The published catalogue includes verified public stable same-brand releases. Every plugin release must update and publish its catalogue entry. New plugins need no manual registry registration, but will not appear until that publication succeeds.
 
 = Are checks immediate? =
-Manual checks respect the 60-second recent-success cooldown, in-progress checks and remote retry limits. No checks run automatically.
+Each click downloads one public JSON file with a freshness query. No controller cooldown applies. The controller entry is evaluated first; if newer, update it and check again. Otherwise all entries are processed from that same file.
 
 == External services ==
 
-GitHub hosts repository metadata and release packages. An explicit check calls GitHub's API and inspects new or changed published ZIPs. Authenticated GraphQL batches repository/release versions; anonymous REST checks each repository. An optional server-side token is sent only to api.github.com. No site inventory is submitted. GitHub receives the server IP and connection metadata. Installation/update downloads the selected package from github.com and approved release-asset hosts. Repository/release links open GitHub only when clicked.
+GitHub hosts the public catalogue and release packages. An explicit check makes one HTTPS GET to raw.githubusercontent.com, regardless of plugin count. It sends no GitHub token or site inventory. GitHub receives the server IP and normal connection metadata. Explicit installation/update downloads the selected release ZIP from github.com and approved release-asset hosts. Nothing is checked automatically.
 
 Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.9.0 =
+* Restore one public JSON catalogue request per manual check; remove WordPress-side repository scans and token requirements.
+* Keep controller-first evaluation and shared local version/readiness records.
+* Require catalogue publication after every plugin release; add targeted release publishing.
 
 = 0.8.1 =
 * Check this controller first; stop and list its update before checking other repositories.

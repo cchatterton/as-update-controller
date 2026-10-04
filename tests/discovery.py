@@ -103,6 +103,32 @@ class DiscoveryTests(unittest.TestCase):
             self.assertEqual(len(p.repositories()), 2)
             self.assertIn('--paginate', api.call_args.args)
 
+    def test_targeted_release_preserves_other_entries(self):
+        record = self.inspect()
+        old = dict(record, id='old', repo='old', file='old/old.php', slug='old', asset='old.zip')
+        info = {"name": record['repo'], "owner": {"login": p.OWNER}, "private": False, "fork": False, "archived": False}
+        calls = []
+        def collect(name, rule):
+            calls.append(name)
+            return record
+        import json
+        with patch.object(p, 'gh', return_value=json.dumps(info).encode()):
+            results = p.discover_one(record['repo'], {}, {'plugins': [old]}, collect)
+        self.assertEqual(calls, [record['repo']])
+        self.assertIn(old, results)
+        self.assertIn(record, results)
+
+    def test_replaced_asset_under_same_tag_rejected(self):
+        record = self.inspect()
+        old = dict(record, sha256='0' * 64)
+        with self.assertRaises(ValueError):
+            p.discover([dict(name=record['repo'], latestRelease={'isDraft': False})], {}, {'plugins': [old]}, lambda *args: record)
+
+    def test_targeted_repository_rejects_other_owner(self):
+        with patch.object(p, 'gh', return_value=b'{"name":"test", "owner":{"login":"other"},"private":false}'):
+            with self.assertRaises(ValueError):
+                p.discover_one('test', {}, {})
+
 
 if __name__ == '__main__':
     unittest.main()

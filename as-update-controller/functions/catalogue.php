@@ -123,30 +123,45 @@ function asuc_validate_catalogue($candidate) {
     if (!$result) { return new WP_Error('catalogue_empty', 'No recognised releases were found.'); }
     return ['published_at' => $candidate['published_at'], 'plugins' => $result];
 }
-/** @return array|WP_Error */
+/** One public JSON download per explicit check, independent of repository count. */
 function asuc_refresh(bool $manual = true, bool $force = false) {
-    if (!$manual || (defined('DOING_CRON') && DOING_CRON)) { return new WP_Error('manual_only', 'Use Check for updates to refresh available plugins and installed updates.'); }
-    $state = (array) asuc_get('check'); $now = time();
+    if (!$manual || !asuc_authorised() || (defined('DOING_CRON') && DOING_CRON)) { return new WP_Error('manual_only', 'Use an authorised Check for updates action.'); }
     $lock = asuc_lock('discovery', 60);
     if (!$lock) { return new WP_Error('check_running', 'A catalogue check is already running.'); }
+    $state = (array) asuc_get('check'); $now = time();
+    $state = array_merge($state, ['last_attempt'=>$now, 'job_id'=>wp_generate_uuid4(), 'status'=>'running', 'retry_at'=>0]);
+    asuc_put('check', $state);
     try {
-        // Recheck after atomic acquisition: another worker may have just completed.
-        $state = (array) asuc_get('check');
-        $state['last_attempt'] = $now; $state['job_id'] = wp_generate_uuid4(); $state['status'] = 'running'; asuc_put('check', $state);
-        $catalogue_url = $force ? add_query_arg('asuc_cache_bust', (string) $now, ASUC_CATALOGUE_URL) : ASUC_CATALOGUE_URL;
-        $response = wp_safe_remote_get($catalogue_url, ['timeout' => 8, 'redirection' => 0, 'limit_response_size' => 1048576, 'headers' => ['Accept' => 'application/json', 'User-Agent' => 'AS-Update-Controller/' . ASUC_VERSION]]);
+        $url = add_query_arg('check', $state['job_id'], ASUC_CATALOGUE_URL);
+        $response = wp_safe_remote_get($url, ['timeout'=>10, 'redirection'=>0, 'limit_response_size'=>1048576, 'headers'=>['Accept'=>'application/json', 'Cache-Control'=>'no-cache', 'User-Agent'=>'AS-Update-Controller/'.ASUC_VERSION]]);
         $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
-        $candidate = $code === 200 ? asuc_decode_catalogue_response((string) wp_remote_retrieve_body($response)) : null;
-        $validated = $candidate ? asuc_validate_catalogue($candidate) : new WP_Error('catalogue_http', 'The catalogue could not be refreshed. Previous results are preserved.');
-        if (is_wp_error($validated)) {
-            $failures = min(8, (int) ($state['failures'] ?? 0) + 1);
-            $state = array_merge($state, ['status' => 'failed', 'failures' => $failures, 'http_code' => $code, 'error' => $validated->get_error_message(), 'retry_at' => 0]);
-            asuc_put('check', $state);
-            return $validated;
-        }
-        asuc_store_catalogue($validated);
-        asuc_put('check', ['status' => 'success', 'job_id' => $state['job_id'], 'last_attempt' => $now, 'last_success' => $now, 'failures' => 0, 'retry_at' => 0]);
-        return ['message' => 'Available plugins and installed plugin update status refreshed.'];
+        if ($code !== 200) { throw new RuntimeException('The published catalogue could not be downloaded'.($code ? ' (HTTP '.$code.')' : '').'. Previous results are retained.'); }
+        $candidate = asuc_decode_catalogue_response((string) wp_remote_retrieve_body($response));
+        if (!is_array($candidate) || ($candidate['schema'] ?? 0) !== 1 || !is_array($candidate['plugins'] ?? null) || !is_string($candidate['published_at'] ?? null)) { throw new RuntimeException('The published catalogue is invalid. Previous results are retained.'); }
+        // Inspect only this controller first; defer all other entries when it needs updating.
+        $controllers = array_values(array_filter($candidate['plugins'], static function($entry) { return is_array($entry) && ($entry['id'] ?? '') === 'as-update-controller'; }));
+        if (count($controllers) !== 1) { throw new RuntimeException('The catalogue must contain exactly one controller release. Previous results are retained.'); }
+        $own = asuc_validate_catalogue(['schema'=>1, 'published_at'=>$candidate['published_at'], 'plugins'=>$controllers]);
+        if (is_wp_error($own)) { throw new RuntimeException($own->get_error_message()); }
+        $controller = $own['plugins']['as-update-controller'];
+        $installed = asuc_plugins()['as-update-controller/as-update-controller.php']['Version'] ?? ASUC_VERSION;
+        $needs_controller = version_compare($controller['version'], $installed, '>');
+        $validated = $needs_controller ? $own : asuc_validate_catalogue($candidate);
+        if (is_wp_error($validated)) { throw new RuntimeException($validated->get_error_message()); }
+        $cached = $validated;
+        if ($needs_controller) { $cached['plugins'] = array_replace(asuc_catalogue()['plugins'] ?? [], $own['plugins']); }
+        ghc_v3_store_snapshot($validated['plugins'], 'AlphaSys', !$needs_controller);
+        asuc_store_catalogue($cached);
+        ghc_v3_sync_local();
+        $message = $needs_controller ? $controller['name'].' '.$controller['version'].' is available (installed '.$installed.'). Update the controller first, then click Check for updates again. Other plugins were not refreshed.' : 'Available plugins and installed update status refreshed from the published catalogue.';
+        $state = array_merge($state, ['status'=>$needs_controller ? 'controller_update' : 'success', 'error'=>'', 'message'=>$message, 'failures'=>0, 'catalogue_published_at'=>$candidate['published_at']]);
+        if (!$needs_controller) { $state['last_success'] = $now; }
+        asuc_put('check', $state);
+        return ['id'=>$state['job_id'], 'status'=>$needs_controller ? 'controller_update' : 'complete', 'done'=>count($validated['plugins']), 'total'=>count($validated['plugins']), 'message'=>$message];
+    } catch (Throwable $error) {
+        $state = array_merge($state, ['status'=>'failed', 'error'=>$error->getMessage(), 'retry_at'=>0]);
+        asuc_put('check', $state);
+        return new WP_Error('catalogue_check', $error->getMessage());
     } finally { asuc_unlock('discovery', $lock); }
 }
 function asuc_compatibility(array $entry): string {

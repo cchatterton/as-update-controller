@@ -36,7 +36,7 @@ function asuc_render_admin(): void {
     $notice = get_transient('asuc_notice_' . get_current_user_id());
     if ($notice) { delete_transient('asuc_notice_' . get_current_user_id()); }
     if ($notice && $notice['error']) { echo '<div class="notice ' . ($notice['error'] ? 'notice-error' : 'notice-success') . '"><p>' . esc_html($notice['message']) . '</p></div>'; }
-    echo '<header class="asuc-header"><span class="asuc-version" aria-label="Version ' . esc_attr(ASUC_VERSION) . '">v' . esc_html(ASUC_VERSION) . '</span><p class="asuc-eyebrow">AlphaSys / Plugin library</p><h2>Your plugins. One place.</h2><p>Discover released AlphaSys plugins directly from GitHub.</p><div class="asuc-header-bottom"><span>' . count($installed) . ' installed · ' . count($updates) . ' updates available</span><button class="button asuc-primary" data-check="">Check for updates</button></div></header>';
+    echo '<header class="asuc-header"><span class="asuc-version" aria-label="Version ' . esc_attr(ASUC_VERSION) . '">v' . esc_html(ASUC_VERSION) . '</span><p class="asuc-eyebrow">AlphaSys / Plugin library</p><h2>Your plugins. One place.</h2><p>Discover released AlphaSys plugins from the published catalogue.</p><div class="asuc-header-bottom"><span>' . count($installed) . ' installed · ' . count($updates) . ' updates available</span><button class="button asuc-primary" data-check="">Check for updates</button></div></header>';
     echo '<div class="asuc-status"><span>' . esc_html(asuc_check_summary()) . '</span><span>' . 'Manual checks only' . '</span></div>';
     echo '<nav class="nav-tab-wrapper" aria-label="Plugin library">';
     foreach (['installed'=>'Updates available','catalogue'=>'Catalogue','settings'=>'Settings'] as $key=>$label) { echo '<a class="nav-tab ' . ($key === $tab ? 'nav-tab-active' : '') . '" href="' . esc_url(asuc_url($key)) . '">' . esc_html($label) . '</a>'; }
@@ -106,7 +106,8 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
 }
 function asuc_render_settings(): void {
-    echo '<p>Both controllers share the github-cchatterton repository table: author, released version, local version, installed state and alpha/beta. Each click checks this controller first and stops if its update is available. When current, it checks other repositories; unchanged packages reuse their verified metadata.</p>';
-    echo '<h2>Manual checks only</h2><p>Choose Check for updates to refresh available plugins and installed update status together. Keep this window open until the check completes. No scheduled checks or controller waiting periods apply.</p><p>For frequent release testing, configure GITHUB_CCHATTERTON_TOKEN in wp-config.php to check up to 100 repositories and their releases in one GitHub request. Without a token, GitHub requires a separate public API request per repository and applies its own anonymous quota.</p>';
+    echo '<p>Each Check for updates downloads one published catalogue JSON file. No GitHub API token or per-repository scan is needed. If this controller has an update, only that update is listed; update it, then check again.</p>';
+    echo '<h2>Manual checks only</h2><p>Checks run only when requested. There are no scheduled checks or controller waiting periods. Plugin ZIPs are downloaded only when installing or updating. The shared github-cchatterton table retains released/local versions, installation state and alpha/beta.</p>';
+    echo '<p>New plugins and versions become available when their release publishes the updated catalogue.</p>';
 
 }

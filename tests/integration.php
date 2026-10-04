@@ -9,6 +9,7 @@ $alpha = json_decode(file_get_contents((getenv('ASUC_TEST_REPO') ?: dirname(ASUC
 $fixture_mode = 'good'; $calls = [];
 $intercept = static function ($pre, $args, $url) use (&$fixture_mode, &$calls, $techn, $alpha) {
     $calls[] = $url;
+    $url = strtok($url, "?");
     if ($url !== TNUC_CATALOGUE_URL && $url !== ASUC_CATALOGUE_URL) { return new WP_Error('test_http', 'Unexpected HTTP during test: ' . $url); }
     if ($fixture_mode === '429') { return ['response'=>['code'=>429], 'headers'=>['retry-after'=>'1200'], 'body'=>'']; }
     if ($fixture_mode === 'invalid') { return ['response'=>['code'=>200], 'headers'=>[], 'body'=>'{"schema":9}']; }
@@ -27,7 +28,7 @@ apply_filters('plugins_api', false, 'plugin_information', (object)['slug'=>'menu
 check_test(count($calls)===0, 'cold caches, repeated reads, details and all admin tabs make zero HTTP calls');
 unset($_GET['force-check'],$_POST['action']);
 check_test(!is_wp_error(tnuc_refresh()) && count($calls)===1, 'one catalogue request for a Techn manual check');
-check_test(!is_wp_error(tnuc_refresh()) && count($calls)===2, 'repeated manual check fetches fresh API data');
+check_test(!is_wp_error(tnuc_refresh()) && count($calls)===2, 'repeated manual check fetches fresh catalogue data');
 check_test(!is_wp_error(asuc_refresh()) && count($calls)===3, 'AlphaSys has its own single catalogue request');
 foreach (tnuc_catalogue()['plugins'] as $entry) { check_test($entry['author']==='Techn','Techn catalogue ownership: '.$entry['id']); }
 foreach (asuc_catalogue()['plugins'] as $entry) { check_test($entry['author']==='AlphaSys','AlphaSys catalogue ownership: '.$entry['id']); }
@@ -36,7 +37,7 @@ $before=count($calls); for($i=0;$i<20;$i++){apply_filters('site_transient_update
 check_test(count($calls)===$before && isset($unknown->response['other/plugin.php']), 'warm reads preserve unrelated provider and make zero HTTP calls');
 $valid=tnuc_catalogue(); tnuc_put('check',[]); $fixture_mode='429';
 check_test(is_wp_error(tnuc_refresh()) && tnuc_catalogue()===$valid, '429 preserves last good catalogue');
-$before=count($calls);check_test(is_wp_error(tnuc_refresh()) && count($calls)===$before+1,'another manual click retries the API immediately');
+$before=count($calls);check_test(is_wp_error(tnuc_refresh()) && count($calls)===$before+1,'another manual click retries the catalogue immediately');
 check_test(tnuc_get('check')['retry_at']===0,'no controller waiting period is stored');
 tnuc_put('check',[]);$fixture_mode='invalid';check_test(is_wp_error(tnuc_refresh()) && tnuc_catalogue()===$valid,'invalid JSON/schema preserves last good catalogue');
 tnuc_put('check',[]);$fixture_mode='good';$lock=tnuc_lock('discovery');$before=count($calls);

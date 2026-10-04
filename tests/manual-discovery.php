@@ -1,81 +1,51 @@
 <?php
-/** Disposable WordPress only: both controllers active. TEST_GRAPHQL=1 exercises batched transport. */
+/** Disposable WordPress only. Both controllers active; no network escapes this fixture. */
 wp_set_current_user(1);
-if (getenv('TEST_GRAPHQL')) { define('GITHUB_CCHATTERTON_TOKEN', 'test-public-metadata-token'); }
-function shared_assert($ok, $label) { if (!$ok) { throw new RuntimeException($label); } echo "PASS: $label\n"; }
-global $wpdb;
-$existed=ghc_v2_exists();$saved_rows=ghc_v2_rows();$saved=[];
-foreach(['asuc_catalogue','tnuc_catalogue','asuc_check','tnuc_check','ghc_v2_scan','auc_github_retry_public'] as $key){$saved[$key]=get_site_option($key);}
-$controller_fixtures=[];foreach(['tnuc'=>'tn-update-controller','asuc'=>'as-update-controller'] as $p=>$slug){$fixture=json_decode(file_get_contents((getenv(strtoupper($p).'_TEST_REPO') ?: dirname(constant(strtoupper($p).'_DIR'))).'/catalogue.json'),true);foreach($fixture['plugins'] as $e){if($e['repo']===$slug){$controller_fixtures[$slug]=$e;}}}
-$files=[];$versions=['test-tn-shared'=>'1.0.0','test-as-shared'=>'1.0.0','test-other-shared'=>'1.0.0'];$authors=['test-tn-shared'=>'Techn','test-as-shared'=>'AlphaSys','test-other-shared'=>'Other Author'];
-$write=static function($repo)use(&$files,&$versions,$authors){
- if(!isset($files[$repo])){$files[$repo]=wp_tempnam($repo.'.zip');}
- $zip=new ZipArchive();$zip->open($files[$repo],ZipArchive::OVERWRITE);
- $zip->addFromString("$repo/$repo.php","<?php\n/*\nPlugin Name: Shared test\nAuthor: ".$authors[$repo]."\nVersion: ".$versions[$repo]."\nUpdate URI: https://github.com/cchatterton/$repo\n*/");$zip->close();clearstatcache(true,$files[$repo]);
+function feed_assert($ok,$label){if(!$ok){throw new RuntimeException($label);}echo "PASS: $label\n";}
+global $wpdb;$existed=ghc_v3_exists();$rows=ghc_v3_rows();$saved=[];
+foreach(['tnuc_catalogue','asuc_catalogue','tnuc_check','asuc_check'] as $key){$saved[$key]=get_site_option($key);}
+$old_updates=get_site_transient('update_plugins');$calls=[];$mode='good';$feed=[];$url='';
+$http=static function($pre,$args,$requested)use(&$calls,&$mode,&$feed,&$url){
+ $calls[]=$requested;
+ feed_assert(strtok($requested,'?')===$url&&strpos($requested,'https://raw.githubusercontent.com/')===0,'only public catalogue JSON requested');
+ feed_assert(empty($args['headers']['Authorization'])&&($args['redirection']??null)===0,'no token or redirect sent');
+ if($mode==='error'){return ['response'=>['code'=>503],'headers'=>[],'body'=>''];}
+ return ['response'=>['code'=>200],'headers'=>[],'body'=>json_encode($mode==='bad'?['schema'=>99]:$feed)];
 };
-foreach(array_keys($versions) as $repo){$write($repo);}
-$calls=[];$mode='good';$listed=array_keys($versions);
-$release=static function($repo)use(&$versions,&$files){return ['tag_name'=>'v'.$versions[$repo],'draft'=>false,'prerelease'=>false,'assets'=>[['name'=>$repo.'.zip','size'=>filesize($files[$repo]),'id'=>$repo.'-'.$versions[$repo],'updated_at'=>$versions[$repo],'digest'=>'sha256:'.hash_file('sha256',$files[$repo])]]];};
-$http=static function($pre,$args,$url)use(&$calls,&$mode,&$listed,&$files,$release,$controller_fixtures){
- $calls[]=$url;
- if($mode==='limit'){return ['response'=>['code'=>403],'headers'=>['retry-after'=>'7200'],'body'=>''];}
- if($url==='https://api.github.com/graphql'){
-  shared_assert(($args['headers']['Authorization']??'')==='Bearer test-public-metadata-token','token sent only to API host');
-  $nodes=[];foreach($listed as $repo){$r=$release($repo);$a=$r['assets'][0];$a['updatedAt']=$a['updated_at'];unset($a['updated_at']);$nodes[]=['name'=>$repo,'isFork'=>false,'isArchived'=>false,'latestRelease'=>['tagName'=>$r['tag_name'],'isDraft'=>false,'isPrerelease'=>false,'releaseAssets'=>['nodes'=>[$a],'pageInfo'=>['hasNextPage'=>false]]]];}
-  return ['response'=>['code'=>200],'headers'=>[],'body'=>json_encode(['data'=>['user'=>['repositories'=>['nodes'=>$nodes,'pageInfo'=>['hasNextPage'=>false,'endCursor'=>'end']]]]])];
- }
- if(strpos($url,'/users/cchatterton/repos?')!==false){$nodes=[];foreach($listed as $repo){$nodes[]=['name'=>$repo,'owner'=>['login'=>'cchatterton'],'private'=>false,'fork'=>false,'archived'=>false];}return ['response'=>['code'=>200],'headers'=>[],'body'=>json_encode($nodes)];}
- if(preg_match('#api.github.com/repos/cchatterton/([^/]+)/releases/latest$#',$url,$m)&&isset($controller_fixtures[$m[1]])){$e=$controller_fixtures[$m[1]];return ['response'=>['code'=>200],'headers'=>[],'body'=>json_encode(['tag_name'=>$e['tag'],'draft'=>false,'prerelease'=>false,'assets'=>[['name'=>$e['asset'],'size'=>1,'digest'=>'sha256:'.$e['sha256']]]])];}
- if(preg_match('#api.github.com/repos/cchatterton/([^/]+)/releases/latest$#',$url,$m)){return ['response'=>['code'=>200],'headers'=>[],'body'=>json_encode($release($m[1]))];}
- if(preg_match('#github.com/cchatterton/([^/]+)/releases/download/#',$url,$m)&&!empty($args['stream'])){shared_assert(empty($args['headers']['Authorization']),'token absent from download');copy($files[$m[1]],$args['filename']);return ['response'=>['code'=>200],'headers'=>[],'body'=>''];}
- throw new RuntimeException('Unexpected HTTP: '.$url);
-};
-$run=static function($prefix='tnuc'){$scan=($prefix.'_dispatch')('check',[]);for($i=0;!is_wp_error($scan)&&$scan['status']==='running'&&$i<100;$i++){$scan=($prefix.'_dispatch')('scan_step',['job'=>$scan['id']]);}if(is_wp_error($scan)){throw new RuntimeException($scan->get_error_message());}return $scan;};
-$count=static function($part)use(&$calls){return count(array_filter($calls,static function($u)use($part){return strpos($u,$part)!==false;}));};
-$installed=WP_PLUGIN_DIR.'/test-tn-shared';
 add_filter('pre_http_request',$http,10,3);
-try {
- $wpdb->query('DROP TABLE IF EXISTS `github-cchatterton`');
- asuc_put('catalogue',[]);tnuc_put('catalogue',[]);
- shared_assert(ghc_v2_ensure_table()===true&&ghc_v2_ensure_table()===true,'table created once, reused by both controllers');
- foreach($controller_fixtures as $e){ghc_v2_save($e['repo'],['author'=>$e['author'],'brand'=>$e['author'],'version'=>$e['version'],'alpha_beta'=>'alpha','plugin_file'=>$e['file'],'release_tag'=>$e['tag'],'status'=>'verified','package_data'=>wp_json_encode($e)]);}
- update_site_option('auc_github_retry_public',time()+DAY_IN_SECONDS);
- $result=$run();shared_assert($result['status']==='complete', 'initial check completes: '.$result['message']);
- shared_assert(count(ghc_v2_rows())===5,'one shared record per repository');
- shared_assert(ghc_v2_row('test-other-shared')['author']==='Other Author','other author retained in shared table');
- shared_assert(isset(tnuc_catalogue()['plugins']['test-tn-shared'])&&!isset(tnuc_catalogue()['plugins']['test-as-shared'])&&isset(asuc_catalogue()['plugins']['test-as-shared']),'separate catalogues from shared table');
- shared_assert(ghc_v2_row('test-tn-shared')['alpha_beta']==='beta','new plugin readiness recorded');
- shared_assert(ghc_v2_row('test-tn-shared')['local_installed_state']==='not_installed','local not-installed state');
- $calls=[];$result=$run('asuc');
- shared_assert($result['status']==='complete'&&$count('/releases/download/')===0,'immediate second-controller check reuses all unchanged package author metadata');
- shared_assert($count('api.github.com')===(getenv('TEST_GRAPHQL')?2:5),'every click freshly validates all repository versions via API');
- $versions['test-tn-shared']='1.0.1';$write('test-tn-shared');
- wp_mkdir_p($installed);file_put_contents($installed.'/test-tn-shared.php',"<?php\n/*\nPlugin Name: Shared test\nAuthor: Techn\nVersion: 1.0.0\nUpdate URI: https://github.com/cchatterton/test-tn-shared\n*/");
- $calls=[];$result=$run();
- shared_assert($result['status']==='complete'&&$count('/releases/download/')===1,'only changed package downloads during rapid recheck');
- $row=ghc_v2_row('test-tn-shared');shared_assert($row['version']==='1.0.1'&&$row['local_version']==='1.0.0'&&$row['local_installed_state']==='inactive','released and local versions stored separately');
- shared_assert(get_site_transient('update_plugins')->response['test-tn-shared/test-tn-shared.php']->new_version==='1.0.1','same check refreshes installed update projection');
- activate_plugin('test-tn-shared/test-tn-shared.php','',true);shared_assert(ghc_v2_row('test-tn-shared')['local_installed_state']==='network_active','network activation updates shared local state');
- deactivate_plugins('test-tn-shared/test-tn-shared.php',false,true);shared_assert(ghc_v2_row('test-tn-shared')['local_installed_state']==='inactive','deactivation updates local state');
- // Changing metadata under an unchanged tag is rejected, preserving the verified package.
- $old=tnuc_catalogue();file_put_contents($files['test-tn-shared'],'changed bytes');clearstatcache(true,$files['test-tn-shared']);
- $result=$run();shared_assert($result['status']==='partial'&&tnuc_catalogue()===$old,'invalid replacement preserves last good catalogue: '.json_encode($result).' equal='.(tnuc_catalogue()===$old?'yes':'no'));$write('test-tn-shared');
- $mode='limit';$result=$run();shared_assert($result['status']==='failed'&&tnuc_catalogue()===$old,'GitHub error preserves records and reports failure');
- $mode='good';$calls=[];$result=$run();shared_assert($result['status']==='complete'&&$count('api.github.com')>0,'immediate click after 403 retries without stored backoff');
- // Fifteen immediate releases: no sleeps, cooldown resets, or cache invalidation.
- for($i=2;$i<=16;$i++){$versions['test-tn-shared']='1.0.'.$i;$write('test-tn-shared');$calls=[];$result=$run();shared_assert($result['status']==='complete'&&ghc_v2_row('test-tn-shared')['version']===$versions['test-tn-shared']&&$count('/releases/download/')===1,'rapid release '.$i.' checked with one changed ZIP');}
- $new='test-added-shared';$versions[$new]='1.0.0';$files[$new]=wp_tempnam($new.'.zip');$z=new ZipArchive();$z->open($files[$new],ZipArchive::OVERWRITE);$z->addFromString("$new/$new.php","<?php\n/*\nPlugin Name: Added after first check\nAuthor: Techn\nVersion: 1.0.0\n*/");$z->close();clearstatcache(true,$files[$new]);$listed[]=$new;
- $calls=[];$result=$run();shared_assert($result['status']==='complete'&&count(ghc_v2_rows())===6&&isset(tnuc_catalogue()['plugins'][$new]),'new repository added after warm checks without registration');
- $before=count($calls);foreach(['tnuc','asuc'] as $p){($p.'_registry')();($p.'_project_updates')(new stdClass());ob_start();($p.'_render_admin')();ob_end_clean();($p.'_scheduled_check')();}
- shared_assert(count($calls)===$before,'ordinary pages, projection and obsolete cron remain HTTP-free');
- wp_set_current_user(0);shared_assert(is_wp_error(tnuc_begin_scan())&&is_wp_error(asuc_scan_step('bad')),'unauthorised checks refused');wp_set_current_user(1);
- $lock=ghc_v2_lock();shared_assert(is_wp_error(ghc_v2_begin('tn-update-controller', TNUC_VERSION)),'simultaneous database writers serialised');ghc_v2_unlock($lock);
- echo "Shared discovery assertions passed.\n";
-} finally {
- wp_set_current_user(1);remove_filter('pre_http_request',$http,10);
- deactivate_plugins('test-tn-shared/test-tn-shared.php',true,true);@unlink($installed.'/test-tn-shared.php');@rmdir($installed);wp_clean_plugins_cache(false);
- $wpdb->query('DROP TABLE IF EXISTS `github-cchatterton`');asuc_put('catalogue',[]);tnuc_put('catalogue',[]);
- if($existed){ghc_v2_ensure_table();foreach($saved_rows as $row){$repo=$row['repo'];unset($row['repo']);ghc_v2_save($repo,$row);}}
- foreach($saved as $key=>$value){if($value===false){delete_site_option($key);}else{update_site_option($key,$value);}}
- foreach($files as $file){@unlink($file);}
+$dir=WP_PLUGIN_DIR.'/feed-test-capability';$file=$dir.'/feed-test-capability.php';
+try{
+ foreach(['tnuc'=>'Techn','asuc'=>'AlphaSys'] as $p=>$brand){
+  $upper=strtoupper($p);$slug=$p==='tnuc'?'tn-update-controller':'as-update-controller';$url=constant($upper.'_CATALOGUE_URL');
+  $root=getenv($upper.'_TEST_REPO') ?: dirname(constant($upper.'_DIR'));
+  $feed=json_decode(file_get_contents($root.'/catalogue.json'),true);$original=$feed;$mode='good';$calls=[];
+  ($p.'_put')('catalogue',[]);($p.'_put')('check',[]);
+  $result=($p.'_dispatch')('check',[]);
+  feed_assert(!is_wp_error($result)&&$result['status']==='complete'&&count($calls)===1,"$p first check uses exactly one request");
+  // New identities arrive through the published feed, without client-side repository scanning.
+  $new=['id'=>'feed-test-capability','repo'=>'feed-test-capability','owner'=>'cchatterton','slug'=>'feed-test-capability','file'=>'feed-test-capability/feed-test-capability.php','asset'=>'feed-test-capability.zip','name'=>'Feed test','description'=>'Test','author'=>$brand,'version'=>'1.0.1','tag'=>'v1.0.1','requires'=>'6.0','requires_php'=>'7.4','dependencies'=>[],'controller_api'=>1,'sha256'=>str_repeat('a',64),'beta'=>true,'allowed_domains'=>[],'include_subdomains'=>false];
+  $feed['plugins'][]=$new;wp_mkdir_p($dir);file_put_contents($file,"<?php\n/*\nPlugin Name: Feed test\nAuthor: $brand\nVersion: 1.0.0\nUpdate URI: https://github.com/cchatterton/feed-test-capability\n*/");wp_clean_plugins_cache(false);
+  $calls=[];$result=($p.'_dispatch')('check',[]);
+  feed_assert($result['status']==='complete'&&count($calls)===1&&isset(($p.'_catalogue')()['plugins'][$new['id']]),"$p new capability and installed update from one JSON");
+  feed_assert(get_site_transient('update_plugins')->response[$new['file']]->new_version==='1.0.1',"$p native installed update projected");
+  $row=ghc_v3_row($new['repo']);feed_assert($row['version']==='1.0.1'&&$row['local_version']==='1.0.0'&&$row['local_installed_state']==='inactive'&&$row['alpha_beta']==='beta',"$p shared version/local state/readiness retained");
+  activate_plugin($new['file'],'',true);feed_assert(ghc_v3_row($new['repo'])['local_installed_state']==='network_active',"$p network activation reflected locally");deactivate_plugins($new['file'],false,true);
+  for($i=2;$i<=16;$i++){$feed['plugins'][count($feed['plugins'])-1]['version']='1.0.'.$i;$feed['plugins'][count($feed['plugins'])-1]['tag']='v1.0.'.$i;$before=count($calls);$result=($p.'_dispatch')('check',[]);feed_assert($result['status']==='complete'&&count($calls)===$before+1,"$p rapid release $i: one JSON, no per-plugin requests");}
+  feed_assert(count($calls)===count(array_unique($calls)),"$p explicit clicks use distinct freshness URLs");
+  // A larger catalogue must not increase request count.
+  for($i=0;$i<100;$i++){$entry=$new;$id='feed-extra-'.$i;foreach(['id','repo','slug'] as $key){$entry[$key]=$id;}$entry['file']=$id.'/'.$id.'.php';$entry['asset']=$id.'.zip';$feed['plugins'][]=$entry;}
+  $calls=[];$result=($p.'_dispatch')('check',[]);feed_assert($result['status']==='complete'&&count($calls)===1,"$p 100 additional plugins still cost one JSON request");
+  $before=($p.'_catalogue')();$mode='error';$calls=[];$result=($p.'_dispatch')('check',[]);feed_assert(is_wp_error($result)&&count($calls)===1&&($p.'_catalogue')()===$before,"$p failed download retains verified metadata");
+  $mode='bad';$result=($p.'_dispatch')('check',[]);feed_assert(is_wp_error($result)&&($p.'_catalogue')()===$before,"$p invalid JSON schema retained previous catalogue");
+  $mode='good';$calls=[];$result=($p.'_dispatch')('check',[]);feed_assert($result['status']==='complete'&&count($calls)===1,"$p immediate recovery needs one request");
+  $calls=[];($p.'_registry')();($p.'_project_updates')(new stdClass());ob_start();($p.'_render_admin')();ob_end_clean();($p.'_scheduled_check')();feed_assert(!$calls,"$p rendering and old cron remain HTTP-free");
+  wp_set_current_user(0);feed_assert(is_wp_error(($p.'_begin_scan')())&&!$calls,"$p permissions enforced before network");wp_set_current_user(1);
+  @unlink($file);@rmdir($dir);wp_clean_plugins_cache(false);
+  ($p.'_put')('catalogue',[]); // The next brand's synthetic identity intentionally reuses this test path.
+ }
+ echo "One-request catalogue assertions passed.\n";
+}finally{
+ remove_filter('pre_http_request',$http,10);wp_set_current_user(1);deactivate_plugins('feed-test-capability/feed-test-capability.php',true,true);@unlink($file);@rmdir($dir);wp_clean_plugins_cache(false);
+ $wpdb->query('DROP TABLE IF EXISTS `github-cchatterton`');asuc_put('catalogue',[]);tnuc_put('catalogue',[]);if($existed){ghc_v3_ensure_table();foreach($rows as $row){$repo=$row['repo'];unset($row['repo']);ghc_v3_save($repo,$row);}}
+ foreach($saved as $key=>$value){if($value===false){delete_site_option($key);}else{update_site_option($key,$value);}}set_site_transient('update_plugins',$old_updates);
 }
