@@ -57,13 +57,15 @@
         const update = document.getElementById('asuc-update-selected');
         if (update) update.disabled = selected.length === 0;
     };
-    const refresh = async () => {
-        const tab = new URL(window.location.href).searchParams.get('tab') || 'installed';
+    const refresh = async (targetTab = '') => {
+        const url = new URL(window.location.href);
+        const tab = targetTab || url.searchParams.get('tab') || 'installed';
         const result = await call('view', { tab });
         const page = new DOMParser().parseFromString(result.html, 'text/html');
         const view = page.getElementById('asuc-view');
         if (!view) throw new Error('Could not refresh the plugin list.');
         document.getElementById('asuc-view').replaceChildren(...view.childNodes);
+        if (targetTab) { url.searchParams.set('tab', targetTab); window.history.replaceState(null, '', url); }
         selection();
     };
     const finish = async job => {
@@ -124,9 +126,9 @@
             progress.value = scan.done || 0;
             scan = await call('scan_step', { job: scan.id });
         }
-        await refresh();
+        await refresh(scan.status === 'controller_update' ? 'installed' : '');
         area.hidden = true;
-        title.textContent = scan.status === 'complete' ? 'Check complete' : 'Check incomplete';
+        title.textContent = scan.status === 'controller_update' ? 'Controller update available' : (scan.status === 'complete' ? 'Check complete' : 'Check incomplete');
         message.textContent = scan.message;
         setBusy(false);
         close.focus();

@@ -16,6 +16,7 @@ function asuc_assets(string $hook): void {
 }
 function asuc_check_summary(): string {
     $s = asuc_get('check');
+    if (($s['status'] ?? '') === 'controller_update') { return asuc_controller_update_pending() ? ($s['message'] ?? 'Update the controller first, then check again.') : 'Controller updated. Check for updates to refresh the other plugins.'; }
     if (($s['status'] ?? '') === 'partial') { return (!empty($s['known_checked']) ? 'Known plugins checked. ' : 'Check incomplete. ') . ($s['error'] ?? 'Verified results are retained. Check again to resume.'); }
     if (($s['status'] ?? '') === 'failed') { return 'Last check failed. ' . (!empty($s['last_success']) ? 'Showing results from ' . wp_date('j M Y, H:i', $s['last_success']) . '.' : 'No successful check yet.'); }
     if (($s['status'] ?? '') === 'running') { return ($s['last_attempt'] ?? 0) < time() - 60 ? 'Previous check was interrupted. Check again to recover.' : 'A catalogue check is running.'; }
@@ -30,6 +31,7 @@ function asuc_render_admin(): void {
     $registry = array_filter(asuc_registry(), 'asuc_domain_allowed'); $releases = asuc_catalogue()['plugins'] ?? []; $plugins = asuc_plugins();
     $installed = array_filter($registry, static fn($e) => isset($plugins[$e['file']]));
     $updates = array_filter($releases, static fn($e) => asuc_domain_allowed($e) && asuc_match($e, $plugins) && version_compare($e['version'], $plugins[$e['file']]['Version'], '>'));
+    if (asuc_controller_update_pending()) { $updates = array_intersect_key($updates, ['as-update-controller'=>true]); }
     echo '<div class="wrap asuc-wrap"><h1>AlphaSys Plugins</h1><div id="asuc-view">';
     $notice = get_transient('asuc_notice_' . get_current_user_id());
     if ($notice) { delete_transient('asuc_notice_' . get_current_user_id()); }
@@ -104,7 +106,7 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
 }
 function asuc_render_settings(): void {
-    echo '<p>Both controllers share the github-cchatterton repository table: author, released version, local version, installed state and alpha/beta. Every click checks GitHub for new repositories and current versions; unchanged packages reuse their verified metadata.</p>';
+    echo '<p>Both controllers share the github-cchatterton repository table: author, released version, local version, installed state and alpha/beta. Each click checks this controller first and stops if its update is available. When current, it checks other repositories; unchanged packages reuse their verified metadata.</p>';
     echo '<h2>Manual checks only</h2><p>Choose Check for updates to refresh available plugins and installed update status together. Keep this window open until the check completes. No scheduled checks or controller waiting periods apply.</p><p>For frequent release testing, configure GITHUB_CCHATTERTON_TOKEN in wp-config.php to check up to 100 repositories and their releases in one GitHub request. Without a token, GitHub requires a separate public API request per repository and applies its own anonymous quota.</p>';
 
 }

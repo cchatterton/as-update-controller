@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AS Update Controller
  * Description: One catalogue, manual update checks and guided updates for AlphaSys plugins.
- * Version: 0.8.0
+ * Version: 0.8.1
  * Author: AlphaSys
  * Author URI: https://alphasys.com.au
  * Update URI: https://github.com/cchatterton/as-update-controller
@@ -14,7 +14,7 @@
  * Text Domain: as-update-controller
  */
 if (!defined('ABSPATH')) { exit; }
-define('ASUC_VERSION', '0.8.0');
+define('ASUC_VERSION', '0.8.1');
 define('ASUC_API_VERSION', 1);
 define('ASUC_FILE', __FILE__);
 define('ASUC_DIR', __DIR__ . '/');

@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.8.0
+Stable tag: 0.8.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories
 
 Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use the shared github-cchatterton table and fresh GitHub API metadata. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
 
-Checks are strictly manual. Check for updates refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
+Checks are strictly manual. Each check verifies this controller first. If its update is available, only that update is listed and the check stops. Update the controller, then check again. When current, the check refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
 
 Reviewed legacy updater files are held inactive while this controller runs. This is a compatibility bridge, not a claim that all plugin repositories have been migrated. Unknown legacy implementations and site-level forced refresh code require review.
 
@@ -52,6 +52,10 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.8.1 =
+* Check this controller first; stop and list its update before checking other repositories.
+* Continue to other plugins only when the controller is current.
 
 = 0.8.0 =
 * Share github-cchatterton rows with author, released/local versions, installed state and alpha/beta.

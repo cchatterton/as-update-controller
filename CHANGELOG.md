@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.1 - 2026-10-04
+
+- Check the initiating controller’s stable release first on every manual check.
+- If newer, verify and list only that controller update, then stop before listing or checking other repositories.
+- Continue to shared repository discovery only when the controller is current; failed controller verification stops with previous metadata retained.
+- Keep updates explicit: update the controller, then click Check for updates again.
+
 ## 0.8.0 - 2026-10-04
 
 - Share one `github-cchatterton` table across both controllers, recording repository, author, released version, local version, installed state and alpha/beta.

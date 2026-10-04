@@ -1,4 +1,10 @@
-# Released plugins and manual checks (0.8.0)
+# Released plugins and manual checks (0.8.1)
+
+## Controller first
+
+Every Check for updates, including a recognised plugin row check, first fetches the initiating controller’s stable release via REST. No owner listing, batch query or other repository request precedes it. Its package is verified using the shared records and existing package checks. A newer version is projected into native updates, displayed alone in Updates available, and ends the scan with `controller_update` status. This does not mark a full catalogue check successful or remove other cached package records. It never installs automatically. Update the controller explicitly, then click Check for updates again.
+
+If the controller is current (including an installed development version newer than the release), the same manual check continues to the owner listing and other repositories. Skip the already-verified controller in subsequent repository processing. A missing/invalid/unavailable controller release stops the check, retaining prior metadata. An error must not be interpreted as “controller current”. The shared implementation is versioned so a newer controller keeps this ordering even when the other installed controller still runs 0.8.0.
 
 ## Shared repository records
 
@@ -10,7 +16,7 @@ The first check seeds already verified catalogue records, lists every public own
 
 ## API and package checks
 
-Set `GITHUB_CCHATTERTON_TOKEN` in wp-config.php for frequent release testing, using public-metadata read access. Existing ASUC_GITHUB_TOKEN and TNUC_GITHUB_TOKEN are accepted after that shared constant. GraphQL retrieves up to 100 public repositories and their latest stable releases/assets per request, following cursors. Without a token, REST paginates the owner list and requests each repository's latest release. No site inventory is sent. Tokens are restricted to api.github.com with redirects disabled and never sent to release download hosts or output to the browser.
+Set `GITHUB_CCHATTERTON_TOKEN` in wp-config.php for frequent release testing, using public-metadata read access. Existing ASUC_GITHUB_TOKEN and TNUC_GITHUB_TOKEN are accepted after that shared constant. After the initial controller REST lookup, GraphQL retrieves up to 100 public repositories and their latest stable releases/assets per request, following cursors. Without a token, REST paginates the owner list and requests each repository's latest release. No site inventory is sent. Tokens are restricted to api.github.com with redirects disabled and never sent to release download hosts or output to the browser.
 
 GitHub enforces its own quotas: anonymous REST is normally 60 requests/hour per hosting IP. A shared table cannot remove that limit. API errors preserve last-good data, report incomplete results and permit another explicit click immediately. There are no automatic retries or alternative-endpoint retry chains. See [GitHub rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
 

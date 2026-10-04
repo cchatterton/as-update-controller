@@ -102,3 +102,9 @@ Live authenticated checks enumerated 58 repositories into the shared table, yiel
 The exact unprefixed `github-cchatterton` table is shared within one database. Local state aggregates multisite activation and retains rows after controller deletion. GitHub still enforces its own quotas. No customer WordPress installation or credentials were changed. Historical sections above describe previous versions, including now-removed cooldown/backoff behaviour.
 
 Post-publication: installed the official 0.7.1 ZIPs into disposable copies, then upgraded both through the native controller batch flow using the published 0.8.0 assets and compatibility catalogues. Both completed, verified installed 0.8.0 headers, and preserved network activation and saved controller state. All published catalogue packages were independently verified before feed publication.
+
+## 0.8.1 — controller-first manual checks (2026-10-04)
+
+PHP 7.4.30 and 8.5.7: new controller-first tests passed for both brands. A newer verified controller performs only its own release API request and ZIP inspection, projects a native update, lists only the controller in Updates available, and stops without an owner listing or other-repository lookup. It does not mark a full check successful. A failed initial lookup preserves the verified update and stops; a current controller continues to discovery on the next immediate click. REST/GraphQL shared discovery, fifteen rapid releases, integration, security and admin UI suites also passed. All packaged PHP and both JavaScript files passed syntax checks.
+
+Mixed-version checks loaded the official 0.8.0 AlphaSys controller before the new Techn controller, then reversed the brands. In both cases the newer controller retained its own initial release check, independent of the older shared engine. Both versions share the writer lock and repository table.
