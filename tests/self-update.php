@@ -1,11 +1,11 @@
 <?php
-/** Disposable COPY of both controllers, with main-file versions changed to 0.0.1; never symlinks into source. */
+/** Disposable COPY of both controllers, with main-file versions changed to 0.0.1 (or CONTROLLER_TEST_FROM set to the actual old release); never symlinks into source. */
 wp_set_current_user(1);
 function self_assert($ok,$label){if(!$ok){throw new RuntimeException($label);}echo "PASS: $label\n";}
 foreach (['tnuc'=>'tn-update-controller','asuc'=>'as-update-controller'] as $prefix=>$slug) {
  $file=$slug.'/'.$slug.'.php';
  self_assert(!is_link(WP_PLUGIN_DIR.'/'.$slug),'self-update uses disposable copy: '.$slug);
- self_assert(get_plugins()[$file]['Version']==='0.0.1','old-version fixture present: '.$slug);
+ self_assert(get_plugins()[$file]['Version']===(getenv('CONTROLLER_TEST_FROM') ?: '0.0.1'),'old-version fixture present: '.$slug);
  ($prefix.'_put')('check',[]);
  $result=($prefix.'_refresh')(); self_assert(!is_wp_error($result),'live published catalogue fetch: '.$slug);
  $catalogue=($prefix.'_catalogue')();self_assert(isset($catalogue['plugins'][$slug]),'controller included in its own catalogue');
