@@ -104,6 +104,7 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
 }
 function asuc_render_settings(): void {
-    echo '<p>Known authors and repositories are remembered. Unchanged releases require no package download. Other-author and non-plugin repositories are skipped for 24 hours.</p><p><button class="button" data-full-check="">Recheck all repositories</button> Revisit ignored repositories and revalidate release assets. This slower audit uses the GitHub API.</p>';
-    echo '<h2>Manual checks only</h2><p>Choose Check for updates to refresh available plugins and update status for installed plugins together. The scan runs in this window; closing it pauses the check. No scheduled or background checks run.</p><p>New releases remain unknown until the next successful manual check. Installing or updating a plugin is a separate action. GitHub may limit unauthenticated checks; a paused scan can be resumed after its retry time.</p>';
+    echo '<p>Both controllers share the github-cchatterton repository table: author, released version, local version, installed state and alpha/beta. Every click checks GitHub for new repositories and current versions; unchanged packages reuse their verified metadata.</p>';
+    echo '<h2>Manual checks only</h2><p>Choose Check for updates to refresh available plugins and installed update status together. Keep this window open until the check completes. No scheduled checks or controller waiting periods apply.</p><p>For frequent release testing, configure GITHUB_CCHATTERTON_TOKEN in wp-config.php to check up to 100 repositories and their releases in one GitHub request. Without a token, GitHub requires a separate public API request per repository and applies its own anonymous quota.</p>';
+
 }

@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.7.1
+Stable tag: 0.8.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ A cached catalogue, manual update checks and guided installation for AlphaSys pl
 
 Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories. Techn plugins are managed separately by TN Update Controller. Both controllers can run together.
 
-Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use one aggregate catalogue. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
+Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Checks use the shared github-cchatterton table and fresh GitHub API metadata. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
 
 Checks are strictly manual. Check for updates refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
 
@@ -39,19 +39,24 @@ If filesystem credentials are required, use the native WordPress update/upload s
 No. Feature plugins continue to operate without it. Legacy updater suppression only applies while the controller is active.
 
 = Why is a GitHub repository absent? =
-Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered directly from GitHub when Check for updates is clicked. Exceptions handle ambiguous identities, exclusions and legacy packages. No feed publication is required. The PHP ZIP extension is required; interrupted or rate-limited scans resume on the next explicit check.
+Public stable WordPress plugin releases from the trusted owner with verified AlphaSys authorship are discovered directly from GitHub when Check for updates is clicked. Exceptions handle ambiguous identities, exclusions and legacy packages. No feed publication is required. The PHP ZIP extension is required; the next explicit check starts fresh while reusing verified records.
 
 = Are checks immediate? =
 Manual checks respect the 60-second recent-success cooldown, in-progress checks and remote retry limits. No checks run automatically.
 
 == External services ==
 
-GitHub hosts the public catalogue and release packages. An explicit manual check sends an HTTPS GET for the catalogue with the controller version in its User-Agent. It does not submit site inventory or credentials. GitHub receives the server IP address and normal connection metadata. An explicit installation/update downloads the selected release package from github.com and approved GitHub release-asset hosts. Repository/release links open GitHub only when clicked.
+GitHub hosts repository metadata and release packages. An explicit check calls GitHub's API and inspects new or changed published ZIPs. Authenticated GraphQL batches repository/release versions; anonymous REST checks each repository. An optional server-side token is sent only to api.github.com. No site inventory is submitted. GitHub receives the server IP and connection metadata. Installation/update downloads the selected package from github.com and approved release-asset hosts. Repository/release links open GitHub only when clicked.
 
 Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.8.0 =
+* Share github-cchatterton rows with author, released/local versions, installed state and alpha/beta.
+* Every click checks fresh API data, with no cooldown or stored backoff.
+* Batch authenticated checks and reuse unchanged package metadata across controllers.
 
 = 0.7.1 =
 * Remember verified authors and ignore other-author/non-plugin repositories for 24 hours.

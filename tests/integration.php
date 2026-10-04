@@ -27,8 +27,8 @@ apply_filters('plugins_api', false, 'plugin_information', (object)['slug'=>'menu
 check_test(count($calls)===0, 'cold caches, repeated reads, details and all admin tabs make zero HTTP calls');
 unset($_GET['force-check'],$_POST['action']);
 check_test(!is_wp_error(tnuc_refresh()) && count($calls)===1, 'one catalogue request for a Techn manual check');
-check_test(!is_wp_error(tnuc_refresh()) && count($calls)===1, 'repeated forced/manual check reuses result');
-check_test(!is_wp_error(asuc_refresh()) && count($calls)===2, 'AlphaSys has its own single catalogue request');
+check_test(!is_wp_error(tnuc_refresh()) && count($calls)===2, 'repeated manual check fetches fresh API data');
+check_test(!is_wp_error(asuc_refresh()) && count($calls)===3, 'AlphaSys has its own single catalogue request');
 foreach (tnuc_catalogue()['plugins'] as $entry) { check_test($entry['author']==='Techn','Techn catalogue ownership: '.$entry['id']); }
 foreach (asuc_catalogue()['plugins'] as $entry) { check_test($entry['author']==='AlphaSys','AlphaSys catalogue ownership: '.$entry['id']); }
 check_test(!array_intersect_key(tnuc_registry(), asuc_registry()), 'registries do not overlap');
@@ -36,8 +36,8 @@ $before=count($calls); for($i=0;$i<20;$i++){apply_filters('site_transient_update
 check_test(count($calls)===$before && isset($unknown->response['other/plugin.php']), 'warm reads preserve unrelated provider and make zero HTTP calls');
 $valid=tnuc_catalogue(); tnuc_put('check',[]); $fixture_mode='429';
 check_test(is_wp_error(tnuc_refresh()) && tnuc_catalogue()===$valid, '429 preserves last good catalogue');
-$before=count($calls);check_test(is_wp_error(tnuc_refresh()) && count($calls)===$before,'manual check honours rate-limit backoff');
-check_test(tnuc_get('check')['retry_at']>=time()+1190,'Retry-After deadline is honoured');
+$before=count($calls);check_test(is_wp_error(tnuc_refresh()) && count($calls)===$before+1,'another manual click retries the API immediately');
+check_test(tnuc_get('check')['retry_at']===0,'no controller waiting period is stored');
 tnuc_put('check',[]);$fixture_mode='invalid';check_test(is_wp_error(tnuc_refresh()) && tnuc_catalogue()===$valid,'invalid JSON/schema preserves last good catalogue');
 tnuc_put('check',[]);$fixture_mode='good';$lock=tnuc_lock('discovery');$before=count($calls);
 check_test(is_wp_error(tnuc_refresh()) && count($calls)===$before,'concurrent worker lock prevents another lookup');

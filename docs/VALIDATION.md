@@ -92,3 +92,11 @@ Published release tags and ZIP bytes must be immutable. Normal checks intentiona
 - The browser completed the normal Techn check with the success dialog. Existing 0.7.0 package-inspection caches, including other-author results, are reused while building the new durable ignore index.
 
 - Published 0.7.1 ZIPs were downloaded and matched byte-for-byte with the builds; live compatibility feeds resolve to their checksums. Official 0.7.0 copies upgraded to 0.7.1 through WordPress, preserving network activation and state. An anonymous live Techn check also completed (one API listing, 22 public version checks, and one newly changed controller package verified).
+
+## 0.8.0 — shared owner table and fresh API checks (2026-10-04)
+
+Disposable multisite checks passed under PHP 7.4.30 and PHP 8.5.7: table creation/reuse, one row per repo, separate branded projections, saved other-author metadata, alpha/beta, released/local versions, inactive/network-active transitions, new repository discovery after a warm check, fifteen immediate changed releases, unchanged ZIP reuse, 403 immediate retry, previous-data retention, writer lock and permission rejection. REST and authenticated GraphQL fixtures both passed. Integration, security, admin UI, beta grouping and multisite suites passed; domain policy and both 12-test publisher suites passed. Both plugin load orders were verified without duplicate functions or HTTP. All packaged PHP passed PHP 7.4 syntax checks; JavaScript syntax and git whitespace checks passed.
+
+Live authenticated checks enumerated 58 repositories into the shared table, yielding 22 Techn and 17 AlphaSys capabilities and Release Management 0.11.10. The initial upgrade check took 4.23 seconds (one API request, two ZIP downloads with redirects); immediate repeat checks took 2.21 and 2.40 seconds, each using one API request and zero downloads. These are local CLI timings with a public-metadata token, not a promise for every host or anonymous API.
+
+The exact unprefixed `github-cchatterton` table is shared within one database. Local state aggregates multisite activation and retains rows after controller deletion. GitHub still enforces its own quotas. No customer WordPress installation or credentials were changed. Historical sections above describe previous versions, including now-removed cooldown/backoff behaviour.

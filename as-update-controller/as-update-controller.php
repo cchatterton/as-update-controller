@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AS Update Controller
  * Description: One catalogue, manual update checks and guided updates for AlphaSys plugins.
- * Version: 0.7.1
+ * Version: 0.8.0
  * Author: AlphaSys
  * Author URI: https://alphasys.com.au
  * Update URI: https://github.com/cchatterton/as-update-controller
@@ -14,12 +14,12 @@
  * Text Domain: as-update-controller
  */
 if (!defined('ABSPATH')) { exit; }
-define('ASUC_VERSION', '0.7.1');
+define('ASUC_VERSION', '0.8.0');
 define('ASUC_API_VERSION', 1);
 define('ASUC_FILE', __FILE__);
 define('ASUC_DIR', __DIR__ . '/');
 define('ASUC_CATALOGUE_URL', 'https://api.github.com/repos/cchatterton/as-update-controller/contents/catalogue.json?ref=main');
-foreach (['state', 'catalogue', 'discovery', 'legacy', 'updates', 'operations', 'actions', 'admin'] as $asuc_module) {
+foreach (['state', 'catalogue', 'shared-github', 'discovery', 'legacy', 'updates', 'operations', 'actions', 'admin'] as $asuc_module) {
     require_once ASUC_DIR . 'functions/' . $asuc_module . '.php';
 }
 unset($asuc_module);
@@ -38,6 +38,9 @@ function asuc_boot(): void {
     add_filter('upgrader_pre_download', 'asuc_verify_download', 10, 4);
     add_filter('upgrader_source_selection', 'asuc_verify_source', 20, 4);
     asuc_migrate_manual_checks();
+    // A second controller can consume the existing shared index without any remote lookup.
+    try { asuc_import_shared(); }
+    catch (Throwable $error) { asuc_put('check', ['status'=>'failed','error'=>'Shared repository metadata could not be applied. Run Check for updates.']); }
     add_action('admin_menu', 'asuc_menu');
     add_action('network_admin_menu', 'asuc_menu');
     add_action('admin_enqueue_scripts', 'asuc_assets');

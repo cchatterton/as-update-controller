@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 - 2026-10-04
+
+- Share one `github-cchatterton` table across both controllers, recording repository, author, released version, local version, installed state and alpha/beta.
+- Check fresh GitHub API metadata on every click; remove cooldowns, timed ignore lists, stored backoff and the separate full-audit control.
+- Batch up to 100 repositories and release versions per authenticated GraphQL request; retain public REST support without a token.
+- Reuse unchanged verified package metadata across brands; inspect only new or changed release assets and retain last-good results on failures.
+- Synchronise local installation state after checks and native plugin actions; preserve manual-only operation and separate branded catalogues.
+
 ## 0.7.1 - 2026-10-04
 
 - Persist learned other-author/non-plugin exclusions for 24 hours, with rule-change invalidation and an explicit full recheck.
