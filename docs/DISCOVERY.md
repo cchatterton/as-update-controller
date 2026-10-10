@@ -22,8 +22,14 @@ Targeted publication downloads/inspects only the released plugin and retains the
 
 `as-update-controller/data/registry.json` contains reviewed exceptions only: ambiguous authors, explicit include/exclude, aliases/supersession, legacy identity/callback hashes, readiness and domain overrides. New identities default to beta; `beta: false` maps to alpha, independently of GitHub prerelease state. Domain rules control availability, not authentication. Discovery never expands executable callback trust.
 
-Full exceptions pin id/owner/repo/file/slug/asset/author. Sparse exceptions can specify `author_header`, `include`, `exclude`, `superseded_by`, `beta`, `allowed_domains` and `include_subdomains`, with a documented reason. Existing identity pins and brand separation remain enforced.
+Full exceptions pin id/owner/repo/file/slug/asset/author. Sparse exceptions can specify `author_header`, `include`, `exclude`, `superseded_by`, `beta`, `exclusive`, `allowed_domains` and `include_subdomains`, with a documented reason. Existing identity pins and brand separation remain enforced.
 
 ## Validation
 
 `python3 tests/discovery.py` covers publisher ownership, paths, identity pins, targeted publication and immutable assets. On disposable WordPress with both controllers active, run `wp eval-file tests/manual-discovery.php`, `tests/controller-first.php`, integration, security and admin UI tests. Do not run mutating tests on customer sites.
+
+## Exclusive plugins
+
+Set `exclusive: true` in the registry exception and run targeted catalogue publication for that repository. Exclusive entries remain in the JSON for installed update management, but are hidden from the WordPress catalogue until manually installed. They cannot be initially installed through the controller. After installation, normal lifecycle and update actions apply; deletion hides them again. This is independent of domain availability and beta readiness, including on localhost. Missing values default to false (or the bundled exception for older feeds).
+
+Explicit bundled domain overrides also apply before the first catalogue check; otherwise installed package headers remain the cold-cache fallback.

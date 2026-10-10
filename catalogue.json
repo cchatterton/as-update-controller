@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-04T08:22:37.752817+00:00",
+  "published_at": "2026-10-10T05:29:50.842190+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -123,10 +123,9 @@
       "name": "AS Managed Services Reporting",
       "description": "Provides managed-services account reporting, access controls, data imports, and AI-assisted summaries.",
       "beta": true,
-      "allowed_domains": [
-        "alphasys.com.au"
-      ],
-      "include_subdomains": true,
+      "exclusive": true,
+      "allowed_domains": [],
+      "include_subdomains": false,
       "version": "1.4.16",
       "tag": "v1.4.16",
       "requires": "7.0",
@@ -191,10 +190,9 @@
       "name": "AS Transcript Themes",
       "description": "Uses the WordPress AI Client to identify topics, themes, and commitments from transcripts and email threads.",
       "beta": true,
-      "allowed_domains": [
-        "alphasys.com.au"
-      ],
-      "include_subdomains": true,
+      "exclusive": true,
+      "allowed_domains": [],
+      "include_subdomains": false,
       "version": "0.2.2",
       "tag": "v0.2.2",
       "requires": "7.0",

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2 - 2026-10-10
+
+- Mark AS Managed Services Reporting and AS Transcript Themes exclusive and remove their controller domain restrictions.
+- Support exclusive plugins: hide uninstalled entries and require manual first installation; preserve installed lifecycle and update management.
+- Publish and validate the boolean exclusive exception independently of domain restrictions and readiness.
+
 ## 0.9.1 - 2026-10-04
 
 - Close the check dialog after a successful check, including controller-first results, and focus the refreshed Updates available tab.

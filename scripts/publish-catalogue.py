@@ -111,6 +111,9 @@ def inspect_package(path, repo, asset, release, exception=None):
         entry["beta"] = exception.get("beta", repo != SLUG)
         if type(entry["beta"]) is not bool:
             raise ValueError("Invalid beta status: " + repo)
+        entry["exclusive"] = exception.get("exclusive", False)
+        if type(entry["exclusive"]) is not bool:
+            raise ValueError("Invalid exclusive status: " + repo)
         entry.update(domain_policy(text))
         if "allowed_domains" in exception:
             raw = ",".join(exception["allowed_domains"])
@@ -160,7 +163,7 @@ def discover(repos, exceptions, previous, collector=collect, report=True):
     for key, entry in exceptions.items():
         if not isinstance(entry, dict):
             raise ValueError("Exception must be an object: " + key)
-        for flag in ("include", "exclude", "beta", "include_subdomains"):
+        for flag in ("include", "exclude", "beta", "exclusive", "include_subdomains"):
             if flag in entry and type(entry[flag]) is not bool:
                 raise ValueError("Exception flag must be boolean: " + key + ": " + flag)
         if "allowed_domains" in entry and (not isinstance(entry["allowed_domains"], list) or any(not isinstance(d, str) for d in entry["allowed_domains"])):

@@ -34,6 +34,16 @@ class DiscoveryTests(unittest.TestCase):
         self.assertTrue(entry['beta'])
         self.assertEqual(len(entry['sha256']), 64)
 
+    def test_exclusive_policy(self):
+        self.assertFalse(self.inspect()['exclusive'])
+        path, asset = self.package()
+        entry = p.inspect_package(path, 'unprefixed-repository', asset, {'tag_name': 'v1.2.3'}, {'exclusive': True})
+        self.assertTrue(entry['exclusive'])
+        self.assertEqual(entry['allowed_domains'], [])
+        for value in ['true', 1, None, []]:
+            with self.assertRaises(ValueError):
+                p.inspect_package(path, 'unprefixed-repository', asset, {'tag_name': 'v1.2.3'}, {'exclusive': value})
+
     def test_other_brand_and_similar_authors_excluded(self):
         for author in ['Techn' if p.BRAND == 'AlphaSys' else 'AlphaSys', p.BRAND + ' Partners', 'Someone Else']:
             self.assertIsNone(self.inspect(author=author))

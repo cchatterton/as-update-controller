@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -44,6 +44,9 @@ The published catalogue includes verified public stable same-brand releases. Eve
 = Are checks immediate? =
 Each click downloads one public JSON file with a freshness query. No controller cooldown applies. The controller entry is evaluated first; if newer, update it and check again. Otherwise all entries are processed from that same file.
 
+= What are exclusive plugins? =
+Exclusive plugins are hidden from the catalogue until manually installed. Once installed, they have the same lifecycle and update actions as other plugins. Exclusive is independent of domain restrictions and beta readiness.
+
 == External services ==
 
 GitHub hosts the public catalogue and release packages. An explicit check makes one HTTPS GET to raw.githubusercontent.com, regardless of plugin count. It sends no GitHub token or site inventory. GitHub receives the server IP and normal connection metadata. Explicit installation/update downloads the selected release ZIP from github.com and approved release-asset hosts. Nothing is checked automatically.
@@ -52,6 +55,9 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.9.2 =
+* Hide exclusive plugins until manually installed; retain normal activation, deactivation and updates after installation.
 
 = 0.9.1 =
 * Close successful update checks automatically and focus the refreshed Updates available tab.

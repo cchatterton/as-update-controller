@@ -124,3 +124,9 @@ Post-publication: targeted publication verified each 0.9.0 package and preserved
 ## 0.9.1 — check completion focus (2026-10-04)
 
 Browser-tested in disposable WordPress 7.0: successful live checks close the modal and select/focus Updates available when started from Catalogue (Techn) or Settings (AlphaSys). Both brands also pass the controller-update completion UI fixture. Download failure remains open with Retry focused; incomplete completion remains open with Close focused. Manual dismissal restores focus to Check for updates. Admin UI and controller-first integration assertions pass; JavaScript syntax checks pass for both engines.
+
+## 0.9.2 — exclusive plugins (2026-10-10)
+
+Added publisher coverage for default false, explicit true and malformed exclusive values. Disposable WordPress tests cover hidden uninstalled entries, denied initial controller installation, manual installation, activation/deactivation, native ZIP upgrade with checksum verification, retained inactive state, deletion/re-hiding and ordinary plugin visibility. Both controllers are exercised. AS exceptions remove domain restrictions, including cold-cache policy on an arbitrary domain. Regression checks cover catalogue grouping, admin UI, one-request manual checks and controller-first processing.
+
+Exclusive lifecycle and native upgrade tests passed on PHP 7.4 and PHP 8.5; domain-policy, grouping, admin UI, manual-check and controller-first regressions passed. Both release publishers passed 16 offline tests.

@@ -28,6 +28,10 @@ function asuc_is_beta(array $entry): bool {
     if (is_bool($entry['beta'] ?? null)) { return $entry['beta']; }
     return asuc_registry()[$entry['id'] ?? '']['beta'] ?? true;
 }
+/** Exclusive plugins are manually installed; metadata remains available for managed updates. */
+function asuc_is_exclusive(array $entry): bool {
+    return $entry['exclusive'] ?? (asuc_bundled_registry()[$entry['id'] ?? '']['exclusive'] ?? false);
+}
 function asuc_beta_badge(array $entry): string {
     return asuc_is_beta($entry) ? '<span class="asuc-beta">Beta</span>' : '';
 }
@@ -36,6 +40,7 @@ function asuc_catalogue_groups(array $registry, array $releases, array $plugins)
     foreach ($registry as $id => $identity) {
         if (!asuc_domain_allowed($identity)) { continue; }
         $entry = $releases[$id] ?? $identity;
+        if (asuc_is_exclusive($entry) && !isset($plugins[$identity['file']])) { continue; }
         $active = isset($plugins[$identity['file']]) && (is_multisite() ? is_plugin_active_for_network($identity['file']) : is_plugin_active($identity['file']));
         $group = $active ? 'active' : (isset($plugins[$identity['file']]) ? 'installed' : (asuc_is_beta($entry) ? 'beta' : 'available'));
         $groups[$group][$id] = $identity;
@@ -110,6 +115,8 @@ function asuc_validate_catalogue($candidate) {
         }
         if (array_key_exists('beta', $entry) && !is_bool($entry['beta'])) { return new WP_Error('catalogue_beta', 'A catalogue beta status is invalid.'); }
         $entry['beta'] = $entry['beta'] ?? ($registry[$id]['beta'] ?? true);
+        if (array_key_exists('exclusive', $entry) && !is_bool($entry['exclusive'])) { return new WP_Error('catalogue_exclusive', 'A catalogue exclusive status is invalid.'); }
+        $entry['exclusive'] = $entry['exclusive'] ?? ($registry[$id]['exclusive'] ?? false);
         $entry['allowed_domains'] = $entry['allowed_domains'] ?? [];
         $entry['include_subdomains'] = $entry['include_subdomains'] ?? false;
         if (!asuc_valid_domain_policy($entry)) { return new WP_Error('catalogue_domains', 'Invalid plugin domain metadata.'); }
@@ -166,6 +173,7 @@ function asuc_refresh(bool $manual = true, bool $force = false) {
 }
 function asuc_compatibility(array $entry): string {
     global $wp_version;
+    if (asuc_is_exclusive($entry) && !isset(asuc_plugins()[$entry['file']])) { return 'This exclusive plugin must be installed manually first.'; }
     if (!asuc_domain_allowed($entry)) { return 'This plugin is unavailable for this domain.'; }
     if (version_compare(PHP_VERSION, $entry['requires_php'], '<')) { return 'Requires PHP ' . $entry['requires_php']; }
     if (version_compare($wp_version, $entry['requires'], '<')) { return 'Requires WordPress ' . $entry['requires']; }

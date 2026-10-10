@@ -25,7 +25,7 @@ try{
   beta_assert(isset($groups['active'][$id]) && !isset($groups['beta'][$id]),"$prefix active beta moves only to Active");
   beta_assert(strpos(($prefix.'_beta_badge')($known),'Beta')!==false,"$prefix active beta retains visible chip");
   beta_assert(array_keys($groups)===['active','installed','available','beta'],"$prefix group order is stable");
-  beta_assert(array_sum(array_map('count',$groups))===count(array_filter($registry, $prefix.'_domain_allowed')),"$prefix every card appears exactly once");
+  beta_assert(array_sum(array_map('count',$groups))===count(array_filter($registry, static fn($e) => ($prefix.'_domain_allowed')($e) && (!(($prefix.'_is_exclusive')($e)) || isset($plugins[$e['file']])))),"$prefix every card appears exactly once");
   $active=[];$promoted=$known;$promoted['beta']=false;$groups=$group($registry,[$id=>$promoted],$plugins);
   beta_assert(isset($groups['installed'][$id]) && !isset($groups['beta'][$id]),"$prefix explicit catalogue promotion keeps installed plugin in Installed");
   beta_assert(($prefix.'_beta_badge')($promoted)==='',"$prefix promoted entry has no beta chip");
