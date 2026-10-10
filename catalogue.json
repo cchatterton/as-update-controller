@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-10T05:29:50.842190+00:00",
+  "published_at": "2026-10-10T05:30:59.127795+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -213,16 +213,17 @@
       "name": "AS Update Controller",
       "description": "One catalogue, manual update checks and guided updates for AlphaSys plugins.",
       "beta": false,
+      "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.1",
-      "tag": "v0.9.1",
+      "version": "0.9.2",
+      "tag": "v0.9.2",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Successful Check for updates now closes its dialog automatically and selects/focuses Updates available, including when a controller update is found. Failed or incomplete checks remain visible for review.\n\nValidated in disposable WordPress with browser checks for success, controller-update completion, download failure and incomplete checks. Admin UI and controller-first integration assertions passed. Manual checks still download one public catalogue JSON.\n",
-      "sha256": "f454bdccede449863f0edfee16376e3245e4889dc28f9430a434c97a6f39fe4c"
+      "body": "Exclusive plugins stay hidden from the catalogue until manually installed. Once installed, they retain normal activation, deactivation, deletion and managed updates. The exclusive flag is independent of domain restrictions and beta readiness.\n\nBoth brand controllers and release publishers support the setting. AS Managed Services Reporting and AS Transcript Themes are exclusive, with their former controller domain restrictions removed.\n\nValidated with disposable WordPress lifecycle and native ZIP updates on PHP 7.4 and 8.5, publisher tests, domain policy, admin UI, catalogue grouping, one-request manual checks and controller-first regressions. No customer site was modified.\n",
+      "sha256": "598ef2c962022337958455b7cd3c6ec0ccfd34ba6e6ba45c89ab5f5f6698631a"
     },
     {
       "id": "as-utm-relay",
