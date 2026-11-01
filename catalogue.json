@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-10-10T05:30:59.127795+00:00",
+  "published_at": "2026-11-01T23:48:52.349462+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -23,6 +23,29 @@
       "controller_api": 1,
       "body": "- Align WordPress 7.0 / PHP 7.4 metadata, GPL/readme packaging and project-authored CSS units with current Codex standards.\n- Remove independent GitHub update checks and delegate updates to AlphaSys Update Controller. Keep Beta readiness and existing feature settings, package identity and domain restrictions.\n- Standardise update headers and controller-aware Install/Activate/Check links.\n\n\nReadiness remains Beta. Update through the matching author controller.\n",
       "sha256": "a8df11adb5dbc549533596884eae7abab218f286362f10b1fc1c26d6584c095c"
+    },
+    {
+      "id": "as-atomic-content",
+      "owner": "cchatterton",
+      "repo": "as-atomic-content",
+      "file": "as-atomic-content/as-atomic-content.php",
+      "slug": "as-atomic-content",
+      "asset": "as-atomic-content.zip",
+      "author": "AlphaSys",
+      "name": "AS Atomic Content",
+      "description": "Reusable cards, rows, and patterns managed with Advanced Custom Fields.",
+      "beta": true,
+      "exclusive": false,
+      "allowed_domains": [],
+      "include_subdomains": false,
+      "version": "0.1.0",
+      "tag": "v0.1.0",
+      "requires": "6.0",
+      "requires_php": "7.4",
+      "dependencies": [],
+      "controller_api": 1,
+      "body": "## 0.1.0 - 2026-11-02\n\n- Added ACF-backed Cards, Rows, and Patterns post types under one WordPress admin menu.\n- Preserved the supplied Card Markup field group and the existing card and row ACF identifiers.\n",
+      "sha256": "d127817251960a9501c6370b507b36fc88028392e2750f28da75d07801f9e2a8"
     },
     {
       "id": "as-content-stream",
