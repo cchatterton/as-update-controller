@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-01T23:48:52.349462+00:00",
+  "published_at": "2026-11-03T06:18:53.222919+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -38,14 +38,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.1.0",
-      "tag": "v0.1.0",
+      "version": "0.1.1",
+      "tag": "v0.1.1",
       "requires": "6.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.1.0 - 2026-11-02\n\n- Added ACF-backed Cards, Rows, and Patterns post types under one WordPress admin menu.\n- Preserved the supplied Card Markup field group and the existing card and row ACF identifiers.\n",
-      "sha256": "d127817251960a9501c6370b507b36fc88028392e2750f28da75d07801f9e2a8"
+      "body": "## 0.1.1 - 2026-11-03\n\n- Renamed the WordPress admin menu to Atoms and added an atom icon.\n- Kept the Cards, Rows, and Patterns submenu visible and scrolled the desktop sidebar to it on those screens.\n\n",
+      "sha256": "208ffdd52cadeaab7c26c1ec24ec3e319ec80bd26040b5638b54f92afeb91588"
     },
     {
       "id": "as-content-stream",
