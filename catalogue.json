@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-04T21:50:13.404896+00:00",
+  "published_at": "2026-11-04T21:59:15.158482+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.9",
-      "tag": "v0.4.9",
+      "version": "0.4.10",
+      "tag": "v0.4.10",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.9 - 2026-11-05\n\n- Fixed internal HTML snippets not rendering on WordPress 7.0 because filename-shaped search-tree references such as `123.html` were passed directly to `get_post()`.\n- Resolved and validated HTML snippet post IDs consistently for internal, external, and both linking modes.\n- Ignored stale or invalid HTML references instead of rendering the current page or raising a null-post warning.",
-      "sha256": "939407069287c27823c134c8ee82f0b9f5d7bfac2cd359fe299bea6591c044b6"
+      "body": "## AS Local CSS 0.4.10\n\n- Enable complete WordPress revisions for custom code and its execution options.\n- Restore language, location, linking mode, side, and priority with the snippet code.\n- Rebuild generated CSS and JavaScript files and the active snippet search tree after a revision restore.\n- Add regression coverage and verify the restore flow on WordPress 7.1 with PHP 7.4 compatibility.\n",
+      "sha256": "2a295a42023e143c1d8b65dbf3de987070f7fe94863f77fc42b116aeaa44c48a"
     },
     {
       "id": "as-ms-reporting",
