@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-04T04:40:18.021461+00:00",
+  "published_at": "2026-11-04T21:50:13.404896+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -124,16 +124,17 @@
       "name": "AS Local CSS",
       "description": "Compatible AlphaSys-maintained release of Simple Custom CSS and JS for adding local CSS, JavaScript, and HTML snippets.",
       "beta": false,
+      "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.8",
-      "tag": "v0.4.8",
+      "version": "0.4.9",
+      "tag": "v0.4.9",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.4.8 - 2026-10-03\n\n- Add a rendered-table fallback so the Related Content column appears on saved custom-code column layouts.\n\nSHA-256: 74b8e6b7c751ab8e75f3bfbafba956cc7021ae8db67b8710abc7957939f3ba19\n",
-      "sha256": "74b8e6b7c751ab8e75f3bfbafba956cc7021ae8db67b8710abc7957939f3ba19"
+      "body": "## 0.4.9 - 2026-11-05\n\n- Fixed internal HTML snippets not rendering on WordPress 7.0 because filename-shaped search-tree references such as `123.html` were passed directly to `get_post()`.\n- Resolved and validated HTML snippet post IDs consistently for internal, external, and both linking modes.\n- Ignored stale or invalid HTML references instead of rendering the current page or raising a null-post warning.",
+      "sha256": "939407069287c27823c134c8ee82f0b9f5d7bfac2cd359fe299bea6591c044b6"
     },
     {
       "id": "as-ms-reporting",
