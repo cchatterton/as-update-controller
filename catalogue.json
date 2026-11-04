@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-04T21:59:15.158482+00:00",
+  "published_at": "2026-11-04T23:49:47.660379+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.4.10",
-      "tag": "v0.4.10",
+      "version": "0.5.0",
+      "tag": "v0.5.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.4.10\n\n- Enable complete WordPress revisions for custom code and its execution options.\n- Restore language, location, linking mode, side, and priority with the snippet code.\n- Rebuild generated CSS and JavaScript files and the active snippet search tree after a revision restore.\n- Add regression coverage and verify the restore flow on WordPress 7.1 with PHP 7.4 compatibility.\n",
-      "sha256": "2a295a42023e143c1d8b65dbf3de987070f7fe94863f77fc42b116aeaa44c48a"
+      "body": "## 0.5.0 - 2026-11-05\n\n- Add contextual capability checks to both legacy AJAX handlers.\n- Upgrade the bundled CodeMirror editor from 5.28.0 to 5.65.20.\n- Make CSS and JavaScript inline-only and migrate existing external-file snippets safely.\n- Remove the content-side Related Custom Code panel and Create CSS/Create JS actions.\n- Record metadata-query and output-escaping follow-ups in the repository backlog candidates file.",
+      "sha256": "c430f8b625a4548c1928437e5f68fd1ec2969fe2904a50cafd210781cd500b5a"
     },
     {
       "id": "as-ms-reporting",
