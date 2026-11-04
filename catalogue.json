@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-03T06:18:53.222919+00:00",
+  "published_at": "2026-11-04T04:40:18.021461+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -38,14 +38,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.1.1",
-      "tag": "v0.1.1",
+      "version": "0.1.2",
+      "tag": "v0.1.2",
       "requires": "6.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.1.1 - 2026-11-03\n\n- Renamed the WordPress admin menu to Atoms and added an atom icon.\n- Kept the Cards, Rows, and Patterns submenu visible and scrolled the desktop sidebar to it on those screens.\n\n",
-      "sha256": "208ffdd52cadeaab7c26c1ec24ec3e319ec80bd26040b5638b54f92afeb91588"
+      "body": "## 0.1.2 - 2026-11-04\n\n- Enabled front-end Pattern viewing for signed-in users.\n- Returned 404 to anonymous Pattern requests and blocked anonymous REST, search, and oEmbed exposure.\n- Marked Pattern pages noindex and excluded them from the core sitemap.\n\n",
+      "sha256": "0f5802e78c9ccb82717112f8b491519b63ad91ca98ee2564999b110296b5705b"
     },
     {
       "id": "as-content-stream",
