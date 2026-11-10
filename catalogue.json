@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-10T04:29:56.241369+00:00",
+  "published_at": "2026-11-10T20:44:23.792118+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -217,14 +217,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.1.0",
-      "tag": "v0.1.0",
+      "version": "0.1.1",
+      "tag": "v0.1.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "# Changelog\n\n## 0.1.0 - 2026-11-10\n\n- Initial SMTP2GO circuit breaker, durable queue, Teams alert, and manual batch recovery.\n",
-      "sha256": "5d6b7aff4c65a44897a071f9e6989a7408234e1f067b1dd4b31e099e4c29e6d3"
+      "body": "## 0.1.1\n\n- Initialise a separate queue and circuit state on each subsite when network activated.\n- Ensure a site reached through `switch_to_blog()` is ready before handling mail.\n- Preserve existing site state and queued messages during setup.\n",
+      "sha256": "f8955b82830dbff176c4a8a50261eba5a473ea539d681140693fcaaf4ebd0ddf"
     },
     {
       "id": "as-transcript-themes",
