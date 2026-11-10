@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-04T23:49:47.660379+00:00",
+  "published_at": "2026-11-10T04:29:56.241369+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -202,6 +202,29 @@
       "controller_api": 1,
       "body": "- Align WordPress 7.0 / PHP 7.4 metadata, GPL/readme packaging and project-authored CSS units with current Codex standards.\n- Remove independent GitHub update checks and delegate updates to AlphaSys Update Controller. Keep Beta readiness and existing feature settings, package identity and domain restrictions.\n- Standardise update headers and controller-aware Install/Activate/Check links.\n\n\nReadiness remains Beta. Update through the matching author controller.\n",
       "sha256": "0211f7753dd5346851d2d9f4150b6d9e0203ff037781f9bc10ac64c575beacb6"
+    },
+    {
+      "id": "as-smtp2go-monitor",
+      "owner": "cchatterton",
+      "repo": "as-smtp2go-monitor",
+      "file": "as-smtp2go-monitor/as-smtp2go-monitor.php",
+      "slug": "as-smtp2go-monitor",
+      "asset": "as-smtp2go-monitor.zip",
+      "author": "AlphaSys",
+      "name": "AS SMTP2GO Monitor",
+      "description": "Pauses SMTP2GO mail after a sending failure and safely queues mail for manual recovery.",
+      "beta": true,
+      "exclusive": false,
+      "allowed_domains": [],
+      "include_subdomains": false,
+      "version": "0.1.0",
+      "tag": "v0.1.0",
+      "requires": "7.0",
+      "requires_php": "7.4",
+      "dependencies": [],
+      "controller_api": 1,
+      "body": "# Changelog\n\n## 0.1.0 - 2026-11-10\n\n- Initial SMTP2GO circuit breaker, durable queue, Teams alert, and manual batch recovery.\n",
+      "sha256": "5d6b7aff4c65a44897a071f9e6989a7408234e1f067b1dd4b31e099e4c29e6d3"
     },
     {
       "id": "as-transcript-themes",
