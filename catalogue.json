@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-11T23:41:12.170612+00:00",
+  "published_at": "2026-11-11T23:42:42.545414+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.1.2",
-      "tag": "v1.1.2",
+      "version": "1.1.3",
+      "tag": "v1.1.3",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Declared AlphaSys Controller API 1 in the plugin header for controller discovery and compatibility checks.",
-      "sha256": "029014503a28cb7d4637f0e9c08807a86fbf19900602e76e364943bbe02653fa"
+      "body": "Added the verified AlphaSys WordPress.org contributor username to the readme metadata.",
+      "sha256": "ded2432b23580c9e4aa7960f81e8aad2e33566ea7fd7ee6cefa7eda99a47b0eb"
     },
     {
       "id": "gf-sf-webhook",
