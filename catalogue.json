@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-10T20:44:23.792118+00:00",
+  "published_at": "2026-11-11T23:41:12.170612+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -293,6 +293,29 @@
       "controller_api": 1,
       "body": "- Align WordPress 7.0 / PHP 7.4 metadata, GPL/readme packaging and project-authored CSS units with current Codex standards.\n- Remove independent GitHub update checks and delegate updates to AlphaSys Update Controller. Keep Beta readiness and existing feature settings, package identity and domain restrictions.\n- Standardise update headers and controller-aware Install/Activate/Check links.\n\n\nReadiness remains Beta. Update through the matching author controller.\n",
       "sha256": "d0435185be36bfd55c2ca86a613fde623d25b84ed6fa8f9de06b24163c68c3b8"
+    },
+    {
+      "id": "fsanz-undeclared-allergen-json",
+      "owner": "cchatterton",
+      "repo": "fsanz-undeclared-allergen-json",
+      "file": "fsanz-undeclared-allergen-json/fsanz-undeclared-allergen-json.php",
+      "slug": "fsanz-undeclared-allergen-json",
+      "asset": "fsanz-undeclared-allergen-json.zip",
+      "author": "AlphaSys",
+      "name": "AlphaSys FSANZ Alerts",
+      "description": "Publishes a daily JSON feed of Australian undeclared allergen recalls.",
+      "beta": true,
+      "exclusive": false,
+      "allowed_domains": [],
+      "include_subdomains": false,
+      "version": "1.1.2",
+      "tag": "v1.1.2",
+      "requires": "7.0",
+      "requires_php": "7.4",
+      "dependencies": [],
+      "controller_api": 1,
+      "body": "Declared AlphaSys Controller API 1 in the plugin header for controller discovery and compatibility checks.",
+      "sha256": "029014503a28cb7d4637f0e9c08807a86fbf19900602e76e364943bbe02653fa"
     },
     {
       "id": "gf-sf-webhook",
