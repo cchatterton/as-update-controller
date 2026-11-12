@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T02:46:48.190691+00:00",
+  "published_at": "2026-11-12T02:53:00.962606+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.4.0",
-      "tag": "v1.4.0",
+      "version": "1.4.1",
+      "tag": "v1.4.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## Changes\n\n- Restored the compact AlphaSys Author Branded header with a runtime version watermark and relevant capability chips.\n- Replaced the designer accordions with Template and Preview tabs. Tokens and the HTML editor sit side by side on wider screens; Preview uses the full available width.\n- Browsed all cached undeclared-allergen recalls using AJAX Previous and Next controls.\n- Added Add now for the selected missing recall. It imports that exact recall as a draft and leaves other missing records untouched.\n- Kept the featured image separate from the HTML preview. Unsaved template changes must be saved before importing.\n\n## Verification\n\nPHP parser and importer tests, PHP lint, and JavaScript syntax checks passed. A disposable WordPress 7.1.4 site confirmed the selected-record AJAX import and draft status. The branded admin UI was reviewed at 1280 px and 390 px, including keyboard tab navigation and preview loading.\n",
-      "sha256": "dbb0ae7d4f0ca9394080e5642555495a7edad00866912a6eaa2fce67a443bfb0"
+      "body": "## Changes\n\n- Hourly automation now defaults to off. Sites without an explicitly saved on choice clear any existing feed-refresh and import schedules on upgrade.\n- Scheduled callbacks check the switch before running, including when an old event was already queued.\n- The switch states clearly that enabling automation imports all missing recalls as drafts.\n- Manual refresh and selected-record imports remain available while automation is off.\n\nAlready imported Alert drafts are not deleted or modified.\n\n## Verification\n\nPHP parser and importer tests, PHP lint, and JavaScript syntax checks passed. In a disposable WordPress 7.1.4 site, an unset option cleared both schedules, explicit on restored both hourly schedules, and off cleared them again. Scheduled callbacks did no work while off.\n",
+      "sha256": "7cfcd37730abbffb40d623410d25326f7f0e34f84275f787c2dade59714fc0a0"
     },
     {
       "id": "gf-sf-webhook",
