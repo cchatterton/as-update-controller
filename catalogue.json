@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T02:21:35.049064+00:00",
+  "published_at": "2026-11-12T02:33:58.839731+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -303,19 +303,19 @@
       "asset": "fsanz-undeclared-allergen-json.zip",
       "author": "AlphaSys",
       "name": "AlphaSys FSANZ Alerts",
-      "description": "Publishes a daily JSON feed of Australian undeclared allergen recalls.",
+      "description": "Publishes an hourly JSON feed of Australian undeclared allergen recalls.",
       "beta": true,
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.2.1",
-      "tag": "v1.2.1",
+      "version": "1.3.0",
+      "tag": "v1.3.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 1.2.1 - 2026-11-12\n\n- Stacked Available tokens, HTML merge template, and Live preview as independent full-width accordions.\n- Opening a token while the template accordion is closed now opens the editor before inserting it.\n",
-      "sha256": "72a21f59ce52c742d57a847f2ccbd178ed157add092317c72cfcb50909e0d548"
+      "body": "## Changes\n\n- New Alert imports are drafts. Existing Alerts remain untouched.\n- Select an item image URL token for the featured image and see it in the live preview.\n- Refresh the FSANZ feed and import missing drafts hourly; pause or resume both jobs with one switch.\n- Show feed status and the two manual actions in one concise full-width panel.\n\n## Verification\n\nPHP parser and importer tests passed. A disposable WordPress 7.1.4 installation created a draft Alert with a sideloaded featured image and verified the hourly on/off schedules. The admin layout was checked at 1280 px and 390 px viewport widths.\n",
+      "sha256": "e6cbbe38b94cce3cc4297f8b6852c59358771a5a237773179479c3e9c60a98a7"
     },
     {
       "id": "gf-sf-webhook",
