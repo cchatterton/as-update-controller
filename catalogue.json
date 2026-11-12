@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T03:30:34.628668+00:00",
+  "published_at": "2026-11-12T03:38:37.581084+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.7.0",
-      "tag": "v1.7.0",
+      "version": "1.7.1",
+      "tag": "v1.7.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## FSANZ Alerts 1.7.0\n\n- Put automation, refresh interval, and import status together in one responsive settings row.\n- Use accessible on/off switches for automation and Draft/Published import status.\n- Set the refresh interval in minutes (1\u20131440, default 60). Feed refresh and missing-alert import share the selected WP-Cron interval.\n- Keep automation off and new imports as drafts by default.\n\nVerified with PHP parser and importer tests, WordPress cron rescheduling checks, and desktop and mobile admin UI checks.\n",
-      "sha256": "99a785dd1e315551ae6900d4860b6fda2e8cf2712226c15f4f2b32551074ce23"
+      "body": "## FSANZ Alerts 1.7.1\n\n- Align the three recall settings controls from the left edge as a compact group, with natural wrapping on narrower screens.\n- Give the full-width Preview iframe a height of 100vh.\n\nVerified in a local WordPress admin page at 1280 \u00d7 900 and 390 \u00d7 844, plus parser and importer tests.\n",
+      "sha256": "fbd16153e32c61aebe420aec516e3090d1909a3057584e3a240a9b0c2e95c03f"
     },
     {
       "id": "gf-sf-webhook",
