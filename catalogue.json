@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-11T23:42:42.545414+00:00",
+  "published_at": "2026-11-12T02:13:45.490052+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.1.3",
-      "tag": "v1.1.3",
+      "version": "1.2.0",
+      "tag": "v1.2.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Added the verified AlphaSys WordPress.org contributor username to the readme metadata.",
-      "sha256": "ded2432b23580c9e4aa7960f81e8aad2e33566ea7fd7ee6cefa7eda99a47b0eb"
+      "body": "## 1.2.0 - 2026-11-12\n\n- Added token discovery for the complete cached JSON, an HTML merge template editor, and a live per-record preview.\n- Registered the `alert` post type and added manual import of the next missing recall.\n- Added overnight import of all missing recalls at about 2 a.m. in the site timezone, refreshing stale feed data first.\n- Deduplicated by FSANZ detail URL across published, unpublished, and trashed Alerts; existing posts are not overwritten.\n",
+      "sha256": "1c19657e9a12fcbb2c58c4f3d59fb37a8fca07df59ed3c64c36ff00581c2aa7c"
     },
     {
       "id": "gf-sf-webhook",
