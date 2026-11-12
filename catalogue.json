@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T02:33:58.839731+00:00",
+  "published_at": "2026-11-12T02:46:48.190691+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.3.0",
-      "tag": "v1.3.0",
+      "version": "1.4.0",
+      "tag": "v1.4.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## Changes\n\n- New Alert imports are drafts. Existing Alerts remain untouched.\n- Select an item image URL token for the featured image and see it in the live preview.\n- Refresh the FSANZ feed and import missing drafts hourly; pause or resume both jobs with one switch.\n- Show feed status and the two manual actions in one concise full-width panel.\n\n## Verification\n\nPHP parser and importer tests passed. A disposable WordPress 7.1.4 installation created a draft Alert with a sideloaded featured image and verified the hourly on/off schedules. The admin layout was checked at 1280 px and 390 px viewport widths.\n",
-      "sha256": "e6cbbe38b94cce3cc4297f8b6852c59358771a5a237773179479c3e9c60a98a7"
+      "body": "## Changes\n\n- Restored the compact AlphaSys Author Branded header with a runtime version watermark and relevant capability chips.\n- Replaced the designer accordions with Template and Preview tabs. Tokens and the HTML editor sit side by side on wider screens; Preview uses the full available width.\n- Browsed all cached undeclared-allergen recalls using AJAX Previous and Next controls.\n- Added Add now for the selected missing recall. It imports that exact recall as a draft and leaves other missing records untouched.\n- Kept the featured image separate from the HTML preview. Unsaved template changes must be saved before importing.\n\n## Verification\n\nPHP parser and importer tests, PHP lint, and JavaScript syntax checks passed. A disposable WordPress 7.1.4 site confirmed the selected-record AJAX import and draft status. The branded admin UI was reviewed at 1280 px and 390 px, including keyboard tab navigation and preview loading.\n",
+      "sha256": "dbb0ae7d4f0ca9394080e5642555495a7edad00866912a6eaa2fce67a443bfb0"
     },
     {
       "id": "gf-sf-webhook",
