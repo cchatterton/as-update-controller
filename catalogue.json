@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T02:13:45.490052+00:00",
+  "published_at": "2026-11-12T02:21:35.049064+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.2.0",
-      "tag": "v1.2.0",
+      "version": "1.2.1",
+      "tag": "v1.2.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 1.2.0 - 2026-11-12\n\n- Added token discovery for the complete cached JSON, an HTML merge template editor, and a live per-record preview.\n- Registered the `alert` post type and added manual import of the next missing recall.\n- Added overnight import of all missing recalls at about 2 a.m. in the site timezone, refreshing stale feed data first.\n- Deduplicated by FSANZ detail URL across published, unpublished, and trashed Alerts; existing posts are not overwritten.\n",
-      "sha256": "1c19657e9a12fcbb2c58c4f3d59fb37a8fca07df59ed3c64c36ff00581c2aa7c"
+      "body": "## 1.2.1 - 2026-11-12\n\n- Stacked Available tokens, HTML merge template, and Live preview as independent full-width accordions.\n- Opening a token while the template accordion is closed now opens the editor before inserting it.\n",
+      "sha256": "72a21f59ce52c742d57a847f2ccbd178ed157add092317c72cfcb50909e0d548"
     },
     {
       "id": "gf-sf-webhook",
