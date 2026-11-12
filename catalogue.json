@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T03:01:56.022733+00:00",
+  "published_at": "2026-11-12T03:16:54.680700+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -308,14 +308,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "1.5.0",
-      "tag": "v1.5.0",
+      "version": "1.6.0",
+      "tag": "v1.6.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## Changes\n\n- Added a Draft / Published choice for newly imported Alert posts. Draft remains the default.\n- The choice applies to manual imports and hourly imports when automation is enabled. Existing Alerts are not modified.\n- Manual action labels, selected-record action labels, success feedback, and the header capability chip reflect the selected status.\n\nAutomation remains off by default.\n\n## Verification\n\nPHP parser and importer tests, PHP lint, and JavaScript syntax checks passed. In a disposable WordPress 7.1.4 site, choosing Published updated the controls and AJAX Publish now created a published Alert; automation remained off. The interface was reviewed at 1280 px and 390 px.\n",
-      "sha256": "966fa325b049b41832a472e24bbef0fe479b451a48090a3dc85c67e4608a5c6a"
+      "body": "## Changes\n\n- Fetch only the exact FSANZ recall-alert listing URL. Listing pagination is no longer followed.\n- Continue to fetch detail pages for \"Undeclared allergen\" cards found on that one listing page.\n- Mark the feed as single-page data. Older multi-page cache data is not served, previewed, or imported until Refresh now replaces it. Existing Alert posts are left unchanged.\n\n## Verification\n\nParser and importer tests, PHP lint, JavaScript syntax, and a disposable WordPress 7.1.4 check passed. A listing fixture with a `?page=18` last-page link produced only one listing request plus the matching detail request. A live WordPress refresh produced a single-page feed, and an old unmarked cache returned a refresh prompt and no import preview.\n",
+      "sha256": "701835766c75b44e1bec717c7e0cba8fd2812cbfea3bf98d377957336ce7e91e"
     },
     {
       "id": "gf-sf-webhook",
