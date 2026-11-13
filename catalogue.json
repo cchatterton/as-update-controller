@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T07:23:48.036942+00:00",
+  "published_at": "2026-11-13T07:31:12.376493+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.7.1",
-      "tag": "v0.7.1",
+      "version": "0.7.2",
+      "tag": "v0.7.2",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.7.1\n\n- Adds a non-blocking Information finding when a CSS record's Base section contains a media query.\n- Reports the first matching line and links directly to the Base accordion.\n- Ignores media-query text inside comments and does not disable compiled CSS delivery.\n",
-      "sha256": "90352e1f51cbc4f6891591347eb1b148698651120b4320aa69dd87db897f5e04"
+      "body": "## AS Local CSS 0.7.2\n\n- Refines the CSS Errors table with content-sized utility columns and a separate ID column.\n- Gives descriptions the available table width and caps them at two lines on common desktop sizes while retaining full mobile copy.\n- Replaces Edit CSS with a compact Edit action.\n",
+      "sha256": "aed83576ea1bdf222df3e5e81cfd8669c934d8f4036a58c7be68cb3c309ed17f"
     },
     {
       "id": "as-ms-reporting",
