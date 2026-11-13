@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T07:31:12.376493+00:00",
+  "published_at": "2026-11-13T07:36:53.748367+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.7.2",
-      "tag": "v0.7.2",
+      "version": "0.7.3",
+      "tag": "v0.7.3",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.7.2\n\n- Refines the CSS Errors table with content-sized utility columns and a separate ID column.\n- Gives descriptions the available table width and caps them at two lines on common desktop sizes while retaining full mobile copy.\n- Replaces Edit CSS with a compact Edit action.\n",
-      "sha256": "aed83576ea1bdf222df3e5e81cfd8669c934d8f4036a58c7be68cb3c309ed17f"
+      "body": "## AS Local CSS 0.7.3\n\n- Shortens repetitive CSS finding descriptions so the errors table gets directly to the point.\n- Adds a native WordPress Help tab with severity guidance, detailed explanations, and suggested fixes.\n- Keeps the table focused while retaining full remediation guidance on demand.\n",
+      "sha256": "ce59c33f739aa2354be087ce0bff94c1138e4c90f6a00d481023ae87f3a2572f"
     },
     {
       "id": "as-ms-reporting",
