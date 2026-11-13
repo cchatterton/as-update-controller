@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T12:00:53.568025+00:00",
+  "published_at": "2026-11-13T12:11:38.994167+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.8.2",
-      "tag": "v0.8.2",
+      "version": "0.9.0",
+      "tag": "v0.9.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.8.2 - 2026-11-13\n\n- Remove the Related Content editor panel, relationship search and save behaviour, and related-content list column.\n- Retain previously stored relationship metadata so the change is non-destructive.\n- Tighten the CSS Errors header into a compact action row with a single-line scan summary.\n- Refresh CSS findings automatically whenever the CSS Errors page is opened.\n\n",
-      "sha256": "2e507570afba1f2e5805e732847a5c3cebc0ed2197228f461ec5dd7f2248bfdf"
+      "body": "## 0.9.0 - 2026-11-13\n\n- Add a native hierarchical Code Domains taxonomy to Local CSS records, including its editor panel, list column, quick-edit support, and compact submenu.\n- Seed Theme, Block, Page, CPT, Plugin, Utility, Component, and Shortcode once while preserving later administrator changes.\n\n",
+      "sha256": "3e48aca396ce14f31ef607b32af0b74c3b0898c94196ff3771c3f8834eeeb19d"
     },
     {
       "id": "as-ms-reporting",
