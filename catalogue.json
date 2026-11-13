@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T05:41:36.768578+00:00",
+  "published_at": "2026-11-13T05:53:20.626571+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.8",
-      "tag": "v0.6.8",
+      "version": "0.6.9",
+      "tag": "v0.6.9",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Completes Update 2a with the dedicated CSS Breakpoints submenu and the full default AlphaSys breakpoint set: %SM% at 48rem, %MD% at 68rem, and %LG% at 75rem. Generated bundles resolve configured tokens without changing authored CSS or legacy inline output.",
-      "sha256": "7ed1c508a7212ecc4569c643ddea1771e0b3f0e1e91e3c2dad2c1a1e94c5c81b"
+      "body": "Restyles the CSS Breakpoints repeater as a native WordPress post list with standard headings, responsive primary-column behavior, hover row actions, an empty state, and an Add New control. Breakpoint compilation behavior is unchanged.",
+      "sha256": "78d3b6d8c6c2e942378f99fc3352b8579f2b8f85ee3bd3f71694f3c455ab764d"
     },
     {
       "id": "as-ms-reporting",
