@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T07:12:27.539339+00:00",
+  "published_at": "2026-11-13T07:23:48.036942+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.7.0",
-      "tag": "v0.7.0",
+      "version": "0.7.1",
+      "tag": "v0.7.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.7.0\n\n- Adds a backward-compatible Base CSS accordion and one independent editor accordion for every configured min-width breakpoint.\n- Automatically wraps non-empty responsive sections in the correct media query and omits empty sections.\n- Keeps inline and generated-file delivery identical, including configured breakpoint-token replacement.\n- Adds revision support, live character counts, stable breakpoint IDs, and section-aware CSS error reporting.\n",
-      "sha256": "e75ced7787565ffb7387600b5332ecd28bab60127480663018b36cf4cfb871aa"
+      "body": "## AS Local CSS 0.7.1\n\n- Adds a non-blocking Information finding when a CSS record's Base section contains a media query.\n- Reports the first matching line and links directly to the Base accordion.\n- Ignores media-query text inside comments and does not disable compiled CSS delivery.\n",
+      "sha256": "90352e1f51cbc4f6891591347eb1b148698651120b4320aa69dd87db897f5e04"
     },
     {
       "id": "as-ms-reporting",
