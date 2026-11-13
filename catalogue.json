@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T07:36:53.748367+00:00",
+  "published_at": "2026-11-13T07:42:46.825587+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.7.3",
-      "tag": "v0.7.3",
+      "version": "0.7.4",
+      "tag": "v0.7.4",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.7.3\n\n- Shortens repetitive CSS finding descriptions so the errors table gets directly to the point.\n- Adds a native WordPress Help tab with severity guidance, detailed explanations, and suggested fixes.\n- Keeps the table focused while retaining full remediation guidance on demand.\n",
-      "sha256": "ce59c33f739aa2354be087ce0bff94c1138e4c90f6a00d481023ae87f3a2572f"
+      "body": "## AS Local CSS 0.7.4\n\n- Widens the CSS record column to use space freed by the concise descriptions.\n- Keeps desktop record titles on one line with ellipsis only for exceptional lengths.\n- Preserves the full title on hover and normal wrapping on mobile.\n",
+      "sha256": "b2d905352095a9b22c4c919e513140208231972c86cabef5109855577202d1fe"
     },
     {
       "id": "as-ms-reporting",
