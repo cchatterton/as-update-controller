@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-12T03:38:37.581084+00:00",
+  "published_at": "2026-11-13T02:05:37.946613+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.5.0",
-      "tag": "v0.5.0",
+      "version": "0.6.0",
+      "tag": "v0.6.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.5.0 - 2026-11-05\n\n- Add contextual capability checks to both legacy AJAX handlers.\n- Upgrade the bundled CodeMirror editor from 5.28.0 to 5.65.20.\n- Make CSS and JavaScript inline-only and migrate existing external-file snippets safely.\n- Remove the content-side Related Custom Code panel and Create CSS/Create JS actions.\n- Record metadata-query and output-escaping follow-ups in the repository backlog candidates file.",
-      "sha256": "c430f8b625a4548c1928437e5f68fd1ec2969fe2904a50cafd210781cd500b5a"
+      "body": "## 0.6.0 - 2026-11-13\n\n- Combine active CSS into one content-addressed stylesheet per frontend, admin, or login context.\n- Enqueue the same frontend bundle on the site and in the block editor instead of printing inline CSS.\n- Publish bundles atomically with cache-safe filenames and retain the last working bundle or inline fallback after a failed rebuild.\n- Preserve legacy earlier/later cascade ordering inside each generated bundle.\n- Rebuild bundles after saves, activation changes, trash/restore actions, revision restores, and the one-time upgrade migration.",
+      "sha256": "c6a5fdbcf089d919c4c8804e28a33f00a90ec2bbb858c6bdcc80fa1be711ea85"
     },
     {
       "id": "as-ms-reporting",
