@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T10:26:23.323936+00:00",
+  "published_at": "2026-11-13T11:56:49.064683+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.8.0",
-      "tag": "v0.8.0",
+      "version": "0.8.1",
+      "tag": "v0.8.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## AS Local CSS 0.8.0\n\n- Adds an optional revisioned Target scope to each CSS record.\n- Wraps Base and each populated breakpoint section independently in the configured selector with `visibility: visible;` on the parent.\n- Allows top-level `&` children when the generated target supplies their parent.\n- Preserves existing output exactly when Target scope is blank and keeps inline and compiled delivery identical.\n",
-      "sha256": "be3da7e2485eb4ea2035d7fa773cf077b54f4b189f6819a83aaf2ce43cb9a4eb"
+      "body": "## AS Local CSS 0.8.1\n\n- Removes Linking type, Cascade position, and the disabled Apply network wide controls from CSS records.\n- Preserves each existing CSS record's stored cascade position internally so editing it cannot silently reorder live CSS.\n- Leaves JavaScript and HTML placement controls unchanged where they remain functional.\n",
+      "sha256": "9f68a9eb003fb5a3357dae5431cb39c3957482ba683222af232d84ad57d42fb6"
     },
     {
       "id": "as-ms-reporting",
