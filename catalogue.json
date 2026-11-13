@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T06:34:13.957422+00:00",
+  "published_at": "2026-11-13T06:40:39.944818+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.11",
-      "tag": "v0.6.11",
+      "version": "0.6.12",
+      "tag": "v0.6.12",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Refines CSS Breakpoints into a deliberately compact premium interface: a narrower card, tighter controls, code-styled tokens, lightweight column labels, restrained hover states, an icon-only Remove action, a compact secondary Add control, and Save as the sole primary action.",
-      "sha256": "1529c40dffe42b9b5cde55f5b1cbc78d2482cff93cc411f1b2ec0ef1266081ec"
+      "body": "Reduces CSS Breakpoints to the page title and compact breakpoint card. Removes the introductory sentence, card header, supporting sentence, and footer example. Moves a concise Add action into the footer opposite a concise Save action.",
+      "sha256": "6419bf0cfe97666a4eb506f7272fc5285643983ae5141b4be04d117297a56cb6"
     },
     {
       "id": "as-ms-reporting",
