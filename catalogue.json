@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T12:19:55.498774+00:00",
+  "published_at": "2026-11-13T12:22:57.956932+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.0",
-      "tag": "v0.9.0",
+      "version": "0.9.1",
+      "tag": "v0.9.1",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.9.0 - 2026-11-13\n\n- Add a native hierarchical Code Domains taxonomy to Local CSS records, including its editor panel, list column, quick-edit support, and compact submenu.\n- Seed Theme, Block, Page, CPT, Plugin, Utility, Component, and Shortcode once while preserving later administrator changes.\n\n",
-      "sha256": "3e48aca396ce14f31ef607b32af0b74c3b0898c94196ff3771c3f8834eeeb19d"
+      "body": "## 0.9.1 - 2026-11-13\n\n- Replace the Code Domains checkbox panel with a hierarchical radio list and a No domain option.\n- Enforce zero-or-one Code Domain for editor and programmatic assignments and remove misleading Quick Edit checkboxes.\n\n",
+      "sha256": "4002f2222ec83f7e3e32c73b3d11ab33a26085e895e9278d4a6950d3455079c2"
     },
     {
       "id": "as-ms-reporting",
