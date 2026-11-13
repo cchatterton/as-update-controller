@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T06:21:34.825692+00:00",
+  "published_at": "2026-11-13T06:34:13.957422+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.10",
-      "tag": "v0.6.10",
+      "version": "0.6.11",
+      "tag": "v0.6.11",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Replaces the oversized CSS Breakpoints list with a compact WordPress-style settings card: constrained width, tighter rows and inputs, monospace tokens, quiet Remove actions, card-level Add control, responsive layout, and a right-aligned Save action. Also adds the %XL% to 80rem default.",
-      "sha256": "f93f8c2babdec4a7c469ed6d0ff9bfeb773d0a2b6cc926d19528539f3d64ad01"
+      "body": "Refines CSS Breakpoints into a deliberately compact premium interface: a narrower card, tighter controls, code-styled tokens, lightweight column labels, restrained hover states, an icon-only Remove action, a compact secondary Add control, and Save as the sole primary action.",
+      "sha256": "1529c40dffe42b9b5cde55f5b1cbc78d2482cff93cc411f1b2ec0ef1266081ec"
     },
     {
       "id": "as-ms-reporting",
