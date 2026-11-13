@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T04:41:33.141650+00:00",
+  "published_at": "2026-11-13T05:13:07.776875+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.4",
-      "tag": "v0.6.4",
+      "version": "0.6.5",
+      "tag": "v0.6.5",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.6.4\n\n- Adds selectable CSS order: Top 1 \u2192 5 Bottom or Top 5 \u2192 1 Bottom.\n- Applies the selected order to both inline and generated-file delivery.\n- Scans published CSS records on save and bundle refresh without changing authored CSS.\n- Adds a native CSS Errors screen with a counter, descriptions, line numbers, and direct edit links.\n- Refreshes generated CSS after activation, update, and file-delivery selection.",
-      "sha256": "1f259d24dc43a7a06d3f63c7145bf5ed53bb2c36b270e7c0103947d5fea7d2d6"
+      "body": "## 0.6.5\n\n- Prints generated CSS at the same WordPress head hook and priority as legacy inline CSS.\n- Preserves the working theme and plugin cascade when switching delivery modes.\n- Retains generated-file delivery, selectable record order, and CSS diagnostics.",
+      "sha256": "4ea0c0e6997cfb8ec98be71684a3dd076bc62bffc22f5a00e72dbcb3912fe897"
     },
     {
       "id": "as-ms-reporting",
