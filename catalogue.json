@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T05:13:07.776875+00:00",
+  "published_at": "2026-11-13T05:27:33.002247+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.5",
-      "tag": "v0.6.5",
+      "version": "0.6.6",
+      "tag": "v0.6.6",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.6.5\n\n- Prints generated CSS at the same WordPress head hook and priority as legacy inline CSS.\n- Preserves the working theme and plugin cascade when switching delivery modes.\n- Retains generated-file delivery, selectable record order, and CSS diagnostics.",
-      "sha256": "4ea0c0e6997cfb8ec98be71684a3dd076bc62bffc22f5a00e72dbcb3912fe897"
+      "body": "## 0.6.6\n\n- Validates the exact generated CSS files referenced by the active compiler search tree.\n- Blocks compiled delivery when an unclosed brace, comment, or string could capture later records.\n- Falls back to safe inline delivery until the offending record is corrected and the bundle rebuild succeeds.\n- Reports the record ID, line, and error in CSS Errors.",
+      "sha256": "73fe836b5d85cd75b5cbe2add36145d768323a4bf552c7ef4269b608b35bcffa"
     },
     {
       "id": "as-ms-reporting",
