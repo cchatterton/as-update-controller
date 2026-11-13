@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T02:45:58.296654+00:00",
+  "published_at": "2026-11-13T03:24:58.040964+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.1",
-      "tag": "v0.6.1",
+      "version": "0.6.2",
+      "tag": "v0.6.2",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.6.1 - 2026-11-13\n\n- Emit combined CSS from priority 10 through priority 1 so priority 1 is last and wins the cascade.\n- Preserve each snippet author ID in generated start and end comments.\n- Render generated AS Local CSS bundle link attributes with double quotes.\n- Invalidate and rebuild 0.6.0 bundles whose generated order is no longer valid.",
-      "sha256": "b19ef029c2fea3c5411516c66eef10b06eb85443630e060570a6d64197ccdc0b"
+      "body": "Fix stale generated CSS bundles.\n\n- Compile bundles from the same generated per-snippet CSS files used by inline delivery.\n- Refresh all CSS bundles on activation and plugin update without a migration-version flag.\n- Recover obsolete bundles automatically on the first request after upgrading from an older release.\n- Preserve the last known-good bundle or inline fallback if a generated snippet file cannot be read.",
+      "sha256": "3e482302ec93fdad760713a51fa924065f8a6839161d6a5f619e6b3de24351e2"
     },
     {
       "id": "as-ms-reporting",
