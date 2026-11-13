@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T03:24:58.040964+00:00",
+  "published_at": "2026-11-13T04:08:59.901168+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.2",
-      "tag": "v0.6.2",
+      "version": "0.6.3",
+      "tag": "v0.6.3",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Fix stale generated CSS bundles.\n\n- Compile bundles from the same generated per-snippet CSS files used by inline delivery.\n- Refresh all CSS bundles on activation and plugin update without a migration-version flag.\n- Recover obsolete bundles automatically on the first request after upgrading from an older release.\n- Preserve the last known-good bundle or inline fallback if a generated snippet file cannot be read.",
-      "sha256": "3e482302ec93fdad760713a51fa924065f8a6839161d6a5f619e6b3de24351e2"
+      "body": "Add selectable CSS delivery.\n\n- Add a CSS Delivery submenu with Run inline (legacy) and Run as generated file choices.\n- Switch CSS delivery immediately without changing JavaScript or HTML output.\n- Continue maintaining generated bundles while inline mode is selected, so file mode remains ready.",
+      "sha256": "f7aa3e4ac99cf3a5750433c58f57da1eb3e0538ef8a92fd4edde9fcd13beb4b0"
     },
     {
       "id": "as-ms-reporting",
