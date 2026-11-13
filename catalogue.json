@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T05:53:20.626571+00:00",
+  "published_at": "2026-11-13T06:21:34.825692+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -127,14 +127,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.6.9",
-      "tag": "v0.6.9",
+      "version": "0.6.10",
+      "tag": "v0.6.10",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Restyles the CSS Breakpoints repeater as a native WordPress post list with standard headings, responsive primary-column behavior, hover row actions, an empty state, and an Add New control. Breakpoint compilation behavior is unchanged.",
-      "sha256": "78d3b6d8c6c2e942378f99fc3352b8579f2b8f85ee3bd3f71694f3c455ab764d"
+      "body": "Replaces the oversized CSS Breakpoints list with a compact WordPress-style settings card: constrained width, tighter rows and inputs, monospace tokens, quiet Remove actions, card-level Add control, responsive layout, and a right-aligned Save action. Also adds the %XL% to 80rem default.",
+      "sha256": "f93f8c2babdec4a7c469ed6d0ff9bfeb773d0a2b6cc926d19528539f3d64ad01"
     },
     {
       "id": "as-ms-reporting",
