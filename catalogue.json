@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-14T00:38:52.976565+00:00",
+  "published_at": "2026-11-14T00:55:49.458339+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -263,14 +263,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.3",
-      "tag": "v0.9.3",
+      "version": "0.9.4",
+      "tag": "v0.9.4",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Remove the unused Settings tab. Manual Check for updates remains in the header.",
-      "sha256": "9c6255cbd100f665127052385267238fa0fc73dbcc3e42320d178aa8b989c365"
+      "body": "Remove the redundant GitHub column from Updates available. Available versions still link to release notes.",
+      "sha256": "430c1845b46c852bff5c202b02392071ab85481b8e81e8bedd76dee71155129b"
     },
     {
       "id": "as-utm-relay",
