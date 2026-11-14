@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-13T12:22:57.956932+00:00",
+  "published_at": "2026-11-14T00:36:16.493796+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -38,14 +38,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.2.0",
-      "tag": "v0.2.0",
+      "version": "0.2.1",
+      "tag": "v0.2.1",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## Native WordPress patterns\n\nAtoms \u2192 Patterns now opens the native WordPress pattern manager. Cards and Rows keep their existing ACF post types and identifiers.\n\nOn activation or update, the plugin copies legacy `pattern` posts to native `wp_block` patterns and sets each copy to **Not synced**. The migration processes 25 posts per batch, resumes safely, and reports progress or errors to administrators. Original Pattern posts remain available for recovery, with their signed-in-only front-end access retained.\n\nRequires WordPress 6.3+ and ACF 6.1+ for Cards, Rows, and legacy Pattern migration.\n",
-      "sha256": "d8f2e67410b642c0c9991c77d04a5ef8327711e3f65b8390583f5ed82854999a"
+      "body": "## Patterns list navigation\n\nThe back arrow beside Patterns in the native WordPress pattern manager now returns to the WordPress Dashboard. This applies only on the Patterns list; navigation inside an individual pattern retains its normal WordPress behavior.\n",
+      "sha256": "20feab15fe18dbe2731652f4d5401e8d1e5e9d9d147095194bfeb66efa8412b1"
     },
     {
       "id": "as-content-stream",
