@@ -15,7 +15,7 @@ foreach(['tnuc','asuc'] as $prefix){
    ui_assert(substr_count($html,'data-check=""')===1,"$prefix $tab has one page check button");
    ui_assert(strpos($html,'<dialog')!==false && strpos($html,'aria-labelledby="'.$prefix.'-dialog-title"')!==false,"$prefix $tab accessible progress dialog");
    if($tab==='installed'){
-    ui_assert(strpos($html,'<th scope="col">Installed</th><th scope="col">Available</th><th scope="col">GitHub</th>')!==false,"$prefix separate version and repository columns");
+    ui_assert(strpos($html,'<th scope="col">Installed</th><th scope="col">Available</th>')!==false && strpos($html,'<th scope="col">GitHub</th>')===false,"$prefix shows versions without a repository column");
     ui_assert(strpos($html,'id="'.$prefix.'-update-selected" disabled')!==false,"$prefix updates disabled before selection");
    }
   }

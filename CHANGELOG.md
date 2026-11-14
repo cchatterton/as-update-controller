@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.4 - 2026-11-14
+
+- Remove the redundant GitHub column from Updates available. The available version still links to release notes.
+
 ## 0.9.3 - 2026-11-14
 
 - Remove the unused Settings tab.
