@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.9.2
+Stable tag: 0.9.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ A cached catalogue, manual update checks and guided installation for AlphaSys pl
 
 Manage verified AlphaSys-authored plugins from cchatterton's GitHub repositories. Techn plugins are managed separately by TN Update Controller. Both controllers can run together.
 
-Plugins > AlphaSys Plugins provides Installed, Catalogue and Settings tabs. Each check downloads one public catalogue JSON file and updates the shared local github-cchatterton table. No GitHub API or token is required. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
+Plugins > AlphaSys Plugins provides Updates available and Catalogue tabs. Each check downloads one public catalogue JSON file and updates the shared local github-cchatterton table. No GitHub API or token is required. Ordinary page rendering makes no update-metadata requests, even when the cache is empty. Installations and updates use WordPress's native upgrader and verify package checksums.
 
 Checks are strictly manual. Each check verifies this controller first. If its update is available, only that update is listed and the check stops. Update the controller, then check again. When current, the check refreshes available plugins and installed update status together. Old controller schedules are removed on upgrade. Discovery does not install updates or change WordPress auto-update settings.
 
@@ -55,6 +55,10 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.9.3 =
+
+* Remove the unused Settings tab.
 
 = 0.9.2 =
 * Hide exclusive plugins until manually installed; retain normal activation, deactivation and updates after installation.

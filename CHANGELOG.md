@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.3 - 2026-11-14
+
+- Remove the unused Settings tab.
+
 ## 0.9.2 - 2026-10-10
 
 - Mark AS Managed Services Reporting and AS Transcript Themes exclusive and remove their controller domain restrictions.

@@ -20,7 +20,7 @@ foreach (['tnuc','asuc'] as $prefix) { delete_site_option($prefix . '_catalogue'
 $unknown = (object) ['response'=>['other/plugin.php'=>(object)['new_version'=>'3.0']]];
 for ($i=0;$i<20;$i++) { apply_filters('site_transient_update_plugins', $unknown); apply_filters('pre_set_site_transient_update_plugins', $unknown); }
 $_GET['force-check']='1'; $_POST['action']='update-selected';
-foreach (['installed','catalogue','settings'] as $tab) {
+foreach (['installed','catalogue'] as $tab) {
     $_GET['tab']=$tab; ob_start(); tnuc_render_admin(); asuc_render_admin(); $html=ob_get_clean();
     check_test(str_contains($html, 'Techn Plugins') && str_contains($html, 'AlphaSys Plugins'), 'both brand screens render: ' . $tab);
 }

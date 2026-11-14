@@ -9,7 +9,7 @@ foreach(['tnuc','asuc'] as $prefix){
  $get=$prefix.'_get';$put=$prefix.'_put';$render=$prefix.'_render_admin';$before=$get('batch');$setup=$get('setup_pending');
  try{
   $put('setup_pending',true);$put('batch',['id'=>'completed-fixture','status'=>'complete','items'=>[]]);
-  foreach(['installed','catalogue','settings'] as $tab){
+  foreach(['installed','catalogue'] as $tab){
    $_GET['tab']=$tab;ob_start();$render();$html=ob_get_clean();
    foreach(['Latest operation','Set up managed updates','Check status','<h2>Recovery</h2>','Update management','card-mark','card-author','A legacy compatibility bridge suppresses'] as $noise){ui_assert(strpos($html,$noise)===false,"$prefix $tab omits $noise");}
    ui_assert(substr_count($html,'data-check=""')===1,"$prefix $tab has one page check button");

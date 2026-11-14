@@ -27,7 +27,7 @@ function asuc_form_start(string $operation): void {
 }
 function asuc_render_admin(): void {
     if (!asuc_authorised()) { wp_die('You cannot manage plugin updates.'); }
-    $tab = sanitize_key($_GET['tab'] ?? 'installed'); if (!in_array($tab, ['installed','catalogue','settings'], true)) { $tab = 'installed'; }
+    $tab = sanitize_key($_GET['tab'] ?? 'installed'); if (!in_array($tab, ['installed','catalogue'], true)) { $tab = 'installed'; }
     $registry = array_filter(asuc_registry(), 'asuc_domain_allowed'); $releases = asuc_catalogue()['plugins'] ?? []; $plugins = asuc_plugins();
     $installed = array_filter($registry, static fn($e) => isset($plugins[$e['file']]));
     $updates = array_filter($releases, static fn($e) => asuc_domain_allowed($e) && asuc_match($e, $plugins) && version_compare($e['version'], $plugins[$e['file']]['Version'], '>'));
@@ -39,7 +39,7 @@ function asuc_render_admin(): void {
     echo '<header class="asuc-header"><span class="asuc-version" aria-label="Version ' . esc_attr(ASUC_VERSION) . '">v' . esc_html(ASUC_VERSION) . '</span><p class="asuc-eyebrow">AlphaSys / Plugin library</p><h2>Your plugins. One place.</h2><p>Discover released AlphaSys plugins from the published catalogue.</p><div class="asuc-header-bottom"><span>' . count($installed) . ' installed · ' . count($updates) . ' updates available</span><button class="button asuc-primary" data-check="">Check for updates</button></div></header>';
     echo '<div class="asuc-status"><span>' . esc_html(asuc_check_summary()) . '</span><span>' . 'Manual checks only' . '</span></div>';
     echo '<nav class="nav-tab-wrapper" aria-label="Plugin library">';
-    foreach (['installed'=>'Updates available','catalogue'=>'Catalogue','settings'=>'Settings'] as $key=>$label) { echo '<a class="nav-tab ' . ($key === $tab ? 'nav-tab-active' : '') . '" href="' . esc_url(asuc_url($key)) . '">' . esc_html($label) . '</a>'; }
+    foreach (['installed'=>'Updates available','catalogue'=>'Catalogue'] as $key=>$label) { echo '<a class="nav-tab ' . ($key === $tab ? 'nav-tab-active' : '') . '" href="' . esc_url(asuc_url($key)) . '">' . esc_html($label) . '</a>'; }
     echo '</nav><div id="asuc-feedback" role="status" aria-live="polite"></div>';
     $batch = asuc_get('batch');
     if (($batch['status'] ?? '') === 'running') {
@@ -47,8 +47,7 @@ function asuc_render_admin(): void {
     } elseif (($batch['status'] ?? '') === 'partial') {
         echo '<p class="asuc-resume">Some plugins could not be updated. <button class="button-link" data-results="">View results</button></p>';
     }
-    if ($tab === 'settings') { asuc_render_settings(); }
-    elseif ($tab === 'catalogue') { asuc_render_catalogue($registry, $releases, $plugins); }
+    if ($tab === 'catalogue') { asuc_render_catalogue($registry, $releases, $plugins); }
     else {
         echo '<div class="asuc-toolbar"><h2>Updates available</h2><button class="button button-primary" id="asuc-update-selected" disabled>Update selected plugins</button></div><div class="asuc-table-scroll"><table class="widefat striped"><thead><tr><td class="check-column"><input type="checkbox" id="asuc-select-all" aria-label="Select all eligible updates"></td><th scope="col">Plugin</th><th scope="col">Installed</th><th scope="col">Available</th><th scope="col">GitHub</th></tr></thead><tbody>';
         foreach ($installed as $id => $e) {
@@ -104,10 +103,4 @@ function asuc_render_catalogue(array $registry, array $releases, array $plugins)
     }
     echo '</div></section>';
     }
-}
-function asuc_render_settings(): void {
-    echo '<p>Each Check for updates downloads one published catalogue JSON file. No GitHub API token or per-repository scan is needed. If this controller has an update, only that update is listed; update it, then check again.</p>';
-    echo '<h2>Manual checks only</h2><p>Checks run only when requested. There are no scheduled checks or controller waiting periods. Plugin ZIPs are downloaded only when installing or updating. The shared github-cchatterton table retains released/local versions, installation state and alpha/beta.</p>';
-    echo '<p>New plugins and versions become available when their release publishes the updated catalogue.</p>';
-
 }
