@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-14T00:36:16.493796+00:00",
+  "published_at": "2026-11-14T00:38:52.976565+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -263,14 +263,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.2",
-      "tag": "v0.9.2",
+      "version": "0.9.3",
+      "tag": "v0.9.3",
       "requires": "6.5",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Exclusive plugins stay hidden from the catalogue until manually installed. Once installed, they retain normal activation, deactivation, deletion and managed updates. The exclusive flag is independent of domain restrictions and beta readiness.\n\nBoth brand controllers and release publishers support the setting. AS Managed Services Reporting and AS Transcript Themes are exclusive, with their former controller domain restrictions removed.\n\nValidated with disposable WordPress lifecycle and native ZIP updates on PHP 7.4 and 8.5, publisher tests, domain policy, admin UI, catalogue grouping, one-request manual checks and controller-first regressions. No customer site was modified.\n",
-      "sha256": "598ef2c962022337958455b7cd3c6ec0ccfd34ba6e6ba45c89ab5f5f6698631a"
+      "body": "Remove the unused Settings tab. Manual Check for updates remains in the header.",
+      "sha256": "9c6255cbd100f665127052385267238fa0fc73dbcc3e42320d178aa8b989c365"
     },
     {
       "id": "as-utm-relay",
