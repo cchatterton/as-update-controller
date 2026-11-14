@@ -37,7 +37,7 @@ function asuc_render_admin(): void {
     if ($notice) { delete_transient('asuc_notice_' . get_current_user_id()); }
     if ($notice && $notice['error']) { echo '<div class="notice ' . ($notice['error'] ? 'notice-error' : 'notice-success') . '"><p>' . esc_html($notice['message']) . '</p></div>'; }
     echo '<header class="asuc-header"><span class="asuc-version" aria-label="Version ' . esc_attr(ASUC_VERSION) . '">v' . esc_html(ASUC_VERSION) . '</span><p class="asuc-eyebrow">AlphaSys / Plugin library</p><h2>Your plugins. One place.</h2><p>Discover released AlphaSys plugins from the published catalogue.</p><div class="asuc-header-bottom"><span>' . count($installed) . ' installed · ' . count($updates) . ' updates available</span><button class="button asuc-primary" data-check="">Check for updates</button></div></header>';
-    echo '<div class="asuc-status"><span>' . esc_html(asuc_check_summary()) . '</span><span>' . 'Manual checks only' . '</span></div>';
+    echo '<div class="asuc-status"><span>' . esc_html(asuc_check_summary()) . '</span></div>';
     echo '<nav class="nav-tab-wrapper" aria-label="Plugin library">';
     foreach (['installed'=>'Updates available','catalogue'=>'Catalogue'] as $key=>$label) { echo '<a class="nav-tab ' . ($key === $tab ? 'nav-tab-active' : '') . '" href="' . esc_url(asuc_url($key)) . '">' . esc_html($label) . '</a>'; }
     echo '</nav><div id="asuc-feedback" role="status" aria-live="polite"></div>';

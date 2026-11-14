@@ -3,7 +3,7 @@ Contributors:
 Tags: updates, plugins, catalogue, alphasys
 Requires at least: 6.5
 Tested up to: 7.1.2
-Stable tag: 0.9.4
+Stable tag: 0.9.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -55,6 +55,10 @@ Terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-servi
 Privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Changelog ==
+
+= 0.9.5 =
+
+* Remove the redundant Manual checks only label from the controller status line.
 
 = 0.9.4 =
 

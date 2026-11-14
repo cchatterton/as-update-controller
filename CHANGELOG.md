@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.5 - 2026-11-14
+
+- Remove the redundant Manual checks only label from the controller status line.
+
 ## 0.9.4 - 2026-11-14
 
 - Remove the redundant GitHub column from Updates available. The available version still links to release notes.
