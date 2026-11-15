@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T04:07:13.330990+00:00",
+  "published_at": "2026-11-15T04:10:34.807773+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.2.2",
-      "tag": "v0.2.2",
+      "version": "0.2.3",
+      "tag": "v0.2.3",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Adds Atoms > Pattern Categories, opening the native WordPress pattern category manager. Keeps Atoms selected on that screen and documents the Enter then Save category assignment workflow.",
-      "sha256": "0f598a431bc7d989c87fae50292a9fb6a300b2eb33af2071d73ca834a8f2de9c"
+      "body": "Uses the pattern taxonomy\u2019s own management capability for the Pattern Categories menu link, matching WordPress access to its native category manager.",
+      "sha256": "e651af6ac4272efaf9d8dcde0a37cd814142186491ad270fab6f1ea91db918b7"
     },
     {
       "id": "as-content-stream",
