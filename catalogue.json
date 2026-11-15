@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T05:46:29.852594+00:00",
+  "published_at": "2026-11-15T06:00:51.906746+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.3.3",
-      "tag": "v0.3.3",
+      "version": "0.3.4",
+      "tag": "v0.3.4",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Focuses the Atomic Design guide on Brad Frost\u2019s five-stage methodology and aligns the Post Type Wrappers guide with the site\u2019s Edit Wrappers screen, position tabs, Add Row control, and Row selector.",
-      "sha256": "2afb578c18a62733bd783c62650dcf11336881ff957b03f6b62661fae5062b02"
+      "body": "Renames the overview guide to Our Composable Atoms and covers the wider system of Cards, Rows, Patterns, List of Values, Palette, and Local CSS/JavaScript.",
+      "sha256": "a33ad19a64011aeea803fddc4250b02e13e6624ddca83ae288cfa1601a3f031f"
     },
     {
       "id": "as-content-stream",
