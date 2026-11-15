@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T05:01:03.934245+00:00",
+  "published_at": "2026-11-15T05:13:09.264077+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.3.0",
-      "tag": "v0.3.0",
+      "version": "0.3.1",
+      "tag": "v0.3.1",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Adds Atoms > Help with seven editable HTML guides. Topics are discovered from the guides folder and load through a permission-checked WordPress AJAX endpoint, with section links, browser history, and ordinary-link fallback. Covers Cards, merge tokens, reusable Rows, native Patterns and categories, component choice, and common questions.",
-      "sha256": "b1bc43b58a8783372f92f4e00fde02d569f48435de6a86f6be338fda10d9cabb"
+      "body": "Reworks Atoms Help into eleven standalone guides: atomic design, an overview of WP Atoms, Card Wizard, utility classes, Echo tokens, the reusable Row block, post type wrappers, and native Pattern creation, sync, usage, and categories. Removes cross-links between guides while retaining direct WordPress admin and documentation links.",
+      "sha256": "8f84d32df0bd7d051b05de980fa9e9f7b5f6e5eee6d63c1c0152d478fd683281"
     },
     {
       "id": "as-content-stream",
