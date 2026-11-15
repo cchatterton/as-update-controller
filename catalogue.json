@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T04:18:52.963953+00:00",
+  "published_at": "2026-11-15T04:43:16.610023+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.2.4",
-      "tag": "v0.2.4",
+      "version": "0.2.5",
+      "tag": "v0.2.5",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Restores the Atoms submenu to Cards, Rows, and Patterns. Documents how to commit a new native pattern category with Enter or comma before saving.",
-      "sha256": "079dfc56b757a989ef416dcd19e27da88354e606ce5be5b157788c2cf19967e6"
+      "body": "Adds Settings > Pattern Categories, linking to the native WordPress pattern category manager. Atoms remains limited to Cards, Rows, and Patterns.",
+      "sha256": "e7cde4d50130aad11e204108d9ff6e98dbac2935ff9a2ba744ac6c71bef50a17"
     },
     {
       "id": "as-content-stream",
