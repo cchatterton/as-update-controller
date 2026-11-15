@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T05:13:09.264077+00:00",
+  "published_at": "2026-11-15T05:21:15.612479+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.3.1",
-      "tag": "v0.3.1",
+      "version": "0.3.2",
+      "tag": "v0.3.2",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Reworks Atoms Help into eleven standalone guides: atomic design, an overview of WP Atoms, Card Wizard, utility classes, Echo tokens, the reusable Row block, post type wrappers, and native Pattern creation, sync, usage, and categories. Removes cross-links between guides while retaining direct WordPress admin and documentation links.",
-      "sha256": "8f84d32df0bd7d051b05de980fa9e9f7b5f6e5eee6d63c1c0152d478fd683281"
+      "body": "Corrects the Atomic Design guide, documents the Edit Wrappers workflow shown in the site interface, and removes old Pattern migration history from editor guides.",
+      "sha256": "4e9ad4525431212ea76a5fe9ba6d864a968431eeb76d8edeeb02cd345eced751"
     },
     {
       "id": "as-content-stream",
