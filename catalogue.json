@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T05:21:15.612479+00:00",
+  "published_at": "2026-11-15T05:46:29.852594+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.3.2",
-      "tag": "v0.3.2",
+      "version": "0.3.3",
+      "tag": "v0.3.3",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Corrects the Atomic Design guide, documents the Edit Wrappers workflow shown in the site interface, and removes old Pattern migration history from editor guides.",
-      "sha256": "4e9ad4525431212ea76a5fe9ba6d864a968431eeb76d8edeeb02cd345eced751"
+      "body": "Focuses the Atomic Design guide on Brad Frost\u2019s five-stage methodology and aligns the Post Type Wrappers guide with the site\u2019s Edit Wrappers screen, position tabs, Add Row control, and Row selector.",
+      "sha256": "2afb578c18a62733bd783c62650dcf11336881ff957b03f6b62661fae5062b02"
     },
     {
       "id": "as-content-stream",
