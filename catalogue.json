@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-14T06:59:15.688748+00:00",
+  "published_at": "2026-11-15T04:07:13.330990+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.2.1",
-      "tag": "v0.2.1",
+      "version": "0.2.2",
+      "tag": "v0.2.2",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## Patterns list navigation\n\nThe back arrow beside Patterns in the native WordPress pattern manager now returns to the WordPress Dashboard. This applies only on the Patterns list; navigation inside an individual pattern retains its normal WordPress behavior.\n",
-      "sha256": "20feab15fe18dbe2731652f4d5401e8d1e5e9d9d147095194bfeb66efa8412b1"
+      "body": "Adds Atoms > Pattern Categories, opening the native WordPress pattern category manager. Keeps Atoms selected on that screen and documents the Enter then Save category assignment workflow.",
+      "sha256": "0f598a431bc7d989c87fae50292a9fb6a300b2eb33af2071d73ca834a8f2de9c"
     },
     {
       "id": "as-content-stream",
