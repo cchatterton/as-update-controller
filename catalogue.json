@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-15T04:10:34.807773+00:00",
+  "published_at": "2026-11-15T04:18:52.963953+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -84,14 +84,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.2.3",
-      "tag": "v0.2.3",
+      "version": "0.2.4",
+      "tag": "v0.2.4",
       "requires": "6.3",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Uses the pattern taxonomy\u2019s own management capability for the Pattern Categories menu link, matching WordPress access to its native category manager.",
-      "sha256": "e651af6ac4272efaf9d8dcde0a37cd814142186491ad270fab6f1ea91db918b7"
+      "body": "Restores the Atoms submenu to Cards, Rows, and Patterns. Documents how to commit a new native pattern category with Enter or comma before saving.",
+      "sha256": "079dfc56b757a989ef416dcd19e27da88354e606ce5be5b157788c2cf19967e6"
     },
     {
       "id": "as-content-stream",
