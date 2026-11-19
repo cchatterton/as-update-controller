@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-16T04:17:28.018962+00:00",
+  "published_at": "2026-11-19T22:31:40.253081+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.2",
-      "tag": "v0.9.2",
+      "version": "0.9.3",
+      "tag": "v0.9.3",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.9.2 - 2026-11-16\n\n- Add Error findings for nested selector entries without `&`, nested rules without direct declarations, and parent declarations placed only after child rules.\n- Exclude nested at-rules and keyframes from selector checks and keep these compatibility findings non-blocking for compiled delivery.\n- Add an Optional note beneath the Target scope label.\n\n",
-      "sha256": "c1a8f9d02c8d3292a994be18f3fe7f13a67ef9e39abb516ba369ee28158cd3b0"
+      "body": "Show generated CSS build errors only on the CSS Delivery screen.",
+      "sha256": "722506d74c12ff332e4c4afb197664cd0960290384bd1d530c944ba4d74ea030"
     },
     {
       "id": "as-ms-reporting",
