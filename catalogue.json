@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-20T03:47:11.703640+00:00",
+  "published_at": "2026-11-20T03:59:08.032494+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.10.4",
-      "tag": "v0.10.4",
+      "version": "0.10.5",
+      "tag": "v0.10.5",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Add CSS Errors page-size settings and severity filters, with errors shown first.",
-      "sha256": "7ffec8b7953a8ffbf759bf546c80e34158162aabd31c8c6b014d32b0f45e067f"
+      "body": "Remove redundant guidance from the CSS Errors screen.",
+      "sha256": "38effbb71397c7f37e0e01e68b541bcc19d3f1659a5b9a79d7b5462016dd4086"
     },
     {
       "id": "as-ms-reporting",
