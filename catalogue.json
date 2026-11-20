@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-20T02:17:49.728734+00:00",
+  "published_at": "2026-11-20T02:30:31.643417+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.10.0",
-      "tag": "v0.10.0",
+      "version": "0.10.2",
+      "tag": "v0.10.2",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Export and import snippets by code type. Imports support replace, append and skip, and append and overwrite. Missing Code Domains are added automatically by slug.",
-      "sha256": "502fe1c83f47326b9f36ded382616cf574bcea2f70ca2288afdef3bf7c155e36"
+      "body": "Refine the Import / Export screen, omit untitled snippets from new exports, and accept HTML body-open placement in import files.",
+      "sha256": "2a00b425254aec3fb3d1c835e2fcd429a650872569167103bc97aaa0b94c96bd"
     },
     {
       "id": "as-ms-reporting",
