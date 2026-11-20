@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-19T22:31:40.253081+00:00",
+  "published_at": "2026-11-20T02:17:49.728734+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.9.3",
-      "tag": "v0.9.3",
+      "version": "0.10.0",
+      "tag": "v0.10.0",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Show generated CSS build errors only on the CSS Delivery screen.",
-      "sha256": "722506d74c12ff332e4c4afb197664cd0960290384bd1d530c944ba4d74ea030"
+      "body": "Export and import snippets by code type. Imports support replace, append and skip, and append and overwrite. Missing Code Domains are added automatically by slug.",
+      "sha256": "502fe1c83f47326b9f36ded382616cf574bcea2f70ca2288afdef3bf7c155e36"
     },
     {
       "id": "as-ms-reporting",
