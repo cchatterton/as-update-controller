@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-20T02:30:31.643417+00:00",
+  "published_at": "2026-11-20T02:58:33.375520+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.10.2",
-      "tag": "v0.10.2",
+      "version": "0.10.3",
+      "tag": "v0.10.3",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Refine the Import / Export screen, omit untitled snippets from new exports, and accept HTML body-open placement in import files.",
-      "sha256": "2a00b425254aec3fb3d1c835e2fcd429a650872569167103bc97aaa0b94c96bd"
+      "body": "Use Local Code labels and move Import / Export to the bottom of the submenu.",
+      "sha256": "c1e24bdc2331dd2ce189d0f97ad5fdfc7953c8eda4da6ebb6a551ac4a72a9c03"
     },
     {
       "id": "as-ms-reporting",
