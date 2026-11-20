@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-20T02:58:33.375520+00:00",
+  "published_at": "2026-11-20T03:47:11.703640+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -173,14 +173,14 @@
       "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.10.3",
-      "tag": "v0.10.3",
+      "version": "0.10.4",
+      "tag": "v0.10.4",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "Use Local Code labels and move Import / Export to the bottom of the submenu.",
-      "sha256": "c1e24bdc2331dd2ce189d0f97ad5fdfc7953c8eda4da6ebb6a551ac4a72a9c03"
+      "body": "Add CSS Errors page-size settings and severity filters, with errors shown first.",
+      "sha256": "7ffec8b7953a8ffbf759bf546c80e34158162aabd31c8c6b014d32b0f45e067f"
     },
     {
       "id": "as-ms-reporting",
