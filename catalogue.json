@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "published_at": "2026-11-20T03:59:08.032494+00:00",
+  "published_at": "2026-11-23T06:16:24.597323+00:00",
   "plugins": [
     {
       "id": "AS-Relevansi",
@@ -418,16 +418,17 @@
       "name": "rAIven Connector",
       "description": "Adds rAIven as an AlphaSys AI connector and provides a live admin test console.",
       "beta": false,
+      "exclusive": false,
       "allowed_domains": [],
       "include_subdomains": false,
-      "version": "0.3.1",
-      "tag": "v0.3.1",
+      "version": "0.3.2",
+      "tag": "v0.3.2",
       "requires": "7.0",
       "requires_php": "7.4",
       "dependencies": [],
       "controller_api": 1,
-      "body": "## 0.3.1 - 2026-09-26\n\n- Replace independent GitHub updater with the guarded AlphaSys controller client.\n- Standardise metadata, links, licensing and WordPress 7.0 / PHP 7.4 compatibility.\n- Preserve existing functionality, settings, hooks and package identity.\n",
-      "sha256": "8a0a9539102abdff2cfeb9263e69c2a8c10580ac939f026cdaef69af35bc6491"
+      "body": "Doubles the generation timeout from 60 seconds to 120 seconds for both native WordPress AI Client requests and direct connector generation. Model discovery remains at 15 seconds. Preserves the AlphaSys Update Controller integration introduced in v0.3.1.",
+      "sha256": "4f4ab4b871b583c3bbf9e2f6ae52b8f60c6d60c98a5b19a655f58363e64d6882"
     },
     {
       "id": "web-force-connect-27",
